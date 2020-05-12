@@ -37,7 +37,7 @@ class PaySuccessConfirmation
             $items = $order->items;
             foreach($items as $item){
                 switch ($item['type']){
-                    
+
                 }
             }
 
