@@ -49,9 +49,15 @@ return [
             'hash' => false,
         ],
 
+
         'customers' => [
             'driver' => 'jwt',
             'provider' => 'customers'
+        ],
+
+        'users' => [
+            'driver' => 'jwt',
+            'provider' => 'users'
         ],
 
         "admins" => [
@@ -80,7 +86,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => \App\Models\User::class,
         ],
 
         'customers' => [

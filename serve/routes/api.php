@@ -16,9 +16,34 @@ use Illuminate\Http\Request;
 
 Route::any('version', function (Request $request) {
     echo "mini-shop v~1.0";
-    $resault = dns_get_record("pinuocaostudio.com",DNS_CNAME);
+    $resault = dns_get_record("pinuocaostudio.com", DNS_CNAME);
     var_dump($resault);
     var_dump($request->getRequestUri());
+});
+
+Route::namespace('Shop')->group(function () {
+    Route::prefix('user')->namespace('User')->group(function () {
+        Route::post('register', 'UserController@register');
+        Route::post('login', 'UserController@login');
+        Route::put('edit', "UserController@edit");
+        Route::get('refresh', "UserController@refresh");
+        Route::get('info', 'UserController@info');
+    });
+    Route::prefix('shop')->namespace('Shop')->middleware('auth:users')->group(function () {
+        Route::get('', 'ShopController@index');
+        Route::post('', 'ShopController@store');
+
+        Route::prefix('order')->group(function(){
+           Route::post('','OrderController@store');
+        });
+
+        Route::prefix('sys')->group(function () {
+            Route::get('payment_method', 'SysController@payment');
+            Route::get('level', 'SysController@level');
+        });
+    });
+
+
 });
 
 Route::prefix('customer')->namespace('Customer')->group(function () {
@@ -66,13 +91,13 @@ Route::middleware('auth:customers')->group(function () {
 });
 
 Route::middleware('auth:admins')->prefix("admin")->group(function () {
-    Route::get('dashboard/{type}',"Dashboard\AdminDashboardController@dashboard_static");
+    Route::get('dashboard/{type}', "Dashboard\AdminDashboardController@dashboard_static");
     Route::apiResource('product', 'Product\AdminProductController');
     Route::apiResource('image', "Image\ImageController")->only(['store', 'destroy', 'index']);
     Route::prefix('order')->namespace('Order')->group(function () {
         Route::get('', 'AdminOrderController@index');
         Route::put('status/{order}', "AdminOrderController@status");
-        Route::put('{order}',"AdminOrderController@update");
+        Route::put('{order}', "AdminOrderController@update");
         Route::get('{order}/shipment', 'AdminOrderShipmentController@index');
         Route::post('{order}/shipment', 'AdminOrderShipmentController@store');
         Route::get('{order}', "AdminOrderController@show");
