@@ -5,6 +5,7 @@ namespace App\Http\Requests\Shop\Shop;
 
 use App\Http\Requests\FormRequest;
 use App\Models\SysLevelVariant;
+use App\Models\SysPaymentMethod;
 use App\Models\SysPluginVariant;
 use App\Models\SysTemplateVariant;
 
@@ -25,6 +26,12 @@ class OrderStoreRequest extends FormRequest
                 "exists:shops,id",
                 function($attribute,$value,$fail){
                     if(!auth('users')->user()->shops()->find($value)) return $fail('没有此商铺');
+                }
+            ],
+            "payment_method"=>[
+                "required",
+                function($attribute, $value, $fail){
+                    if(!SysPaymentMethod::where('active',true)->where('method_code',$value)->first()) return $fail($attribute.' 支付代码错误，或支付未启用');
                 }
             ],
             "items"=>"array|required",

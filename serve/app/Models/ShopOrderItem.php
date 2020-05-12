@@ -15,6 +15,7 @@ class ShopOrderItem extends Model
         self::ORDER_ITEM_TEMPLATE => "商城模板",
         self::ORDER_ITEM_PLUGIN => "商城插件",
     ];
+    protected $guarded = [];
 
     public $timestamps = false;
 

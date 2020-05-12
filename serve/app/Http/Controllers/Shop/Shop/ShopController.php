@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Shop\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\Shop\ShopStoreRequest;
+use App\Http\Resources\Shop\ShopResource;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -11,7 +12,7 @@ class ShopController extends Controller
     public function index()
     {
         $shops = auth('users')->user()->shops;
-        return $this->jsonSuccessResponse($shops);
+        return $this->jsonSuccessResponse(ShopResource::collection($shops));
     }
 
     public function store(ShopStoreRequest $request)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SysLevel;
 use Illuminate\Http\Request;
 
 /*
@@ -16,9 +17,12 @@ use Illuminate\Http\Request;
 
 Route::any('version', function (Request $request) {
     echo "mini-shop v~1.0";
-    $resault = dns_get_record("pinuocaostudio.com", DNS_CNAME);
-    var_dump($resault);
-    var_dump($request->getRequestUri());
+//    $data = ["自定义域名","无限商品上传","免费赠送2GB图片空间","支持自定义模块","提供多场景主题模版","多种营销工具自选安装","支持二次开发和定制","可配置多平台小程序","可配置微信/支付宝等收款方式","赠送积分功能","赠送100条短信"];
+//    SysLevel::find(2)->update(['level_content'=>$data]);
+//    echo $data;
+//    $resault = dns_get_record("pinuocaostudio.com", DNS_CNAME);
+//    var_dump($resault);
+//    var_dump($request->getRequestUri());
 });
 
 Route::namespace('Shop')->group(function () {

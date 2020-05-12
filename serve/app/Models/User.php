@@ -17,6 +17,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Shop::class, "user_id");
     }
 
+    public function shopOrders()
+    {
+        return $this->hasMany(ShopOrder::class,'user_id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

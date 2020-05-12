@@ -46,6 +46,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Pay\PaySuccessConfirmation'
         ],
 
+        'App\Events\Shop\Pay\PaySuccessEvent'=>[
+            'App\Listeners\Shop\Pay\PaySuccessConfirmation'
+        ]
+
 
     ];
 

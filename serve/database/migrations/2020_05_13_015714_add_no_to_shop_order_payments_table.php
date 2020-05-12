@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSysLevelsTable extends Migration
+class AddNoToShopOrderPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateSysLevelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sys_levels', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('level_name');
-            $table->string('level_img_url')->nullable();
-            $table->json('level_content')->nullable();
+        Schema::table('shop_order_payments', function (Blueprint $table) {
+            $table->string('no',45);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateSysLevelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sys_levels');
+        Schema::table('shop_order_payments', function (Blueprint $table) {
+            $table->dropColumn('no');
+        });
     }
 }
