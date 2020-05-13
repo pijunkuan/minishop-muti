@@ -41,7 +41,7 @@ class ShopController extends Controller
         }catch (\Exception $exception){
             DB::rollBack();
             Log::error($exception->getMessage());
-            return $this->jsonErrorResponse('创建失败，请查看日志');
+            return $this->jsonErrorResponse(422,'创建失败，请查看日志');
         }
 
         return $this->jsonSuccessResponse($shop);

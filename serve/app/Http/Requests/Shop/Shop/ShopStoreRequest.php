@@ -21,6 +21,7 @@ class ShopStoreRequest extends FormRequest
                 "exists:shop_orders,no",
                 function ($attribute, $value, $fail) {
                     $order = ShopOrder::where('no',$value)->first();
+                    if(!$order) return $fail('该订单不存在');
                     if($order->status != ShopOrder::ORDER_STATUS_PAID) return $fail('该订单未支付');
                     if($order->shop || $order->item['type'] != 'level') return $fail('无法创建商城');
                 }
@@ -32,7 +33,8 @@ class ShopStoreRequest extends FormRequest
     public function attributes()
     {
         return [
-            "shop_name" => "商铺名称"
+            "shop_name" => "商铺名称",
+            "order_no"=>"订单编号"
         ];
     }
 }

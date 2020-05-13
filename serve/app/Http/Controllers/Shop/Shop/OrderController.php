@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Shop;
 
-use App\Events\Pay\PaySuccessEvent;
+use App\Events\Shop\Pay\PaySuccessEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\Shop\OrderStoreRequest;
 use App\Http\Resources\Shop\Order\OrderResource;

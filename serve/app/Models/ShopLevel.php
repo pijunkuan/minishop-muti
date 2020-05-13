@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShopLevel extends Model
 {
     public $table="shop_levels";
-
+    protected $guarded = [];
     public function shop()
     {
         return $this->belongsTo(Shop::class,'shop_id');
