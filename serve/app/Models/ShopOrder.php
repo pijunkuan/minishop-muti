@@ -21,9 +21,9 @@ class ShopOrder extends Model
     const ITEM_TYPE_PLUGIN="plugin";
 
     const itemTypeMap = [
-      self::ITEM_TYPE_LEVEL => "版本",
-      self::ITEM_TYPE_TEMPLATE => "模板",
-      self::ITEM_TYPE_PLUGIN => "插件",
+      self::ITEM_TYPE_LEVEL => "网站服务",
+      self::ITEM_TYPE_TEMPLATE => "主题购买",
+      self::ITEM_TYPE_PLUGIN => "插件购买",
     ];
 
     protected $guarded = [];
