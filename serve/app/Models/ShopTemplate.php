@@ -11,6 +11,7 @@ class ShopTemplate extends Model
     public $casts = [
         "active" => "boolean",
     ];
+    protected $guarded = [];
 
     public function shop()
     {

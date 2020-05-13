@@ -3,6 +3,7 @@
 namespace App\Listeners\Shop\Block;
 
 use App\Events\Shop\Block\BlockSuccessEvent;
+use App\Models\ShopOrder;
 use App\Models\SysLevel;
 use App\Models\SysLevelVariant;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -29,7 +30,7 @@ class LevelConfirmation
     public function handle(BlockSuccessEvent $event)
     {
         $shop = $event->shop;
-        if($event->item_type == "level"){
+        if($event->item_type == ShopOrder::ITEM_TYPE_LEVEL){
             $level = SysLevel::find($event->sys_block_id);
             if($level){
                 $exp_at = now()->addMonths($event->time)->addDay();

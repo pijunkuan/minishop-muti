@@ -14,7 +14,7 @@ class AddActivToShopTemplatesTable extends Migration
     public function up()
     {
         Schema::table('shop_templates', function (Blueprint $table) {
-            $table->boolean('active');
+            $table->boolean('active')->default(false);
         });
     }
 
