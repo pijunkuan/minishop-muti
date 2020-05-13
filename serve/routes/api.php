@@ -39,6 +39,8 @@ Route::namespace('Shop')->group(function () {
 
         Route::prefix('order')->group(function(){
            Route::post('','OrderController@store');
+           Route::post('pay_success/{payment_no}','OrderController@success');
+           Route::get('{order_no}','OrderController@show');
         });
 
         Route::prefix('sys')->group(function () {
