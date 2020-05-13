@@ -16,6 +16,16 @@ class ShopOrder extends Model
       self::ORDER_STATUS_CLOSED => "已关闭",
     ];
 
+    const ITEM_TYPE_LEVEL="level";
+    const ITEM_TYPE_TEMPLATE="template";
+    const ITEM_TYPE_PLUGIN="plugin";
+
+    const itemTypeMap = [
+      self::ITEM_TYPE_LEVEL => "版本",
+      self::ITEM_TYPE_TEMPLATE => "模板",
+      self::ITEM_TYPE_PLUGIN => "插件",
+    ];
+
     protected $guarded = [];
 
     protected static function boot()

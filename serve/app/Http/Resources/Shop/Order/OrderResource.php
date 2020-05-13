@@ -28,7 +28,14 @@ class OrderResource extends JsonResource
             "shop_name"=>$this['shop_name'],
             "status_code"=>$this['status'],
             "status"=>ShopOrder::orderStatusMap[$this['status']],
-            "item"=>$this['item'],
+            "item"=>[
+                "type"=>ShopOrder::itemTypeMap[$this['item']['type']],
+                "type_code"=>$this['item']['type'],
+                "item_name"=>$this['item']['item_name'],
+                "time_value"=>"{$this['item']['time']}个月",
+                "time"=>$this['item']['time'],
+                "price"=>$this['item']['price'],
+            ],
             "payment"=>[
                 "no"=>$payment['no'],
                 "pay_no"=>$payment['pay_no'],
@@ -41,7 +48,6 @@ class OrderResource extends JsonResource
                 "created_at"=>$payment['created_at']->toDateTimeString(),
             ],
             "created_at"=>$this['created_at']->toDateTimeString(),
-
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Shop\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Shop\Level\LevelResource;
+use App\Http\Resources\System\Template\TemplateListResource;
 use App\Models\SysLevel;
 use App\Models\SysPaymentMethod;
 use App\Models\SysTemplate;
@@ -25,7 +26,7 @@ class SysController extends Controller
 
     public function template_list(Request $request)
     {
-        $templates = SysTemplate::where('active',true)->orderBy('created_at','desc')->paginate($request->get('pageSize'));
-        return $this->jsonSuccessResponse($templates);
+        $templates = SysTemplate::where('active',true)->orderBy('created_at','desc')->get();
+        return $this->jsonSuccessResponse(TemplateListResource::collection($templates));
     }
 }

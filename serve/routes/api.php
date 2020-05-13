@@ -47,6 +47,7 @@ Route::namespace('Shop')->group(function () {
         Route::prefix('sys')->group(function () {
             Route::get('payment_method', 'SysController@payment');
             Route::get('level', 'SysController@level');
+            Route::get('template','SysController@template_list');
         });
     });
 
