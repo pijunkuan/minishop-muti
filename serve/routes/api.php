@@ -35,7 +35,6 @@ Route::namespace('Shop')->group(function () {
     });
     Route::prefix('shop')->namespace('Shop')->middleware('auth:users')->group(function () {
         Route::get('', 'ShopController@index');
-        Route::post('', 'ShopController@store');
 
         Route::prefix('order')->group(function(){
            Route::post('','OrderController@store');

@@ -13,8 +13,8 @@ class Shop extends Model
     const SHOP_STATUS_STOP = "stop";
 
     const shopStatusMap = [
-        self::SHOP_STATUS_PENDING => "未激活",
-        self::SHOP_STATUS_ACTIVE => "已激活",
+        self::SHOP_STATUS_PENDING => "未配置",
+        self::SHOP_STATUS_ACTIVE => "运行中",
         self::SHOP_STATUS_STOP => "已关闭",
     ];
 
