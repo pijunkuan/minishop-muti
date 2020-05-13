@@ -39,7 +39,8 @@ class OrderResource extends JsonResource
                 "status"=>ShopOrderPayment::paymentStatusMap[$payment['status']],
                 "pay_at"=>$payment['pay_at']?$payment['pay_at']:null ,
                 "created_at"=>$payment['created_at']->toDateTimeString(),
-            ]
+            ],
+            "created_at"=>$this['created_at']->toDateTimeString(),
 
         ];
     }
