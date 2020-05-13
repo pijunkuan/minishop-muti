@@ -2,6 +2,8 @@
 
 namespace App\Listeners\Shop\Pay;
 
+use App\Events\Shop\Block\BlockSuccessEvent;
+use App\Events\Shop\CreateShopEvent;
 use App\Events\Shop\Pay\PaySuccessEvent;
 use App\Models\ShopOrder;
 use App\Models\ShopOrderPayment;
@@ -55,6 +57,11 @@ class PaySuccessConfirmation
                 "data" => null,
             ], 422)));
         }
-
+        $order = $payment->shopOrder;
+        if(!$order->shop){
+            event(new CreateShopEvent($order->user,$order['no']));
+        }
+        $order->refresh();
+        event(new BlockSuccessEvent($order->shop,$order->item['type'],$order->item['sys_block_id'],$order->item['time']));
     }
 }

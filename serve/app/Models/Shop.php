@@ -31,6 +31,7 @@ class Shop extends Model
                 if (!$model->shop_url) {
                     return false;
                 }
+                $model->shop_name = "新建店铺{$model->shop_url}";
             }
         });
     }

@@ -43,12 +43,14 @@ class OrderStoreRequest extends FormRequest
                     switch($type){
                         case "template":
                             if(!SysTemplateVariant::where('id',$value)->first()) return $fail('不存在此模板');
+                            if(!$this->input('shop_id')) return $fail('商铺id 不可为空');
                             break;
                         case "level":
                             if(!SysLevelVariant::where('id',$value)->first()) return $fail('不存在此版本');
                             break;
                         case "plugin":
                             if(!SysPluginVariant::where('id',$value)->first()) return $fail('不存在此插件');
+                            if(!$this->input('shop_id')) return $fail('商铺id 不可为空');
                             break;
                         default:
                             return $fail('类型错误');
