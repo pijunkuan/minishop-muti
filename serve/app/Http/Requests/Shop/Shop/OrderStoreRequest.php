@@ -22,7 +22,7 @@ class OrderStoreRequest extends FormRequest
     {
         return [
             "shop_id"=>[
-                "required",
+                "nullable",
                 "exists:shops,id",
                 function($attribute,$value,$fail){
                     if(!auth('users')->user()->shops()->find($value)) return $fail('没有此商铺');
@@ -34,14 +34,12 @@ class OrderStoreRequest extends FormRequest
                     if(!SysPaymentMethod::where('active',true)->where('method_code',$value)->first()) return $fail($attribute.' 支付代码错误，或支付未启用');
                 }
             ],
-            "items"=>"array|required",
-            "items.*.type"=>"required",
-            "items.*.item_id"=>[
+            "item"=>"required",
+            "item.type"=>"required",
+            "item.item_id"=>[
                 "required",
                 function($attribute, $value, $fail){
-                    preg_match('/items\.(\d+)\.item_id/', $attribute, $m);
-                    $index = $m[1];
-                    $type = $this->input('items')[$index]['type'];
+                    $type = $this->input('item')['type'];
                     switch($type){
                         case "template":
                             if(!SysTemplateVariant::where('id',$value)->first()) return $fail('不存在此模板');

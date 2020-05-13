@@ -35,9 +35,9 @@ class ShopOrder extends Model
         });
     }
 
-    public function items()
+    public function item()
     {
-        return $this->hasMany(ShopOrderItem::class,"shop_order_id");
+        return $this->hasOne(ShopOrderItem::class,"shop_order_id");
     }
 
     public function payments()

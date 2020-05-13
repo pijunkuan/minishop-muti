@@ -16,6 +16,7 @@ class CreateShopOrderItemsTable extends Migration
         Schema::create('shop_order_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('shop_order_id');
+            $table->foreign('shop_order_id')->references('id')->on('shop_orders')->onDelete('cascade');
             $table->string('type');
             $table->unsignedBigInteger('item_id');
             $table->string('item_name');

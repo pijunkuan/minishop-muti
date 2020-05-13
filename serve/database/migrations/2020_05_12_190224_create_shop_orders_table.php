@@ -21,8 +21,8 @@ class CreateShopOrdersTable extends Migration
             $table->decimal('ori_amount');
             $table->decimal('discounts_amount');
             $table->decimal('amount');
-            $table->unsignedBigInteger('shop_id');
-            $table->string('shop_name');
+            $table->unsignedBigInteger('shop_id')->nullable();
+            $table->string('shop_name')->nullable();
             $table->string('status')->default(ShopOrder::ORDER_STATUS_PENDING);
             $table->timestamps();
         });

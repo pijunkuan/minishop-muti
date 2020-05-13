@@ -48,7 +48,14 @@ class EventServiceProvider extends ServiceProvider
 
         'App\Events\Shop\Pay\PaySuccessEvent'=>[
             'App\Listeners\Shop\Pay\PaySuccessConfirmation'
-        ]
+        ],
+
+        'App\Events\Shop\Block\BlockSuccessEvent'=>[
+            'App\Listeners\Shop\Block\LevelConfirmation',
+            'App\Listeners\Shop\Block\TemplateConfirmation',
+            'App\Listeners\Shop\Block\PluginConfirmation',
+        ],
+
 
 
     ];
