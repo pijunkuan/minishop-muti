@@ -21,4 +21,10 @@ class ShopController extends Controller
         $shops = auth('users')->user()->shops;
         return $this->jsonSuccessResponse(ShopResource::collection($shops));
     }
+
+    public function show($shop)
+    {
+        $shop = auth('users')->user()->shops()->find($shop);
+        return $this->jsonSuccessResponse(new ShopResource($shop));
+    }
 }
