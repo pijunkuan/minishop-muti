@@ -5,8 +5,10 @@ namespace App\Listeners\Shop\Block;
 use App\Events\Shop\Block\BlockSuccessEvent;
 use App\Models\ShopOrder;
 use App\Models\SysTemplate;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class TemplateConfirmation
@@ -37,7 +39,7 @@ class TemplateConfirmation
                 $shop_template = $shop->templates()->where('sys_template_id', $template['id'])->first();
                 if ($shop_template) {
                     if ($shop_template['exp_at'] > now()) {
-                        $exp_at = $shop_template['exp_at']->addMonths($event->time)->addDay();
+                        $exp_at = Carbon::make($shop_template['exp_at'])->addMonths($event->time)->addDay();
                     }
                     $shop_template->update([
                         'exp_at' => $exp_at
@@ -50,10 +52,10 @@ class TemplateConfirmation
                     if($shop->templates()->count() == 1){
                         $shop_template->update(['active'=>true]);
                     }
-                    $shop_template->refresh();
+                    $shop_template = $shop_template->refresh();
                     $default_setting_file = "{$template['template_file']}template_setting.json";
                     if(Storage::exists($default_setting_file)){
-                        $default_setting = json_decode(Storage::get($default_setting_file),true);
+                        $default_setting = json_encode(Storage::get($default_setting_file),true);
                     }else{
                         $default_setting = null;
                     }

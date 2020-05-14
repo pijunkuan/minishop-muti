@@ -28,5 +28,4 @@ class ShopTemplate extends Model
     {
         return $this->hasOne(ShopTemplateSetting::class,"shop_template_id");
     }
-
 }

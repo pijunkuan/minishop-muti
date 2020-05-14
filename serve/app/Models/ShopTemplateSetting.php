@@ -9,6 +9,9 @@ class ShopTemplateSetting extends Model
     public $table="shop_template_settings";
     public $timestamps = false;
     protected $guarded = [];
+    protected $casts = [
+        "setting"=>"array"
+    ];
 
     public function shop_template()
     {
