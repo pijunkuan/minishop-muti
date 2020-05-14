@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductVariant extends Model
 {
-    public $table="product_variants";
+    public $table="app_product_variants";
     protected $guarded = [];
     public $timestamps = false;
 
