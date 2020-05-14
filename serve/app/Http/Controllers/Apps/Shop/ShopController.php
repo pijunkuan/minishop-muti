@@ -23,7 +23,7 @@ class ShopController extends Controller
             if (Shop::where('id', "<>", $shop['id'])->where('shop_url', $request->get('shop_url'))->first()) {
                 return $this->jsonErrorResponse(401, "商铺链接已存在，不可重复");
             }
-            $shop->shop_name = $request->get('shop_url');
+            $shop->shop_url = $request->get('shop_url');
         }
         if ($request->has('status')) {
             if (!in_array($request->get('status'), [
