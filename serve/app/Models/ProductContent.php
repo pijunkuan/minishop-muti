@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductContent extends Model
 {
-    public $table = "product_contents";
+    public $table = "app_product_contents";
     protected $guarded = [];
     public $timestamps = false;
     public function product()
