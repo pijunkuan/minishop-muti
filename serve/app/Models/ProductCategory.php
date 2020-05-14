@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductCategory extends Model
 {
-    public $table = 'product_categories';
+    public $table = 'app_product_categories';
     public $timestamps = false;
     protected $guarded = [];
 }
