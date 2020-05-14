@@ -17,14 +17,38 @@ class ShipmentRequest extends FormRequest
     public function rules()
     {
         return [
-            "shipment_title"=>"required",
-            "visibility"=>"required|boolean",
-            "need_cost"=>"required|boolean",
-            "cost_type"=>"nullable",
-            "price_1"=>"nullable|numeric",
-            "value_1"=>"nullable|numeric",
-            "price_2"=>"nullable|numeric",
-            "value_2"=>"nullable|numeric",
+            "shipment_code" => [
+                "required",
+                function ($attribute, $value, $fail) {
+                    if (!in_array($value, config('shop_shipment_methods.codes')))
+                        return $fail('非法代码code');
+                }
+            ],
+            "shipment_name" => "required",
+            "need_cost" => [
+                "required",
+                "boolean",
+                function ($attribute, $value, $fail) {
+                    if ($value) {
+                        if (!$this->input('cost_type')) return $fail('cost_type 不可为空');
+                        if (!$this->input('rules')) return $fail('rules 不可为空');
+                    }
+                }
+            ],
+            "cost_type" => [
+                "nullable",
+                function ($attribute, $value, $fail) {
+                    if (!in_array($value, config('shop_shipment_methods.cost_types')))
+                        return $fail('非法类型cost_type');
+                }
+            ],
+            "rules" => "nullable|array",
+            "rules.*.area" => "required|array",
+            "rules.*.price_1" => "required|numeric",
+            "rules.*.value_1" => "required|numeric",
+            "rules.*.price_2" => "required|numeric",
+            "rules.*.value_2" => "required|numeric",
+
         ];
     }
 }

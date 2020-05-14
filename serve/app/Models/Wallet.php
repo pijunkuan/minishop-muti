@@ -14,7 +14,7 @@ class Wallet extends Model
         self::WALLET_OUT => "支出"
     ];
 
-    public $table = "wallets";
+    public $table = "app_wallets";
     protected $guarded = [];
     protected static function boot()
     {

@@ -63,6 +63,11 @@ class Shop extends Model
         return $this->hasMany(PaymentMethod::class,"shop_id");
     }
 
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class,"shop_id");
+    }
+
     public function product_variants()
     {
         return $this->hasManyThrough(ProductVariant::class,Product::class,'shop_id','product_id');

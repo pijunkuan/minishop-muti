@@ -23,6 +23,10 @@ class ProductRequest extends FormRequest
             "product.product_des" => "nullable",
             "product.on_sale" => "required|boolean",
             "content" => "nullable",
+            "product.shipment_id" => [
+                "required",
+                "exists:app_shipments,id"
+            ],
             "images" => "nullable|array",
             "images.*.image_id" => [
                 "required",

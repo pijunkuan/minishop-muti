@@ -5,12 +5,12 @@ namespace App\Http\Resources\Shipment;
 use App\Models\Shipment;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ShipmentResource extends JsonResource
+class ShipmentDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -25,6 +25,7 @@ class ShipmentResource extends JsonResource
             "cost_type" => $this['need_cost']?Shipment::shipmentCostMap[$this['cost_type']]:"无运费",
             "cost_type_code" => $this['cost_type'],
             "need_cost" => $this['need_cost'],
+            "rules"=>ShipmentRuleResource::collection($this['rules'])
         ];
     }
 }

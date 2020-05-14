@@ -25,5 +25,15 @@ Route::group([
     Route::apiResource('product', 'Product\ProductController');
     Route::apiResource('category', 'Category\CategoryController')->except(['show']);
     Route::apiResource('image', "Image\ImageController")->only(['store', 'destroy', 'index']);
-
+    Route::get('shipment/type','Shipment\ShipmentController@type_list');
+    Route::apiResource('shipment', 'Shipment\ShipmentController');
+    Route::prefix('customer')->namespace('Customer')->group(function () {
+        Route::put('{customer}', 'CustomerController@update');
+        Route::get('', 'CustomerController@index');
+    });
+    Route::prefix('wallet/{customer}')->namespace('Wallet')->group(function () {
+        Route::get('balance', 'WalletController@balance');
+        Route::get('', 'WalletController@index');
+        Route::post('', 'WalletController@store');
+    });
 });

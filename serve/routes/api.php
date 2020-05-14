@@ -83,11 +83,6 @@ Route::prefix('pay/{no}')->namespace('Pay')->group(function () {
 });
 
 Route::middleware('auth:customers')->group(function () {
-    Route::prefix('wallet')->namespace('Wallet')->group(function () {
-        Route::get('', 'WalletController@index');
-        Route::get('balance', 'WalletController@balance');
-    });
-
     Route::post('order/calc', 'Order\OrderController@calc');
     Route::post('order/{order}/pay/{payment}', "Order\OrderController@pay_create")->name('order.pay');
     Route::apiResource('order', "Order\OrderController")->except(['destroy']);
@@ -103,20 +98,8 @@ Route::middleware('auth:admins')->prefix("admin")->group(function () {
         Route::post('{order}/shipment', 'AdminOrderShipmentController@store');
         Route::get('{order}', "AdminOrderController@show");
     });
-    Route::prefix('customer')->namespace('Customer')->group(function () {
-        Route::put('{customer}', 'AdminCustomerController@update');
-        Route::get('', 'AdminCustomerController@index');
-    });
-    Route::prefix('wallet/{customer}')->namespace('Wallet')->group(function () {
-        Route::get('balance', 'AdminWalletController@balance');
-        Route::get('', 'AdminWalletController@index');
-        Route::post('', 'AdminWalletController@store');
-    });
-    Route::apiResource('shipment', 'Shipment\AdminShipmentController');
-//    Route::get('theme', "Theme\ThemeController@get");
-//    Route::post('theme', "Theme\ThemeController@put");
-//    Route::get('template', "Template\TemplateController@get");
-//    Route::post('template', "Template\TemplateController@put");
+
+
 });
 
 

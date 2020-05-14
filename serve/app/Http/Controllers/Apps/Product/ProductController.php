@@ -47,6 +47,9 @@ class ProductController extends Controller
             $product_spu = $request->get('product');
             $product['product_title'] = $product_spu['product_title'];
             $product['on_sale'] = $product_spu['on_sale'];
+            if (!$shop->shipments()->find($product_spu['shipment_id']))
+                return $this->jsonErrorResponse(401, "无该运输模板");
+            $product['shipment_id'] = $product_spu['shipment_id'];
             if (isset($product_spu['product_unit'])) $product['product_unit'] = $product_spu['product_unit'];
             if (isset($product_spu['product_des'])) $product['product_des'] = $product_spu['product_des'];
             $product->save();
@@ -94,6 +97,11 @@ class ProductController extends Controller
         try {
             if ($request->has('product')) {
                 $product_spu = $request->get('product');
+                if (isset($product_spu['shipment_id'])) {
+                    if (!$shop->shipments()->find($product_spu['shipment_id']))
+                        return $this->jsonErrorResponse(401, "无该运输模板");
+                    $product['shipment_id'] = $product_spu['shipment_id'];
+                }
                 if (isset($product_spu['product_title'])) $product['product_title'] = $product_spu['product_title'];
                 if (isset($product_spu['on_sale'])) $product['on_sale'] = $product_spu['on_sale'];
                 if (isset($product_spu['product_unit'])) $product['product_unit'] = $product_spu['product_unit'];

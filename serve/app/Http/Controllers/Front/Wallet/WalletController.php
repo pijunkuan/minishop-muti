@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Wallet;
+namespace App\Http\Controllers\Front\Wallet;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Wallet\WalletCollection;

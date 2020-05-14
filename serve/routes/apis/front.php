@@ -26,7 +26,10 @@ Route::group([
             Route::delete('{variant_id}', 'CartController@destroy');
         });
         Route::apiResource('address', 'Address\AddressController')->except(['show']);
-
+        Route::prefix('wallet')->namespace('Wallet')->group(function () {
+            Route::get('', 'WalletController@index');
+            Route::get('balance', 'WalletController@balance');
+        });
     });
 });
 
