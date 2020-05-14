@@ -45,7 +45,7 @@ class Shop extends Model
 
     public function level()
     {
-        return $this->hasOne(ShopLevel::class,'shop_id');
+        return $this->hasOne(ShopLevel::class, 'shop_id');
     }
 
     public function plugins()
@@ -53,10 +53,25 @@ class Shop extends Model
         return $this->hasMany(ShopPlugin::class, 'shop_id');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, "shop_id");
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class, "shop_id");
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, "shop_id");
+    }
+
     public static function findAvailableNo()
     {
         // 订单流水号前缀
-        $prefix = "shop".date('ymd');
+        $prefix = "shop" . date('ymd');
         for ($i = 0; $i < 10; $i++) {
             // 随机生成 6 位的数字
             $url = $prefix . str_pad(random_int(0, 999), 3, '0', STR_PAD_LEFT);
