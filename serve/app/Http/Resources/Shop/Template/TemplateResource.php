@@ -16,6 +16,7 @@ class TemplateResource extends JsonResource
     {
         return [
             "id"=>$this['id'],
+            "template_id"=>$this['template']['id'],
             "template_name"=>$this['template']['template_name'],
             "active"=>$this['active'],
             "exp_at"=>$this['exp_at'],

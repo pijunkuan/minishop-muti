@@ -17,6 +17,7 @@ class TemplateListResource extends JsonResource
         $file = $this['template_file'];
         $price = $this->variants()->min('price');
         return [
+            "template_id"=>$this['id'],
             "template_name"=>$this['template_name'],
             "template_img"=>asset("{$file}img.jpg"),
             "template_content"=>$this['template_content'],
