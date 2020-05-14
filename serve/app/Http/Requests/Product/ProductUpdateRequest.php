@@ -24,10 +24,10 @@ class ProductUpdateRequest extends FormRequest
             "product.on_sale"=>"nullable|boolean",
             "content"=>"nullable",
             "images"=>"nullable|array",
-            "images.*.image_id"=>"required|exists:images,id",
+            "images.*.image_id"=>"required|exists:app_images,id",
             "images.*.sort"=>"required",
             "variants"=>"nullable|array",
-            "variants.*.id"=>"nullable|exists:product_variants,id",
+            "variants.*.id"=>"nullable|exists:app_product_variants,id",
             "variants.*.variant_title"=>"required",
             "variants.*.variant_code"=>"nullable",
             "variants.*.ori_price"=>"nullable|numeric",
@@ -38,7 +38,7 @@ class ProductUpdateRequest extends FormRequest
             "categories"=>"nullable|array",
             "categories.*"=>[
                 "nullable",
-                "exists:categories,id"
+                "exists:app_categories,id"
             ]
         ];
     }

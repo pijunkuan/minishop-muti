@@ -119,8 +119,6 @@ Route::middleware('auth:customers')->group(function () {
 
 Route::middleware('auth:admins')->prefix("admin")->group(function () {
     Route::get('dashboard/{type}', "Dashboard\AdminDashboardController@dashboard_static");
-    Route::apiResource('product', 'Product\AdminProductController');
-    Route::apiResource('image', "Image\ImageController")->only(['store', 'destroy', 'index']);
     Route::prefix('order')->namespace('Order')->group(function () {
         Route::get('', 'AdminOrderController@index');
         Route::put('status/{order}', "AdminOrderController@status");
@@ -138,7 +136,6 @@ Route::middleware('auth:admins')->prefix("admin")->group(function () {
         Route::get('', 'AdminWalletController@index');
         Route::post('', 'AdminWalletController@store');
     });
-    Route::apiResource('category', 'Category\AdminCategoryController')->except(['show']);
     Route::apiResource('shipment', 'Shipment\AdminShipmentController');
     Route::get('theme', "Theme\ThemeController@get");
     Route::post('theme', "Theme\ThemeController@put");

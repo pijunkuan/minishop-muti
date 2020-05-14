@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Image;
+namespace App\Http\Controllers\Apps\Image;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Image\ImageRequest;
@@ -14,18 +14,20 @@ class ImageController extends Controller
 {
     public function index(Request $request)
     {
-        $images = new Image();
+        $shop = $request->get('ori_shop');
+        $images = $shop->images();
         $images = $images->orderBy('id','desc')->paginate($request->get('pageSize'));
         return $this->jsonSuccessResponse(new ImageCollection($images));
     }
 
     public function store(ImageRequest $request)
     {
+        $shop = $request->get('ori_shop');
         $file = $request->file('file');
         $fileName = date('YmdHis').str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT).".".$file->getClientOriginalExtension();
         $savePath = "images/".$fileName;
         Storage::put($savePath,File::get($file));
-        $img = Image::create([
+        $img = $shop->images()->create([
             "img_file"=>$savePath,
             "img_name"=>$fileName,
             "img_bytes"=>$file->getSize()
@@ -33,8 +35,10 @@ class ImageController extends Controller
         return $this->jsonSuccessResponse($img);
     }
 
-    public function destroy(Image $image)
+    public function destroy(Request $request)
     {
+        $shop = $request->get('ori_shop');
+        $image = $shop->images()->findOrFail($request->route()->parameter('image'));
         if($image->img_file){
             Storage::delete($image->img_file);
             $image->delete();

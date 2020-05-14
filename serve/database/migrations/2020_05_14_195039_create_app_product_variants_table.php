@@ -22,6 +22,7 @@ class CreateAppProductVariantsTable extends Migration
             $table->decimal('ori_price')->nullable();
             $table->decimal('price');
             $table->decimal('buy_price')->nullable();
+            $table->decimal('weight')->nullable();
             $table->integer('quantity');
         });
     }

@@ -10,9 +10,15 @@ Route::group(["prefix" => "shop", "namespace" => "Shop"], function () {
 
     Route::group(['prefix'=>"template"],function(){
         Route::get('','TemplateController@index');
+        Route::get('cloud','TemplateController@cloud');
         Route::get('{template}','TemplateController@show');
         Route::put('{template}/active','TemplateController@active');
         Route::put('{template}','TemplateController@update');
-        Route::get('cloud','TemplateController@cloud');
+
     });
 });
+
+Route::apiResource('product', 'Product\ProductController');
+Route::apiResource('category', 'Category\CategoryController')->except(['show']);
+Route::apiResource('image', "Image\ImageController")->only(['store', 'destroy', 'index']);
+

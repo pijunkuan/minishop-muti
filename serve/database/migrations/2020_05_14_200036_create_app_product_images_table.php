@@ -19,6 +19,7 @@ class CreateAppProductImagesTable extends Migration
             $table->foreign('product_id')->references('id')->on('app_products')->onDelete('cascade');
             $table->unsignedBigInteger('image_id');
             $table->foreign('image_id')->references('id')->on('app_images')->onDelete('cascade');
+            $table->integer('sort')->default(0);
         });
     }
 

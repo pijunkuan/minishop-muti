@@ -1,55 +1,68 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Apps\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Resources\Product\AdminProductCollection;
 use App\Http\Resources\Product\AdminProductDetailResource;
-use App\Http\Resources\Product\ProductCollection;
-use App\Http\Resources\Product\ProductDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class AdminProductController extends Controller
+class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = new Product();
-        if($name = $request->get('name')) $products = $products->where('product_title','like',"%{$name}%");
+        $shop = $request->get('ori_shop');
+        $products = $shop->products();
+        if ($name = $request->get('name')) $products = $products->where('product_title', 'like', "%{$name}%");
         $products = $products->orderBy('created_at', 'desc')->paginate($request->get('pageSize'));
         return $this->jsonSuccessResponse(new AdminProductCollection($products));
     }
 
-    public function show(Product $product)
+    public function show(Request $request)
     {
+        $shop = $request->get('ori_shop');
+        $product = $shop->products()->findOrFail($request->route()->parameter('product'));
         return $this->jsonSuccessResponse(new AdminProductDetailResource($product));
+    }
+
+    public function destroy(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+        $product = $shop->products()->findOrFail($request->route()->parameter('product'));
+        $product->delete();
+        return $this->jsonSuccessResponse();
     }
 
     public function store(ProductRequest $request)
     {
         DB::beginTransaction();
         try {
-            $product = new Product();
+            $shop = $request->get('ori_shop');
+            $product = $shop->products()->make();
             $product_spu = $request->get('product');
             $product['product_title'] = $product_spu['product_title'];
             $product['on_sale'] = $product_spu['on_sale'];
             if (isset($product_spu['product_unit'])) $product['product_unit'] = $product_spu['product_unit'];
             if (isset($product_spu['product_des'])) $product['product_des'] = $product_spu['product_des'];
             $product->save();
-            if ($categories = $request->get('categories') ?: []) $product->categories()->sync($categories);
-
+            if ($categories = $request->get('categories') ?: []) {
+                $categories = $shop->categories()->whereIn('id', $categories)->pluck('id');
+                $product->categories()->sync($categories);
+            }
             $product->content()->create(['content' => $request->get('content')]);
             $images = $request->get('images');
             if (is_array($images) && count($images)) {
                 foreach ($images as $image) {
-                    $product->product_images()->create([
-                        "image_id" => $image['image_id'],
-                        "sort" => $image['sort']
-                    ]);
+                    if ($shop->images()->find($image['image_id']))
+                        $product->product_images()->create([
+                            "image_id" => $image['image_id'],
+                            "sort" => $image['sort']
+                        ]);
                 }
             }
             $variants = $request->get('variants');
@@ -73,8 +86,10 @@ class AdminProductController extends Controller
         return $this->jsonSuccessResponse(new AdminProductDetailResource($product));
     }
 
-    public function update(Product $product, ProductUpdateRequest $request)
+    public function update(ProductUpdateRequest $request)
     {
+        $shop = $request->get('ori_shop');
+        $product = $shop->products()->findOrFail($request->route()->parameter('product'));
         DB::beginTransaction();
         try {
             if ($request->has('product')) {
@@ -93,15 +108,19 @@ class AdminProductController extends Controller
                 $product->product_images()->delete();
                 if (is_array($images) && count($images)) {
                     foreach ($images as $image) {
-                        $product->product_images()->create([
-                            "image_id" => $image['image_id'],
-                            "sort" => $image['sort']
-                        ]);
+                        if ($shop->images()->find($image['image_id']))
+                            $product->product_images()->create([
+                                "image_id" => $image['image_id'],
+                                "sort" => $image['sort']
+                            ]);
                     }
                 }
             }
             if ($request->has('categories')) {
-                $product->categories()->sync($request->get('categories') ?: []);
+                if ($categories = $request->get('categories') ?: []) {
+                    $categories = $shop->categories()->whereIn('id', $categories)->pluck('id');
+                    $product->categories()->sync($categories);
+                }
             }
             if ($request->has('variants')) {
                 $variants = $request->get('variants');
@@ -133,14 +152,8 @@ class AdminProductController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
-            return $this->jsonErrorResponse(401, "创建失败"."，原因：".$exception->getMessage());
+            return $this->jsonErrorResponse(401, "创建失败" . "，原因：" . $exception->getMessage());
         }
         return $this->jsonSuccessResponse(new AdminProductDetailResource($product));
-    }
-
-    public function destroy(Product $product)
-    {
-        $product->delete();
-        return $this->jsonSuccessResponse();
     }
 }
