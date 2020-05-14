@@ -26,7 +26,8 @@ class ShopResource extends JsonResource
         return [
             "shop_id"=>$this['id'],
             "shop_name"=>$this['shop_name'],
-            "shop_url"=>"{$this['shop_url']}.min-eshop.vip",
+            "shop_url"=>"{$this['shop_url']}",
+            "host"=>config('shop_base.shop_base_host'),
             "status"=>Shop::shopStatusMap[$this['status']],
             "status_code"=>$this['status'],
             "active"=>$this['active'],
