@@ -63,7 +63,7 @@ Route::group([
         "middleware"=>["auth:users","shop_center"],
         "namespace"=>"Apps"
     ],function(){
-   require_once __DIR__."/apis/center.php";
+   require __DIR__."/apis/center.php";
 });
 Route::group([
     "domain"=>"{account}.min-eshop.vip",
@@ -71,7 +71,7 @@ Route::group([
     "middleware"=>["auth:users","shop_center"],
     "namespace"=>"Apps"
 ],function(){
-    require_once __DIR__."/apis/center.php";
+    require __DIR__."/apis/center.php";
 });
 Route::prefix('customer')->namespace('Customer')->group(function () {
     Route::post('login', "CustomerController@login");
