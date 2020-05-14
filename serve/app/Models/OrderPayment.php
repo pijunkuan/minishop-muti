@@ -16,7 +16,7 @@ class OrderPayment extends Model
       self::PAYMENT_STATUS_CLOSED=>"已关闭",
     ];
 
-    public $table = "order_payments";
+    public $table = "app_order_payments";
     protected $guarded = [];
 
     protected static function boot()

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderShipment extends Model
 {
-    public $table = "order_shipments";
+    public $table = "app_order_shipments";
     protected $guarded = [];
 
     public function order()

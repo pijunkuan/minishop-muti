@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Address;
+namespace App\Http\Controllers\Front\Address;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Address\AddressStoreRequest;
 use App\Http\Resources\Address\AddressCollection;
-use App\Models\Address;
+use App\Http\Resources\Address\AddressResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
 {
-
     public function index(Request $request)
     {
         $addresses = auth('customers')->user()->addresses();
@@ -39,18 +38,18 @@ class AddressController extends Controller
                 $customer->addresses()->update(['default' => false]);
             if ($customer->addresses()->count() == 0)
                 $address['default'] = true;
-            $customer->addresses()->create($address);
+            $address = $customer->addresses()->create($address);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
             return $this->jsonErrorResponse(401, $exception->getMessage());
         }
-        return $this->jsonSuccessResponse(null, "地址创建成功");
+        return $this->jsonSuccessResponse(new AddressResource($address), "地址创建成功");
     }
 
-    public function update($address, AddressStoreRequest $request)
+    public function update(AddressStoreRequest $request)
     {
-        if ($address = auth('customers')->user()->addresses()->find($address)) {
+        if ($address = auth('customers')->user()->addresses()->find($request->route()->parameter('address'))) {
             DB::beginTransaction();
             try {
                 $temp = [
@@ -83,9 +82,9 @@ class AddressController extends Controller
         }
     }
 
-    public function destroy($address)
+    public function destroy(Request $request)
     {
-        if ($address = auth('customers')->user()->addresses()->find($address)) {
+        if ($address = auth('customers')->user()->addresses()->find($request->route()->parameter('address'))) {
             $address->delete();
             if (auth('customers')->user()->addresses()->count() > 0)
                 if (auth('customers')->user()->addresses()->where('default', 1)->count() == 0)

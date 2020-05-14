@@ -58,9 +58,29 @@ class Shop extends Model
         return $this->hasMany(Product::class, "shop_id");
     }
 
+    public function payment_methods()
+    {
+        return $this->hasMany(PaymentMethod::class,"shop_id");
+    }
+
+    public function product_variants()
+    {
+        return $this->hasManyThrough(ProductVariant::class,Product::class,'shop_id','product_id');
+    }
+
     public function categories()
     {
         return $this->hasMany(Category::class, "shop_id");
+    }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class,'shop_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasManyThrough(Order::class,Customer::class,"shop_id","customer_id");
     }
 
     public function images()

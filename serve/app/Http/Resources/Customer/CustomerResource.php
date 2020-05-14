@@ -18,7 +18,7 @@ class CustomerResource extends JsonResource
             "id"=>$this['id'],
             "username"=>$this['username'],
             "mobile"=>$this['mobile'],
-            "balance"=>$this->wallets()->sum('amount'),
+//            "balance"=>$this->wallets()->sum('amount'),
             "created_at"=>$this['created_at']->toDateTimeString()
         ];
     }

@@ -12,7 +12,7 @@ class Customer extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    public $table="customers";
+    public $table="app_customers";
     protected $guarded = [];
     protected $hidden = ["password"];
 
@@ -50,6 +50,11 @@ class Customer extends Authenticatable implements JWTSubject
     public function cartItems()
     {
         return $this->hasMany(CartItem::class,"customer_id");
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class,"shop_id");
     }
 
     public static function findAvailableUsername()

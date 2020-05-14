@@ -31,7 +31,7 @@ class Order extends Model
         self::REFUND_STATUS_REFUNDED => "已退款",
     ];
 
-    public $table = "orders";
+    public $table = "app_orders";
     protected $guarded = [];
 
     protected static function boot()

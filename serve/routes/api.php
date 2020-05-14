@@ -26,7 +26,6 @@ use Illuminate\Http\Request;
 //});
 
 
-
 Route::namespace('Shop')->group(function () {
     Route::prefix('user')->namespace('User')->group(function () {
         Route::post('register', 'UserController@register');
@@ -49,7 +48,7 @@ Route::namespace('Shop')->group(function () {
         Route::prefix('sys')->group(function () {
             Route::get('payment_method', 'SysController@payment');
             Route::get('level', 'SysController@level');
-            Route::get('template','SysController@template_list');
+            Route::get('template', 'SysController@template_list');
         });
     });
 
@@ -58,28 +57,17 @@ Route::namespace('Shop')->group(function () {
 
 
 Route::group([
-        "domain"=>"{account}.minishop.test",
-        "prefix"=>"center",
-        "middleware"=>["auth:users","shop_center"],
-        "namespace"=>"Apps"
-    ],function(){
-   require __DIR__."/apis/center.php";
+    "domain" => "{account}.minishop.test",
+], function () {
+    require __DIR__ . "/apis/center.php";
+    require __DIR__ . "/apis/front.php";
 });
 Route::group([
-    "domain"=>"{account}.min-eshop.vip",
-    "prefix"=>"center",
-    "middleware"=>["auth:users","shop_center"],
-    "namespace"=>"Apps"
-],function(){
-    require __DIR__."/apis/center.php";
-});
-Route::prefix('customer')->namespace('Customer')->group(function () {
-    Route::post('login', "CustomerController@login");
-    Route::get('refresh', 'CustomerController@refresh');
-    Route::get('logout', 'CustomerController@logout');
-    Route::post('', 'CustomerController@register');
-    Route::put('', 'CustomerController@update');
-    Route::get('', 'CustomerController@me');
+    "domain" => "{account}.min-eshop.vip",
+], function () {
+    require __DIR__ . "/apis/center.php";
+    require __DIR__ . "/apis/front.php";
+
 });
 
 Route::prefix('admin')->namespace('Admin')->group(function () {
@@ -89,10 +77,6 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
     Route::get('me', "AdminController@me");
     Route::put('me', "AdminController@update");
 });
-Route::apiResource('product', 'Product\ProductController')->only(['index', 'show']);
-Route::get('category', 'Category\CategoryController@index');
-Route::get('theme', "Theme\ThemeController@get");
-Route::get('template', "Template\TemplateController@get");
 
 Route::prefix('pay/{no}')->namespace('Pay')->group(function () {
     Route::get('wallet', "PayController@wallet")->middleware('auth:customers');
@@ -103,15 +87,7 @@ Route::middleware('auth:customers')->group(function () {
         Route::get('', 'WalletController@index');
         Route::get('balance', 'WalletController@balance');
     });
-    Route::prefix('cart')->namespace('Cart')->group(function () {
-        Route::post('cache', 'CartController@cache_in');
-        Route::get('cache/{key}', 'CartController@cache_out');
-        Route::get('', 'CartController@index');
-        Route::post('', 'CartController@store');
-        Route::put('', 'CartController@update');
-        Route::delete('{variant_id}', 'CartController@destroy');
-    });
-    Route::apiResource('address', 'Address\AddressController')->except(['show']);
+
     Route::post('order/calc', 'Order\OrderController@calc');
     Route::post('order/{order}/pay/{payment}', "Order\OrderController@pay_create")->name('order.pay');
     Route::apiResource('order', "Order\OrderController")->except(['destroy']);
@@ -137,10 +113,10 @@ Route::middleware('auth:admins')->prefix("admin")->group(function () {
         Route::post('', 'AdminWalletController@store');
     });
     Route::apiResource('shipment', 'Shipment\AdminShipmentController');
-    Route::get('theme', "Theme\ThemeController@get");
-    Route::post('theme', "Theme\ThemeController@put");
-    Route::get('template', "Template\TemplateController@get");
-    Route::post('template', "Template\TemplateController@put");
+//    Route::get('theme', "Theme\ThemeController@get");
+//    Route::post('theme', "Theme\ThemeController@put");
+//    Route::get('template', "Template\TemplateController@get");
+//    Route::post('template', "Template\TemplateController@put");
 });
 
 

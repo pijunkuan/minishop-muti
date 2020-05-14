@@ -21,7 +21,8 @@ class AddCartRequest extends FormRequest
             'variant_id'=>[
                 'required',
                 function($attribute,$value,$fail){
-                    if(!$variant = ProductVariant::find($value))
+                    $shop = auth('customers')->user()->shop;
+                    if(!$variant = $shop->product_variants()->find($value))
                         return $fail('该商品不存在');
                     if(!$variant->product->on_sale )
                         return $fail('该商品未上架');

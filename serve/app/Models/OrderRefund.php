@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderRefund extends Model
 {
-    public $table = "order_refunds";
+    public $table = "app_order_refunds";
     protected $guarded = [];
 
     const REFUND_STATUS_REFUNDING = "refunding";

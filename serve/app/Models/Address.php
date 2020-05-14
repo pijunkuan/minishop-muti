@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    public $table="addresses";
+    public $table="app_addresses";
     protected $guarded = [];
     protected $casts = [
         "default"=>"boolean"

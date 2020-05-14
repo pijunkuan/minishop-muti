@@ -20,7 +20,6 @@ class Edit extends FormRequest
             "username"=>[
                 'nullable',
                 "string",
-                'unique:customers,username'
             ],
             "password"=>[
                 'nullable',

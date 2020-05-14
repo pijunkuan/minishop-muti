@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Cart;
+namespace App\Http\Controllers\Front\Cart;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\AddCartRequest;
@@ -22,14 +22,15 @@ class CartController extends Controller
 
     public function store(AddCartRequest $request)
     {
+        $shop = $request->get('ori_shop');
         $quantity = $request->get('quantity');
         $customer = auth('customers')->user();
         if($cart_item = $customer->cartItems()->where('variant_id',$request->get('variant_id'))->first()){
-           $cart_item->update([
-               "quantity"=>$cart_item->quantity + $quantity
-           ]);
+            $cart_item->update([
+                "quantity"=>$cart_item->quantity + $quantity
+            ]);
         }else{
-            $variant = ProductVariant::find($request->get('variant_id'));
+            $variant = $shop->product_variants()->find($request->get('variant_id'));
             $cart_item = new CartItem([
                 "customer_id"=>$customer['id'],
                 "variant_id"=>$variant['id'],
@@ -54,9 +55,9 @@ class CartController extends Controller
         return $this->jsonSuccessResponse();
     }
 
-    public function destroy($variant_id)
+    public function destroy(Request $request)
     {
-        auth('customers')->user()->cartItems()->where('variant_id',$variant_id)->delete();
+        auth('customers')->user()->cartItems()->where('variant_id',$request->route()->parameter('variant_id'))->delete();
         return $this->jsonSuccessResponse();
     }
 
@@ -71,9 +72,9 @@ class CartController extends Controller
         ]);
     }
 
-    public function cache_out($key)
+    public function cache_out(Request $request)
     {
-        $cart = Cache::get($key);
+        $cart = Cache::get($request->route()->parameter('key'));
         if(!$cart) return $this->jsonErrorResponse(404,'该key不存在');
         if($cart['customer_id'] !== auth('customers')->user()->id) return $this->jsonErrorResponse(401,'没有权限');
         return $this->jsonSuccessResponse(["items"=>$cart['items']]);

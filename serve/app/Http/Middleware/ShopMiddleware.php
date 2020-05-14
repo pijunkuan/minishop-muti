@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Shop;
 use Closure;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ShopMiddleware
 {
@@ -15,7 +17,26 @@ class ShopMiddleware
      */
     public function handle($request, Closure $next)
     {
-        echo $request->account;
-        return $next($request);
+        $shop = Shop::where('shop_url',$request->account)->first();
+        if($shop){
+            $customer = auth('customers')->user();
+            if($customer){
+                if($customer->shop['id'] != $shop['id']){
+                    throw (new HttpResponseException(response()->json([
+                        'code' => 422,
+                        "message" => "此商城无此用户",
+                        "body" => null,
+                    ], 422)));
+                }
+            }
+            $request->attributes->add(['ori_shop' => $shop]);
+            return $next($request);
+        }else{
+            throw (new HttpResponseException(response()->json([
+                'code' => 422,
+                "message" => "无商城",
+                "body" => null,
+            ], 422)));
+        }
     }
 }
