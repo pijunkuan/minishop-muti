@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    public $table = "products";
+    public $table = "app_products";
     protected $guarded = [];
 
     protected $casts = [
