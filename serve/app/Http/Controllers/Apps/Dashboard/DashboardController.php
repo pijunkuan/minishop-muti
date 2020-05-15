@@ -88,23 +88,23 @@ class DashboardController extends Controller
                     Order::ORDER_STATUS_SENT,
                     Order::ORDER_STATUS_SUCCESS
                 ])->groupBy('name')->get([
-                    DB::raw("DATE_FORMAT(created_at, '%H' ) as name"),
+                    DB::raw("DATE_FORMAT(app_orders.created_at, '%H' ) as name"),
                     DB::raw("SUM(amount) as value")
                 ]);
-//                $today = $orders->whereBetween('app_orders.created_at', $day)->whereIn('status', [
-//                    Order::ORDER_STATUS_PROCESSING,
-//                    Order::ORDER_STATUS_PARTIAL,
-//                    Order::ORDER_STATUS_SENT,
-//                    Order::ORDER_STATUS_SUCCESS
-//                ])->groupBy('name')->get([
-//                    DB::raw("DATE_FORMAT('app_orders'.'created_at', '%H' ) as name"),
-//                    DB::raw("SUM('app_orders'.'amount') as value")
-//                ]);
+                $today = $orders->whereBetween('app_orders.created_at', $day)->whereIn('status', [
+                    Order::ORDER_STATUS_PROCESSING,
+                    Order::ORDER_STATUS_PARTIAL,
+                    Order::ORDER_STATUS_SENT,
+                    Order::ORDER_STATUS_SUCCESS
+                ])->groupBy('name')->get([
+                    DB::raw("DATE_FORMAT(app_orders.created_at, '%H' ) as name"),
+                    DB::raw("SUM(amount) as value")
+                ]);
                 $hour = date("G", time());
-//                $today = $this->hourArrayMake($hour, $today);
+                $today = $this->hourArrayMake($hour, $today);
                 $yesterday = $this->hourArrayMake(24, $yesterday);
                 $rs = [
-//                    'today' => $this->arraySum($today),
+                    'today' => $this->arraySum($today),
                     'yesterday' => $this->arraySum($yesterday),
                 ];
                 break;
