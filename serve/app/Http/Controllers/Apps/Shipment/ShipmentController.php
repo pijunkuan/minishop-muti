@@ -37,8 +37,8 @@ class ShipmentController extends Controller
             $shipment = $shop->shipments()->create([
                 "shipment_code" => $request->get('shipment_code'),
                 "shipment_name" => $request->get('shipment_name'),
-                "need_cost" => $request->get('cost_type_code'),
-                "cost_type" => $request->get('cost_type'),
+                "need_cost" => $request->get('need_cost'),
+                "cost_type" => $request->get('cost_type_code'),
             ]);
             if ($request->get('need_cost')) {
                 $shipment->update([
