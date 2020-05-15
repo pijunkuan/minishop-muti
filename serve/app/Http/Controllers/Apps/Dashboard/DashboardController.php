@@ -24,21 +24,21 @@ class DashboardController extends Controller
                 $processing_count = $orders->where('status', Order::ORDER_STATUS_PROCESSING)
                     ->where('refund_status', null)->count();
                 $refunding_count = $orders->where('refund_status', Order::REFUND_STATUS_REFUNDING)->count();
-                $day_new_order_count = $orders->whereBetween('created_at', $day)->count();
+                $day_new_order_count = $orders->whereBetween('app_orders.created_at', $day)->count();
                 $day_new_order_suc_amount = $orders->whereIn('status', [
                     Order::ORDER_STATUS_PROCESSING,
                     Order::ORDER_STATUS_PARTIAL,
                     Order::ORDER_STATUS_SENT,
                     Order::ORDER_STATUS_SUCCESS
-                ])->whereBetween('created_at', $day)->sum('amount');
-                $yesterday_order_count = $orders->whereBetween('created_at', $yesterday)->count();
-                $yesterday_order_amount = $orders->whereBetween('created_at', $yesterday)->sum('amount');
+                ])->whereBetween('app_orders.created_at', $day)->sum('amount');
+                $yesterday_order_count = $orders->whereBetween('app_orders.created_at', $yesterday)->count();
+                $yesterday_order_amount = $orders->whereBetween('app_orders.created_at', $yesterday)->sum('amount');
                 $yesterday_order_suc_amount = $orders->whereIn('status', [
                     Order::ORDER_STATUS_PROCESSING,
                     Order::ORDER_STATUS_PARTIAL,
                     Order::ORDER_STATUS_SENT,
                     Order::ORDER_STATUS_SUCCESS
-                ])->whereBetween('created_at', $yesterday)->sum('amount');
+                ])->whereBetween('app_orders.created_at', $yesterday)->sum('amount');
                 $yesterday_order_rate = $yesterday_order_amount ? round($yesterday_order_suc_amount / $yesterday_order_amount, 2) * 100 : 0;
                 $rs = [
                     "processing_count" => $processing_count,
@@ -53,9 +53,9 @@ class DashboardController extends Controller
                 break;
             case "customer":
                 $customers = $shop->customers();
-                $today_customer_count = $customers->whereBetween('created_at', $day)->count();
-                $yesterday_customer_count = $customers->whereBetween('created_at', $yesterday)->count();
-                $week_customer_count = $customers->whereBetween('created_at', $week)->count();
+                $today_customer_count = $customers->whereBetween('app_customers.created_at', $day)->count();
+                $yesterday_customer_count = $customers->whereBetween('app_customers.created_at', $yesterday)->count();
+                $week_customer_count = $customers->whereBetween('app_customers.created_at', $week)->count();
                 $rs = [
                     'today_customer_count' => $today_customer_count,
                     'yesterday_customer_count' => $yesterday_customer_count,
@@ -82,7 +82,7 @@ class DashboardController extends Controller
                 break;
             case "order_line":
                 $orders = $shop->orders();
-                $yesterday = $orders->whereBetween('created_at', $yesterday)->whereIn('status', [
+                $yesterday = $orders->whereBetween('app_orders.created_at', $yesterday)->whereIn('status', [
                     Order::ORDER_STATUS_PROCESSING,
                     Order::ORDER_STATUS_PARTIAL,
                     Order::ORDER_STATUS_SENT,
@@ -91,20 +91,20 @@ class DashboardController extends Controller
                     DB::raw("DATE_FORMAT(created_at, '%H' ) as name"),
                     DB::raw("SUM(amount) as value")
                 ]);
-                $today = $orders->whereBetween('created_at', $day)->whereIn('status', [
-                    Order::ORDER_STATUS_PROCESSING,
-                    Order::ORDER_STATUS_PARTIAL,
-                    Order::ORDER_STATUS_SENT,
-                    Order::ORDER_STATUS_SUCCESS
-                ])->groupBy('name')->get([
-                    DB::raw("DATE_FORMAT(created_at, '%H' ) as name"),
-                    DB::raw("SUM(amount) as value")
-                ]);
+//                $today = $orders->whereBetween('app_orders.created_at', $day)->whereIn('status', [
+//                    Order::ORDER_STATUS_PROCESSING,
+//                    Order::ORDER_STATUS_PARTIAL,
+//                    Order::ORDER_STATUS_SENT,
+//                    Order::ORDER_STATUS_SUCCESS
+//                ])->groupBy('name')->get([
+//                    DB::raw("DATE_FORMAT('app_orders'.'created_at', '%H' ) as name"),
+//                    DB::raw("SUM('app_orders'.'amount') as value")
+//                ]);
                 $hour = date("G", time());
-                $today = $this->hourArrayMake($hour, $today);
+//                $today = $this->hourArrayMake($hour, $today);
                 $yesterday = $this->hourArrayMake(24, $yesterday);
                 $rs = [
-                    'today' => $this->arraySum($today),
+//                    'today' => $this->arraySum($today),
                     'yesterday' => $this->arraySum($yesterday),
                 ];
                 break;
