@@ -41,6 +41,12 @@ class ShipmentController extends Controller
                 "cost_type" => $request->get('cost_type'),
             ]);
             if ($request->get('need_cost')) {
+                $shipment->update([
+                    "price_1"=>$request->get('price_1'),
+                    "value_1"=>$request->get('value_1'),
+                    "price_2"=>$request->get('price_2'),
+                    "value_2"=>$request->get('value_2'),
+                ]);
                 foreach ($request->get('rules') as $item) {
                     $shipment->rules()->create([
                         "area" => $item['area'],
@@ -76,7 +82,7 @@ class ShipmentController extends Controller
         return $this->jsonSuccessResponse();
     }
 
-    public function update(Request $request)
+    public function update(ShipmentRequest $request)
     {
         $shop = $request->get('ori_shop');
         $shipment = $shop->shipments()->findOrFail($request->route()->parameter('shipment'));
@@ -90,6 +96,12 @@ class ShipmentController extends Controller
                 ]);
             $shipment->rules()->delete();
             if ($request->get('need_cost')) {
+                $shipment->update([
+                    "price_1"=>$request->get('price_1'),
+                    "value_1"=>$request->get('value_1'),
+                    "price_2"=>$request->get('price_2'),
+                    "value_2"=>$request->get('value_2'),
+                ]);
                 foreach ($request->get('rules') as $item) {
                     $shipment->rules()->create([
                         "area" => $item['area'],

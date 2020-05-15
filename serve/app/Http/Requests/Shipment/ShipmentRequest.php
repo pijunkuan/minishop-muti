@@ -42,6 +42,10 @@ class ShipmentRequest extends FormRequest
                         return $fail('非法类型cost_type');
                 }
             ],
+            "price_1" => "nullable|numeric",
+            "price_2" => "nullable|numeric",
+            "value_1" => "nullable|numeric",
+            "value_2" => "nullable|numeric",
             "rules" => "nullable|array",
             "rules.*.area" => "required|array",
             "rules.*.price_1" => "required|numeric",
