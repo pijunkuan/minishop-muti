@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Apps\Shipment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shipment\ShipmentRequest;
 use App\Http\Resources\Shipment\ShipmentDetailResource;
+use App\Http\Resources\Shipment\ShipmentResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +22,7 @@ class ShipmentController extends Controller
     {
         $shop = $request->get('ori_shop');
         $shipments = $shop->shipments;
-        return $this->jsonSuccessResponse(ShipmentDetailResource::collection($shipments));
+        return $this->jsonSuccessResponse(ShipmentResource::collection($shipments));
     }
 
 
