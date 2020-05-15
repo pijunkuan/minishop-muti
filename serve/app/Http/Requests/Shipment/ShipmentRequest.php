@@ -31,7 +31,6 @@ class ShipmentRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     if ($value) {
                         if (!$this->input('cost_type_code')) return $fail('cost_type 不可为空');
-                        if (!$this->input('rules')) return $fail('rules 不可为空');
                     }
                 }
             ],
