@@ -37,15 +37,7 @@ Route::prefix('pay/{no}')->namespace('Pay')->group(function () {
     Route::get('wallet', "PayController@wallet")->middleware('auth:customers');
 });
 
-Route::middleware('auth:customers')->group(function () {
 
-});
-
-Route::middleware('auth:admins')->prefix("admin")->group(function () {
-
-
-
-});
 
 
 
