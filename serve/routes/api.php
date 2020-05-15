@@ -25,22 +25,20 @@ Route::group([
 
 });
 
-Route::prefix('admin')->namespace('Admin')->group(function () {
-    Route::post('login', "AdminController@login");
-    Route::post('refresh', "AdminController@refresh");
-    Route::get('logout', "AdminController@logout");
-    Route::get('me', "AdminController@me");
-    Route::put('me', "AdminController@update");
-});
+//Route::prefix('admin')->namespace('Admin')->group(function () {
+//    Route::post('login', "AdminController@login");
+//    Route::post('refresh', "AdminController@refresh");
+//    Route::get('logout', "AdminController@logout");
+//    Route::get('me', "AdminController@me");
+//    Route::put('me', "AdminController@update");
+//});
 
 Route::prefix('pay/{no}')->namespace('Pay')->group(function () {
     Route::get('wallet', "PayController@wallet")->middleware('auth:customers');
 });
 
 Route::middleware('auth:customers')->group(function () {
-    Route::post('order/calc', 'Order\OrderController@calc');
-    Route::post('order/{order}/pay/{payment}', "Order\OrderController@pay_create")->name('order.pay');
-    Route::apiResource('order', "Order\OrderController")->except(['destroy']);
+
 });
 
 Route::middleware('auth:admins')->prefix("admin")->group(function () {

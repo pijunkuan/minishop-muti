@@ -30,6 +30,9 @@ Route::group([
             Route::get('', 'WalletController@index');
             Route::get('balance', 'WalletController@balance');
         });
+        Route::post('order/calc', 'Order\OrderController@calc');
+        Route::post('order/{order}/pay/{payment}', "Order\OrderController@pay_create")->name('order.pay');
+        Route::apiResource('order', "Order\OrderController")->except(['destroy']);
     });
 });
 

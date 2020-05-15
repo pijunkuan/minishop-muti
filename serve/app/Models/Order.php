@@ -86,6 +86,11 @@ class Order extends Model
         return $this->hasMany(OrderRefund::class, "order_id");
     }
 
+    public function suborders()
+    {
+        return $this->hasMany(OrderSuborder::class,"order_id");
+    }
+
     public static function findAvailableNo()
     {
         // 订单流水号前缀

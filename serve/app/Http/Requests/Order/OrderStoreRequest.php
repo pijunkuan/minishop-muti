@@ -34,7 +34,8 @@ class OrderStoreRequest extends FormRequest
                 // 检查 items 数组下每一个子数组的 variant_id 参数
                 'required',
                 function ($attribute, $value, $fail) {
-                    if (!$sku = ProductVariant::find($value)) return $fail('该商品不存在');
+                    $shop = auth('customers')->user()->shop;
+                    if (!$sku = $shop->product_variants()->find($value)) return $fail('该商品不存在');
                     if (!$sku->product->on_sale) return $fail('该商品未上架');
                     if ($sku->quantity === 0) return $fail('该商品已售完');
                     // 获取当前索引

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Product;
 
+use App\Http\Resources\Shipment\ShipmentDetailResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminProductDetailResource extends JsonResource
@@ -34,6 +35,8 @@ class AdminProductDetailResource extends JsonResource
            "images"=>$images_array,
            "variants"=>$this->variants,
            "content"=>$this->content->content,
+           "shipment_id"=>$this['shipment_id'],
+           "shipment"=>new ShipmentDetailResource($this['shipment']),
            "created_at"=>$this->created_at->toDateTimeString(),
            "updated_at"=>$this->updated_at->toDateTimeString(),
 

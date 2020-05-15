@@ -10,8 +10,8 @@ class Wallet extends Model
     const WALLET_OUT = "out";
 
     const walletTypeMap = [
-        self::WALLET_IN => "收入",
-        self::WALLET_OUT => "支出"
+        self::WALLET_IN => "充值",
+        self::WALLET_OUT => "扣款"
     ];
 
     public $table = "app_wallets";

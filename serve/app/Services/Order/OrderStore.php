@@ -20,11 +20,14 @@ class OrderStore
         }
         $order = self::order_init();
         $items = self::items($items);
-
+        $suborders = self::suborders($items);
+        $suborders = self::suborders_shipment_calc($suborders);
         $order['address'] = $address;
         $order['items'] = $items;
-        $order['items_amount'] = self::items_calc($items);
-        $order['shipments_amount'] = self::shipment_calc($items);
+        $order['suborders'] = $suborders;
+        $suborders = collect($suborders);
+        $order['items_amount'] = $suborders->sum('items_amount');
+        $order['shipments_amount'] = $suborders->sum('shipments_amount');
         $order['amount'] = $order['items_amount'] + $order['shipments_amount'] - $order['discounts_amount'];
         return $order;
     }
@@ -73,7 +76,6 @@ class OrderStore
     }
 
 
-
     private static function items($items)
     {
         $variants = array();
@@ -88,19 +90,114 @@ class OrderStore
                 "price" => $variant['price'],
                 "quantity" => $item['quantity'],
                 "weight" => $variant['weight'],
+                "shipment_id" => $variant->product['shipment_id']
             ];
         }
         return $variants;
     }
 
-    private static function items_calc($items)
+    private static function suborders($items)
     {
-        $items_amount = 0;
-        foreach ($items as $item) {
-            $items_amount += $item['price'] * $item['quantity'];
+        $i = 0;
+        $suborders = array();
+        foreach (collect($items)->groupBy("shipment_id") as $shipment_id => $items) {
+            $suborders[$i] = [
+                "shipment_id" => $shipment_id,
+                "items_amount" => 0,
+                "items_weight" => 0,
+                "items_count" => 0,
+                "shipments_amount" => 0,
+                "items" => array()
+            ];
+            foreach ($items as $item) {
+                $suborders[$i]['items'][] = [
+                    "variant_id" => $item['variant_id'],
+                    "variant_code" => $item['variant_code'],
+                    "product_unit" => $item['product_unit'],
+                    "product_title" => $item['product_title'],
+                    "variant_title" => $item['variant_title'],
+                    "price" => $item['price'],
+                    "quantity" => $item['quantity'],
+                    "weight" => $item['weight'],
+                ];
+                $suborders[$i]['items_amount'] += $item['quantity'] * $item['price'];
+                $suborders[$i]['items_weight'] += $item['quantity'] * $item['weight'];
+                $suborders[$i]['items_count'] += $item['quantity'];
+            }
+            $i++;
         }
-        return $items_amount;
+        return $suborders;
     }
+
+    private static function suborders_shipment_calc($suborders, $address = null)
+    {
+        foreach ($suborders as $key => $suborder) {
+            $shipment = Shipment::find($suborder['shipment_id']);
+            if ($shipment) {
+                if ($shipment['need_cost']) {
+                    $rule = null;
+                    if (isset($address['province']))
+                        $rule = $shipment->rules()->where('area', 'like', "%{$address['province']}%")->first();
+                    if($rule){
+                        $shipment['price_1'] = $rule['price_1'];
+                        $shipment['price_2'] = $rule['price_2'];
+                        $shipment['value_1'] = $rule['value_1'];
+                        $shipment['value_2'] = $rule['value_2'];
+                    }
+                    $shipments_amount = 0;
+                    $calc_value = 0;
+                    switch ($shipment['cost_type']) {
+                        case Shipment::SHIPMENT_COST_NUMERIC:
+                            $calc_value = $suborder['items_count'] - $shipment['value_1'];
+                            break;
+                        case Shipment::SHIPMENT_COST_WEIGHT:
+                            $calc_value = $suborder['items_weight'] - $shipment['value_1'];
+                            break;
+                    }
+                    $shipments_amount += $shipment['price_1'] * 1.00;
+                    if ($shipment['value_2'] && $calc_value >0) {
+                        $shipments_amount += ceil($calc_value / $shipment['value_2']) * $shipment['price_2'];
+                    }
+                    $suborders[$key]['shipments_amount'] = $shipments_amount;
+                }
+            }
+        }
+        return $suborders;
+//        $shipment = Shipment::where('visibility', 1)->first();
+//        $shipments_amount = 0;
+//        if ($shipment) {
+//            if ($shipment->need_cost) {
+//                $items_weight = 0;
+//                $items_amount = 0;
+//                foreach ($items as $item) {
+//                    $items_amount += $item['quantity'];
+//                    $items_weight += $item['quantity'] * $item['weight'];
+//                }
+//
+//                switch ($shipment->cost_type) {
+//                    case Shipment::SHIPMENT_COST_NUMERIC:
+//                        $calc_value = $items_amount - $shipment->value_1;
+//                        $shipments_amount += $shipment->price_1 * 1.00;
+//                        if ($shipment->value_2 && $calc_value) {
+//                            $shipments_amount += ceil($calc_value / $shipment->value_2) * $shipment->price_2;
+//                        }
+//                        break;
+//                    case Shipment::SHIPMENT_COST_WEIGHT:
+//                        $calc_value = $items_weight - $shipment->value_1;
+//                        $shipments_amount += $shipment->price_1 * 1.00;
+//                        if ($shipment->value_2 && $calc_value) {
+//                            $shipments_amount += ceil($calc_value / $shipment->value_2) * $shipment->price_2;
+//                        }
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        }
+//        return $shipments_amount;
+
+    }
+
 
     private static function address($address)
     {
@@ -125,42 +222,6 @@ class OrderStore
         ];
     }
 
-    private static function shipment_calc($items)
-    {
-        $shipment = Shipment::where('visibility', 1)->first();
-        $shipments_amount = 0;
-        if ($shipment) {
-            if ($shipment->need_cost) {
-                $items_weight = 0;
-                $items_amount = 0;
-                foreach ($items as $item) {
-                    $items_amount += $item['quantity'];
-                    $items_weight += $item['quantity'] * $item['weight'];
-                }
-
-                switch ($shipment->cost_type) {
-                    case Shipment::SHIPMENT_COST_NUMERIC:
-                        $calc_value = $items_amount - $shipment->value_1;
-                        $shipments_amount += $shipment->price_1 * 1.00;
-                        if ($shipment->value_2 && $calc_value) {
-                            $shipments_amount += ceil($calc_value / $shipment->value_2) * $shipment->price_2;
-                        }
-                        break;
-                    case Shipment::SHIPMENT_COST_WEIGHT:
-                        $calc_value = $items_weight - $shipment->value_1;
-                        $shipments_amount += $shipment->price_1 * 1.00;
-                        if ($shipment->value_2 && $calc_value) {
-                            $shipments_amount += ceil($calc_value / $shipment->value_2) * $shipment->price_2;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        return $shipments_amount;
-
-    }
 
 
 }
