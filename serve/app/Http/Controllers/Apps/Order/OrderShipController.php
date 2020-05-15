@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace App\Http\Controllers\Apps\Order;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\ShipmentStoreRequest;
@@ -8,18 +8,20 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AdminOrderShipmentController extends Controller
+class OrderShipController extends Controller
 {
-    public function index($order, Request $request)
+    public function index(Request $request)
     {
-        $order = Order::find($order);
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
         if(!$order) return $this->jsonErrorResponse(404,"无此订单记录");
         return $this->jsonSuccessResponse($order->shipments);
     }
 
-    public function store($order, ShipmentStoreRequest $request)
+    public function store(ShipmentStoreRequest $request)
     {
-        $order = Order::find($order);
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
         if(!$order) return $this->jsonErrorResponse(404,"无此订单记录");
         if(in_array($order->status,[
             Order::ORDER_STATUS_CLOSED,

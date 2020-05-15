@@ -40,8 +40,8 @@ Route::group([
         Route::get('', 'OrderController@index');
         Route::put('status/{order}', "OrderController@status");
         Route::put('{order}', "OrderController@update");
-//        Route::get('{order}/shipment', 'AdminOrderShipmentController@index');
-//        Route::post('{order}/shipment', 'AdminOrderShipmentController@store');
+        Route::get('{order}/shipment', 'OrderShipController@index');
+        Route::post('{order}/shipment', 'OrderShipController@store');
         Route::get('{order}', "OrderController@show");
     });
     Route::get('dashboard/{type}', "Dashboard\DashboardController@dashboard_static");
