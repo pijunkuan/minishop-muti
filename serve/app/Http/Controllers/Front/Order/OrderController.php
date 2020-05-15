@@ -57,9 +57,9 @@ class OrderController extends Controller
         return $this->jsonSuccessResponse(new OrderCollection($orders));
     }
 
-    public function show($order)
+    public function show(Request $request)
     {
-        $order = auth('customers')->user()->orders()->where('no',$order)->first();
+        $order = auth('customers')->user()->orders()->where('no',$request->route()->parameter('order'))->first();
         if(!$order) return $this->jsonErrorResponse(404,"未找到此订单");
         return $this->jsonSuccessResponse(new OrderDetail($order));
     }
@@ -73,9 +73,9 @@ class OrderController extends Controller
         return $this->jsonSuccessResponse(new OrderResource($order));
     }
 
-    public function update($order,Request $request)
+    public function update(Request $request)
     {
-        $order = auth('customers')->user()->orders()->where('no',$order)->first();
+        $order = auth('customers')->user()->orders()->where('no',$request->route()->parameter('order'))->first();
         if(!$order) return $this->jsonErrorResponse(404,"未找到此订单");
         if($request->has("status")){
             switch($request->get('status')){
@@ -104,7 +104,6 @@ class OrderController extends Controller
     public function calc(OrderCalcRequest $request)
     {
         $order = OrderStore::order_calc($request->get('address'),$request->get('items'));
-//        return $this->jsonSuccessResponse($order);
         return $this->jsonSuccessResponse(new OrderCalcResource($order));
     }
 

@@ -8,7 +8,6 @@ class Image extends Model
 {
     public $table = "app_images";
     protected $guarded = [];
-    public $timestamps = false;
 
     public function getUrlAttribute()
     {

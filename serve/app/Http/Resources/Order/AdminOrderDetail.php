@@ -17,30 +17,12 @@ class AdminOrderDetail extends JsonResource
      */
     public function toArray($request)
     {
-        $items = array();
-        foreach ($this->items as $value) {
-            $ori_variant = ProductVariant::find($value['variant_id']);
-            $img_url = null;
-            if ($ori_variant) {
-                if ($img = $ori_variant->product->product_images()->orderBy('sort', 'asc')->first()) $img_url = $img->image->url;
-            }
-            $items[] = [
-                "product_title" => $value['product_title'],
-                "variant_id" => $value['variant_id'],
-                "variant_title" => $value['variant_title'],
-                "price" => $value['price'],
-                "img_url" => $img_url,
-                "product_unit" => $value['product_unit'],
-                "quantity" => $value['quantity'],
-                "ship_quantity" => $this->ship_items()->where('variant_id', $value['variant_id'])->sum('quantity') * 1.0,
-                "total" => $value['quantity'] * $value['price']
-            ];
-        }
+
         $address = [
-            "name" => $this->address->name,
-            "mobile" => $this->address->mobile,
-            "address" => "{$this->address->province} {$this->address->city} {$this->address->district} {$this->address->detail}",
-            "zip" => $this->address->zip,
+            "name" => $this['address']['name'],
+            "mobile" => $this['address']['mobile'],
+            "address" => "{$this['address']['province']} {$this['address']['city']} {$this['address']['district']} {$this['address']['detail']}",
+            "zip" => $this['address']['zip'],
         ];
         $refund = null;
         if ($this['refund_status']) {
@@ -60,7 +42,8 @@ class AdminOrderDetail extends JsonResource
             "payment" => $this->payments()->orderBy('created_at', "desc")->first(),
             "shipments" => OrderShipmentResource::collection($this->shipments),
             "address" => $address,
-            "items" => $items,
+            "items" => OrderItemResource::collection($this['items']),
+            "suborders"=>SuborderResource::collection($this['suborders']),
             "items_amount" => $this['items_amount'],
             "shipments_amount" => $this['shipments_amount'],
             "discounts_amount" => $this['discounts_amount'],

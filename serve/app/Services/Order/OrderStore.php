@@ -20,8 +20,7 @@ class OrderStore
         }
         $order = self::order_init();
         $items = self::items($items);
-        $suborders = self::suborders($items);
-        $suborders = self::suborders_shipment_calc($suborders);
+        $suborders = self::suborders($items, $address);
         $order['address'] = $address;
         $order['items'] = $items;
         $order['suborders'] = $suborders;
@@ -37,30 +36,17 @@ class OrderStore
         DB::beginTransaction();
         try {
             $address = self::address($address);
-            $order_init = self::order_init();
-            $items = self::items($items);
-            $order = $customer->orders()->create(
-                array_merge($order_init, [
-                    "status" => Order::ORDER_STATUS_PENDING,
-                    "remark" => $remark
-                ])
-            );
+            $order_init = self::order_init($remark);
+            $order = $customer->orders()->create($order_init);
             $order->address()->create($address);
-            foreach ($items as $item) {
-                $order->items()->create($item);
-                if (ProductVariant::find($item['variant_id'])->decreaseStock($item['quantity']) <= 0) {
-                    throw (new HttpResponseException(response()->json([
-                        'code' => 422,
-                        "msg" => "该商品库存不足",
-                        "data" => null,
-                    ], 422)));
-                }
-            }
+            $items = self::items($items);
+            $suborders=self::suborders($items, $address);
+            self::items_create($order, $items);
+            self::suborders_create($order,$suborders);
 
-            $order->items_amount = self::items_calc($items);
-
-            $order->shipments_amount = self::shipment_calc($items);
-
+            $suborders = collect($suborders);
+            $order->items_amount = $suborders->sum('items_amount');
+            $order->shipments_amount = $suborders->sum('shipments_amount');
             $order->amount = $order->items_amount + $order->shipments_amount - $order->discounts_amount;
             $order->save();
             DB::commit();
@@ -72,6 +58,7 @@ class OrderStore
                 "data" => null,
             ], 422)));
         }
+        $order->refresh();
         return $order;
     }
 
@@ -96,7 +83,30 @@ class OrderStore
         return $variants;
     }
 
-    private static function suborders($items)
+    private static function items_create(Order $order, $items)
+    {
+        foreach ($items as $item) {
+            $order->items()->create([
+                "variant_id" => $item['variant_id'],
+                "variant_code" => $item['variant_code'],
+                "product_unit" => $item['product_unit'],
+                "product_title" => $item['product_title'],
+                "variant_title" => $item['variant_title'],
+                "price" => $item['price'],
+                "quantity" => $item['quantity'],
+                "weight" => $item['weight'],
+            ]);
+            if (ProductVariant::find($item['variant_id'])->decreaseStock($item['quantity']) <= 0) {
+                throw (new HttpResponseException(response()->json([
+                    'code' => 422,
+                    "msg" => "该商品库存不足",
+                    "data" => null,
+                ], 422)));
+            }
+        }
+    }
+
+    private static function suborders($items, $address = null)
     {
         $i = 0;
         $suborders = array();
@@ -126,11 +136,6 @@ class OrderStore
             }
             $i++;
         }
-        return $suborders;
-    }
-
-    private static function suborders_shipment_calc($suborders, $address = null)
-    {
         foreach ($suborders as $key => $suborder) {
             $shipment = Shipment::find($suborder['shipment_id']);
             if ($shipment) {
@@ -138,7 +143,7 @@ class OrderStore
                     $rule = null;
                     if (isset($address['province']))
                         $rule = $shipment->rules()->where('area', 'like', "%{$address['province']}%")->first();
-                    if($rule){
+                    if ($rule) {
                         $shipment['price_1'] = $rule['price_1'];
                         $shipment['price_2'] = $rule['price_2'];
                         $shipment['value_1'] = $rule['value_1'];
@@ -155,7 +160,7 @@ class OrderStore
                             break;
                     }
                     $shipments_amount += $shipment['price_1'] * 1.00;
-                    if ($shipment['value_2'] && $calc_value >0) {
+                    if ($shipment['value_2'] && $calc_value > 0) {
                         $shipments_amount += ceil($calc_value / $shipment['value_2']) * $shipment['price_2'];
                     }
                     $suborders[$key]['shipments_amount'] = $shipments_amount;
@@ -163,41 +168,29 @@ class OrderStore
             }
         }
         return $suborders;
-//        $shipment = Shipment::where('visibility', 1)->first();
-//        $shipments_amount = 0;
-//        if ($shipment) {
-//            if ($shipment->need_cost) {
-//                $items_weight = 0;
-//                $items_amount = 0;
-//                foreach ($items as $item) {
-//                    $items_amount += $item['quantity'];
-//                    $items_weight += $item['quantity'] * $item['weight'];
-//                }
-//
-//                switch ($shipment->cost_type) {
-//                    case Shipment::SHIPMENT_COST_NUMERIC:
-//                        $calc_value = $items_amount - $shipment->value_1;
-//                        $shipments_amount += $shipment->price_1 * 1.00;
-//                        if ($shipment->value_2 && $calc_value) {
-//                            $shipments_amount += ceil($calc_value / $shipment->value_2) * $shipment->price_2;
-//                        }
-//                        break;
-//                    case Shipment::SHIPMENT_COST_WEIGHT:
-//                        $calc_value = $items_weight - $shipment->value_1;
-//                        $shipments_amount += $shipment->price_1 * 1.00;
-//                        if ($shipment->value_2 && $calc_value) {
-//                            $shipments_amount += ceil($calc_value / $shipment->value_2) * $shipment->price_2;
-//                        }
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        }
-//        return $shipments_amount;
-
     }
 
+    private static function suborders_create(Order $order, $suborders)
+    {
+        foreach ($suborders as $suborder) {
+            $temp = $order->suborders()->create([
+                "items_amount" => $suborder['items_amount'],
+                "shipments_amount" => $suborder['shipments_amount']
+            ]);
+            foreach ($suborder['items'] as $item) {
+                $temp->items()->create([
+                    "variant_id" => $item['variant_id'],
+                    "variant_code" => $item['variant_code'],
+                    "product_unit" => $item['product_unit'],
+                    "product_title" => $item['product_title'],
+                    "variant_title" => $item['variant_title'],
+                    "price" => $item['price'],
+                    "quantity" => $item['quantity'],
+                    "weight" => $item['weight'],
+                ]);
+            }
+        }
+    }
 
     private static function address($address)
     {
@@ -212,16 +205,17 @@ class OrderStore
         ];
     }
 
-    private static function order_init()
+    private static function order_init($remark = null)
     {
         return [
             "items_amount" => 0,
             "shipments_amount" => 0,
             "discounts_amount" => 0,
             "amount" => 0,
+            "remark" => $remark,
+            "status" => Order::ORDER_STATUS_PENDING,
         ];
     }
-
 
 
 }

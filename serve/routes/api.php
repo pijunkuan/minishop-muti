@@ -42,15 +42,7 @@ Route::middleware('auth:customers')->group(function () {
 });
 
 Route::middleware('auth:admins')->prefix("admin")->group(function () {
-    Route::get('dashboard/{type}', "Dashboard\AdminDashboardController@dashboard_static");
-    Route::prefix('order')->namespace('Order')->group(function () {
-        Route::get('', 'AdminOrderController@index');
-        Route::put('status/{order}', "AdminOrderController@status");
-        Route::put('{order}', "AdminOrderController@update");
-        Route::get('{order}/shipment', 'AdminOrderShipmentController@index');
-        Route::post('{order}/shipment', 'AdminOrderShipmentController@store');
-        Route::get('{order}', "AdminOrderController@show");
-    });
+
 
 
 });

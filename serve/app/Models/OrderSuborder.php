@@ -17,6 +17,6 @@ class OrderSuborder extends Model
 
     public function items()
     {
-        return $this->hasMany(OrderSuborderItem::class,"sub_order_id");
+        return $this->hasMany(OrderSuborderItem::class,"suborder_id");
     }
 }

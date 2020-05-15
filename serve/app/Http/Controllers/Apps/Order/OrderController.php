@@ -17,7 +17,8 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $orders = new Order();
+        $shop = $request->get('ori_shop');
+        $orders = $shop->orders();
         $orders = $orders->orderBy('created_at', 'desc');
         if($name = $request->get('name')){
             $orders_id = OrderAddress::where('name','like',"%{$name}%")->pluck('order_id');
@@ -51,13 +52,17 @@ class OrderController extends Controller
         return $this->jsonSuccessResponse(new OrderCollection($orders));
     }
 
-    public function show(Order $order)
+    public function show(Request $request)
     {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
         return $this->jsonSuccessResponse(new AdminOrderDetail($order));
     }
 
-    public function status(Order $order, Request $request)
+    public function status(Request $request)
     {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
         if ($request->has("status")) {
             switch ($request->get('status')) {
                 case "closed":
@@ -79,8 +84,10 @@ class OrderController extends Controller
         }
     }
 
-    public function update(Order $order, AdminOrderUpdateRequest $request)
+    public function update(AdminOrderUpdateRequest $request)
     {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
         if ($request->has('address')) {
             $address = $request->get('address');
             if (!isset($address['name']) && is_null($address['name'])) return $this->jsonErrorResponse(405, "姓名 不能为空");

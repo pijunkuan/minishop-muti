@@ -22,7 +22,7 @@ class OrderCalcResource extends JsonResource
             'discounts_amount' => $this['discounts_amount'],
             'amount' => $this['amount'],
             'items' => OrderItemResource::collection($this['items']),
-            "suborders"=>new SuborderResource($this['suborders'])
+            "suborders"=>SuborderResource::collection($this['suborders'])
         ];
     }
 }

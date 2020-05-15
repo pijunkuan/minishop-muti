@@ -36,4 +36,14 @@ Route::group([
         Route::get('', 'WalletController@index');
         Route::post('', 'WalletController@store');
     });
+    Route::prefix('order')->namespace('Order')->group(function () {
+        Route::get('', 'OrderController@index');
+        Route::put('status/{order}', "OrderController@status");
+        Route::put('{order}', "OrderController@update");
+        Route::get('{order}/shipment', 'AdminOrderShipmentController@index');
+        Route::post('{order}/shipment', 'AdminOrderShipmentController@store');
+        Route::get('{order}', "OrderController@show");
+    });
+    Route::get('dashboard/{type}', "Dashboard\DashboardController@dashboard_static");
+
 });

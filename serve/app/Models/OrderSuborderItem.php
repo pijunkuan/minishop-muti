@@ -12,6 +12,6 @@ class OrderSuborderItem extends Model
 
     public function suborder()
     {
-        return $this->belongsTo(OrderSuborder::class,"sub_order_id");
+        return $this->belongsTo(OrderSuborder::class,"suborder_id");
     }
 }
