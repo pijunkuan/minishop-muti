@@ -30,12 +30,12 @@ class ShipmentRequest extends FormRequest
                 "boolean",
                 function ($attribute, $value, $fail) {
                     if ($value) {
-                        if (!$this->input('cost_type')) return $fail('cost_type 不可为空');
+                        if (!$this->input('cost_type_code')) return $fail('cost_type 不可为空');
                         if (!$this->input('rules')) return $fail('rules 不可为空');
                     }
                 }
             ],
-            "cost_type" => [
+            "cost_type_code" => [
                 "nullable",
                 function ($attribute, $value, $fail) {
                     if (!in_array($value, config('shop_shipment_methods.cost_types')))
