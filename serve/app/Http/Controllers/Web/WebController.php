@@ -15,10 +15,26 @@ class WebController extends Controller
         if ($shop_template) {
             $template = $shop_template->template;
             $file = $template['template_file'];
-            return view('welcome', [
+            return view('shop', [
                 "file" => $file,
             ]);
         }
+    }
+
+    public function center(Request $request)
+    {
+        $file = "templates/center/";
+        return view("center",[
+            "file" => $file
+        ]);
+    }
+
+    public function account(Request $request)
+    {
+        $file = "templates/account/";
+        return view('account', [
+            "file" => $file
+        ]);
     }
 
 //    public function css(Request $request)

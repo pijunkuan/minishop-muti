@@ -11,9 +11,20 @@
 |
 */
 
-Route::domain('userback.minishop.test')->get('',function(){
-    echo "userback";
+
+
+Route::group([
+    "domain"=>"userback.minishop.test",
+],function(){
+    require __DIR__ . "/webs/account.php";
 });
+
+Route::group([
+    "domain"=>"account.min-eshop.vip",
+],function(){
+    require __DIR__ . "/webs/account.php";
+});
+
 Route::group([
     "domain"=>"{account}.min-eshop.vip",
     "middleware"=>["shop"]
