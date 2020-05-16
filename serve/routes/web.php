@@ -29,16 +29,16 @@ Route::group([
     "domain"=>"{account}.min-eshop.vip",
     "middleware"=>["shop"]
 ],function(){
-    require __DIR__ . "/webs/shop.php";
     require __DIR__ . "/webs/center.php";
+    require __DIR__ . "/webs/shop.php";
 });
 
 Route::group([
     "domain"=>"{account}.minishop.test",
     "middleware"=>["shop"]
 ],function(){
-    require __DIR__ . "/webs/shop.php";
     require __DIR__ . "/webs/center.php";
+    require __DIR__ . "/webs/shop.php";
 
 });
 
