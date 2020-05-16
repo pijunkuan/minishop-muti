@@ -4,14 +4,12 @@
         <meta charset="utf-8">
         <link rel=stylesheet href="//at.alicdn.com/t/font_1789330_ptlh42r5dqn.css">
         <title>Vue Test</title>
-        @foreach ($csses as $css)
-            <link href="{{asset($css)}}" rel=stylesheet>
-            @endforeach
+        <link href="{{asset('css/app.css')}}" rel=stylesheet>
+
     </head>
     <body>
        <div id="app"></div>
     </body>
-    @foreach($jses as $js)
-        <script src="{{asset($js)}}"></script>
-        @endforeach
+    <script src="{{asset('js/app.js')}}"></script>
+
 </html>

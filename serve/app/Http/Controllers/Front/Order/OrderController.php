@@ -107,12 +107,12 @@ class OrderController extends Controller
         return $this->jsonSuccessResponse(new OrderCalcResource($order));
     }
 
-    public function pay_create($order,$payment)
+    public function pay_create(Request $request)
     {
-        $order = auth('customers')->user()->orders()->where('no',$order)->first();
+        $order = auth('customers')->user()->orders()->where('no',$request->route()->parameter('order'))->first();
         if(!$order) return $this->jsonErrorResponse(404,"未找到此订单");
         if($order->status !== Order::ORDER_STATUS_PENDING) return $this->jsonErrorResponse(404,"该状态无法支付");
-        switch($payment){
+        switch($request->route()->parameter('payment')){
             case "wallet":
                 event(new PayCreateEvent($order,"wallet"));
                 return $this->jsonSuccessResponse($order->payments()->where('status',OrderPayment::PAYMENT_STATUS_PENDING)->orderBy('created_at','desc')->first());
