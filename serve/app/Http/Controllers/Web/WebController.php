@@ -13,28 +13,32 @@ class WebController extends Controller
         $shop = $request->get('ori_shop');
         $shop_template = $shop->templates()->where('active', true)->first();
         if ($shop_template) {
-            return view('welcome');
+            $template = $shop_template->template;
+            $file = $template['template_file'];
+            return view('welcome', [
+                "file" => $file,
+            ]);
         }
     }
 
-    public function css(Request $request)
-    {
-        $shop = $request->get('ori_shop');
-        $shop_template = $shop->templates()->where('active', true)->first();
-        if ($shop_template) {
-            $template = $shop_template->template;
-            $file = $template['template_file'];
-           return redirect(asset($file.'css/'.$request->route()->parameter('file')));
-        }
-    }
-    public function js(Request $request)
-    {
-        $shop = $request->get('ori_shop');
-        $shop_template = $shop->templates()->where('active', true)->first();
-        if ($shop_template) {
-            $template = $shop_template->template;
-            $file = $template['template_file'];
-            return redirect(asset($file.'js/'.$request->route()->parameter('file')));
-        }
-    }
+//    public function css(Request $request)
+//    {
+//        $shop = $request->get('ori_shop');
+//        $shop_template = $shop->templates()->where('active', true)->first();
+//        if ($shop_template) {
+//            $template = $shop_template->template;
+//            $file = $template['template_file'];
+//           return redirect(asset($file.'css/'.$request->route()->parameter('file')));
+//        }
+//    }
+//    public function js(Request $request)
+//    {
+//        $shop = $request->get('ori_shop');
+//        $shop_template = $shop->templates()->where('active', true)->first();
+//        if ($shop_template) {
+//            $template = $shop_template->template;
+//            $file = $template['template_file'];
+//            return redirect(asset($file.'js/'.$request->route()->parameter('file')));
+//        }
+//    }
 }
