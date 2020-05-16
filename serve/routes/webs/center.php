@@ -4,4 +4,16 @@ Route::group([
     "prefix"=>"center",
 ],function(){
     Route::get('',"Web\WebController@center");
+    Route::get('session',"Web\WebController@center");
+    Route::get('init',"Web\WebController@center");
+    Route::get('dashboard',"Web\WebController@center");
+    Route::get('order/{all}',"Web\WebController@center");
+    Route::get('product/{all}',"Web\WebController@center");
+    Route::get('customer/{all}',"Web\WebController@center");
+    Route::get('sale/{all}',"Web\WebController@center");
+    Route::get('theme/{all}',"Web\WebController@center");
+    Route::get('plugins/{all}',"Web\WebController@center");
+    Route::get('image/{all}',"Web\WebController@center");
+    Route::get('settings/{all}',"Web\WebController@center");
+    Route::get('user/{all}',"Web\WebController@center");
 });
