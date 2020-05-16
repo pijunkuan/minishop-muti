@@ -1,15 +1,20 @@
 <?php
 
-namespace App\Events\Pay;
+namespace App\Events\Order\Pay;
 
 use App\Models\OrderPayment;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class PaySuccessEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $payment, $pay_no;
 
     /**
@@ -29,5 +34,8 @@ class PaySuccessEvent
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-
+    public function broadcastOn()
+    {
+        return new PrivateChannel('channel-name');
+    }
 }

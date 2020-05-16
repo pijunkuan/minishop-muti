@@ -39,11 +39,14 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Order\OrderRefundCancelEvent'=>[
             'App\Listeners\Order\OrderRefundCancelConfirmation'
         ],
-        'App\Events\Pay\PayCreateEvent'=>[
-            'App\Listeners\Pay\PayCreateConfirmation'
+
+        'App\Events\Order\Pay\PayCreateEvent'=>[
+            'App\Listeners\Order\Pay\Create\WalletCreateConfirmation',
+            'App\Listeners\Order\Pay\Create\CashCreateConfirmation',
         ],
-        'App\Events\Pay\PaySuccessEvent'=>[
-            'App\Listeners\Pay\PaySuccessConfirmation'
+
+        'App\Events\Order\Pay\PaySuccessEvent'=>[
+            'App\Listeners\Order\Pay\Success\PaySuccessConfirmation'
         ],
 
         'App\Events\Shop\Pay\PaySuccessEvent'=>[

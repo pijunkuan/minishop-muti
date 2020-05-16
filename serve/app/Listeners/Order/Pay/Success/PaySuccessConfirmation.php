@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\Pay;
+namespace App\Listeners\Order\Pay\Success;
 
-use App\Events\Pay\PaySuccessEvent;
+use App\Events\Order\Pay\PaySuccessEvent;
 use App\Models\Order;
 use App\Models\OrderPayment;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -48,8 +48,8 @@ class PaySuccessConfirmation
             DB::rollBack();
             throw (new HttpResponseException(response()->json([
                 'code' => 422,
-                "msg" => $exception->getMessage(),
-                "data" => null,
+                "message" => "支付失败",
+                "body" => null,
             ], 422)));
         }
     }

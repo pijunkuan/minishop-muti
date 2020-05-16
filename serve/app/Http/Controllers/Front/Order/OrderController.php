@@ -6,13 +6,14 @@ use App\Events\Order\OrderCancelEvent;
 use App\Events\Order\OrderRefundCancelEvent;
 use App\Events\Order\OrderRefundEvent;
 use App\Events\Order\OrderSuccessEvent;
-use App\Events\Pay\PayCreateEvent;
+use App\Events\Order\Pay\PayCreateEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderCalcRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Resources\Order\OrderCalcResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Http\Resources\Order\OrderDetail;
+use App\Http\Resources\Order\OrderPaymentResource;
 use App\Http\Resources\Order\OrderResource;
 use App\Models\Order;
 use App\Models\OrderAddress;
@@ -112,14 +113,16 @@ class OrderController extends Controller
         $order = auth('customers')->user()->orders()->where('no',$request->route()->parameter('order'))->first();
         if(!$order) return $this->jsonErrorResponse(404,"未找到此订单");
         if($order->status !== Order::ORDER_STATUS_PENDING) return $this->jsonErrorResponse(404,"该状态无法支付");
-        switch($request->route()->parameter('payment')){
-            case "wallet":
-                event(new PayCreateEvent($order,"wallet"));
-                return $this->jsonSuccessResponse($order->payments()->where('status',OrderPayment::PAYMENT_STATUS_PENDING)->orderBy('created_at','desc')->first());
-                break;
-            default:
-                return $this->jsonErrorResponse(404,"无此状态码");
-                break;
-        }
+        $payment_type = $request->route()->parameter('payment');
+        $shop = $request->get('ori_shop');
+        if(!$shop->payment_methods()->where('$payment_method_code',$payment_type)->where('active',1)->first())
+            return $this->jsonErrorResponse(404,"该支付方式不存在/未启用");
+        event(new PayCreateEvent($order,$payment_type));
+        $payment = $order->payments()
+            ->whereIn('status',[
+                OrderPayment::PAYMENT_STATUS_PENDING,
+                OrderPayment::PAYMENT_STATUS_SUCCESS,
+            ])->orderBy('created_at','desc')->first();
+        return $this->jsonSuccessResponse(new OrderPaymentResource($payment));
     }
 }
