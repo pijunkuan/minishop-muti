@@ -47,6 +47,12 @@ class UserController extends Controller
         return $this->jsonSuccessResponse($this->respondWithToken(auth('users')->refresh()),"更新成功");
     }
 
+    public function logout()
+    {
+        auth('users')->logout();
+        return $this->jsonSuccessResponse(null,"成功登出");
+    }
+
     public function refresh()
     {
         return $this->jsonSuccessResponse($this->respondWithToken(auth('users')->refresh()));

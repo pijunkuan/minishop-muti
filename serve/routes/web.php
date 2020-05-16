@@ -30,6 +30,7 @@ Route::group([
     "middleware"=>["shop"]
 ],function(){
     require __DIR__ . "/webs/shop.php";
+    require __DIR__ . "/webs/center.php";
 });
 
 Route::group([
@@ -37,6 +38,8 @@ Route::group([
     "middleware"=>["shop"]
 ],function(){
     require __DIR__ . "/webs/shop.php";
+    require __DIR__ . "/webs/center.php";
+
 });
 
 

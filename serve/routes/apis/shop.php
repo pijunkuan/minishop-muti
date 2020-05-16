@@ -7,6 +7,7 @@ Route::namespace('Shop')->group(function () {
         Route::put('edit', "UserController@edit");
         Route::get('refresh', "UserController@refresh");
         Route::get('info', 'UserController@info');
+        Route::get('logout',"UserController@logout");
     });
     Route::prefix('shop')->namespace('Shop')->middleware('auth:users')->group(function () {
         Route::get('', 'ShopController@index');
