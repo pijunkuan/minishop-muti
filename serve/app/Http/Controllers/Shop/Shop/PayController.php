@@ -77,6 +77,7 @@ class PayController extends Controller
                 case "charge.succeeded":
                     if(!$charge['paid']) return response()->json(['msg' => "no paid"], 400);
                     $payment=ShopOrderPayment::where("no",$charge['order_no'])->firstOrFail();
+                    if($payment['status'] == ShopOrderPayment::PAYMENT_STATUS_PAID)return response()->json(['msg' => "already paid"], 400);
                     event(new PaySuccessEvent($payment,$charge['id']));
                     break;
                 default:
