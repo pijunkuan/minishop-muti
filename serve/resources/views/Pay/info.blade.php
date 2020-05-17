@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>支付出错了</title>
+    <title>友情提示</title>
 </head>
 <body>
 <div class="content">

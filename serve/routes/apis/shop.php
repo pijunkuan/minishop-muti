@@ -14,7 +14,6 @@ Route::namespace('Shop')->group(function () {
         Route::get('{shop}', 'ShopController@show');
         Route::prefix('order')->group(function () {
             Route::post('', 'OrderController@store');
-//            Route::post('pay_success/{payment_no}', 'OrderController@success');
             Route::get('list', 'OrderController@index');
             Route::get('{order_no}', 'OrderController@show');
         });

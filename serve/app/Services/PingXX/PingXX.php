@@ -54,12 +54,6 @@ class PingXX
     public function pc_alipay($params)
     {
         $amount = ceil($params['amount'] * 100);
-//        if (isset($params['pay_no']) && !is_null($params['pay_no'])) {
-//            $charge = Charge::retrieve($params['pay_no']);
-//            if ($charge['amount'] == $amount && ($charge['time_expire'] - 1000) > time() && $charge['channel'] == "alipay_pc_direct")
-//                return null;
-//            return $charge;
-//        }
         $c = [
             'order_no' => $params['no'],
             'app' => array('id' => $this->Ping_app_id),
