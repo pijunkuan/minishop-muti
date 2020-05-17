@@ -44,7 +44,7 @@ class OrderResource extends JsonResource
                 "amount"=>$payment['amount'],
                 "status_code"=>$payment['status'],
                 "status"=>ShopOrderPayment::paymentStatusMap[$payment['status']],
-                "pay_url"=>"//account.min-eshop.vip/pay/{$payment['pay_no']}",
+                "pay_url"=>"//account.min-eshop.vip/pay/{$payment['no']}",
                 "pay_at"=>$payment['pay_at']?$payment['pay_at']:null ,
                 "created_at"=>$payment['created_at']->toDateTimeString(),
             ],
