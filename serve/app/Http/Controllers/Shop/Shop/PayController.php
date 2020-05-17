@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Shop;
 
+use App\Events\Shop\Pay\PaySuccessEvent;
 use App\Http\Controllers\Controller;
 use App\Models\ShopOrderPayment;
 use App\Services\PingXX\PingXX;
@@ -16,25 +17,25 @@ class PayController extends Controller
     {
         $payment = ShopOrderPayment::where('no', $request->route()->parameter('payment_no'))->first();
         if (!$payment)
-            return view('Pay.info',[
-                "message"=>"不存在该支付单"
+            return view('Pay.info', [
+                "message" => "不存在该支付单"
             ]);
         if ($payment->status == ShopOrderPayment::PAYMENT_STATUS_PAID)
-            return view('Pay.info',[
-                "message"=>"该订单已支付"
+            return view('Pay.info', [
+                "message" => "该订单已支付"
             ]);
         if ($payment->status == ShopOrderPayment::PAYMENT_STATUS_CLOSED)
-            return view('Pay.info',[
-                "message"=>"该订单已关闭"
+            return view('Pay.info', [
+                "message" => "该订单已关闭"
             ]);
 
         $data = [
-            "pay_no"=>$payment['pay_no'],
-            "amount"=>$payment['amount'],
-            "no"=>$payment['no'],
-            "url"=>"http://google.de"
+            "pay_no" => $payment['pay_no'],
+            "amount" => $payment['amount'],
+            "no" => $payment['no'],
+            "url" => "http://google.de"
         ];
-        switch($payment['payment_method']){
+        switch ($payment['payment_method']) {
             case "alipay":
                 $pingxx_serve = new PingXX(self::APP_ID);
                 $charge = $pingxx_serve->pc_alipay($data);
@@ -43,18 +44,18 @@ class PayController extends Controller
 
                 break;
             default:
-                return view('Pay.info',[
-                    "message"=>"错误的支付代码"
+                return view('Pay.info', [
+                    "message" => "错误的支付代码"
                 ]);
                 break;
         }
-        if($charge){
-            return view('Pay.pay',[
-                "charge"=>$charge
+        if ($charge) {
+            return view('Pay.pay', [
+                "charge" => $charge
             ]);
-        }else{
-            return view('Pay.info',[
-                "message"=>"支付参数有误，请重新创建"
+        } else {
+            return view('Pay.info', [
+                "message" => "支付参数有误，请重新创建"
             ]);
         }
     }
@@ -66,11 +67,24 @@ class PayController extends Controller
         $headers = Util::getRequestHeaders();
         $signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : null;
         $pingxx = new PingXX(self::APP_ID);
-        $result = $pingxx->verify_signature($raw_data,$signature);
-        if($result == 1){
-            $event = json_decode($raw_data,true);
+        $result = $pingxx->verify_signature($raw_data, $signature);
+        if ($result == 1) {
+            $event = json_decode($raw_data, true);
+            $object = $event['data']['object'];
+            $charge = $pingxx->charge_retrieve($object['id']);
+            if (!$charge) return response()->json(['msg' => "no object"], 400);
+            switch ($event['type']) {
+                case "charge.succeeded":
+                    if(!$charge['paid']) return response()->json(['msg' => "no paid"], 400);
+                    $payment=ShopOrderPayment::where("no",$charge['order_no'])->firstOrFail();
+                    event(new PaySuccessEvent($payment,$charge['id']));
+                    break;
+                default:
+                    return response()->json(['msg' => "error type"], 400);
+                    break;
+            }
             return $this->jsonSuccessResponse($event);
-        }elseif ($result == 0) {
+        } elseif ($result == 0) {
             return response()->json(['msg' => "verification failed"], 400);
         } else {
             return response()->json(['msg' => "verification error"], 400);

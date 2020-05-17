@@ -77,6 +77,11 @@ class PingXX
         return $charge;
     }
 
+    public function charge_retrieve($id)
+    {
+        return Charge::retrieve($id);
+    }
+
     /**
      * 验证 webhooks 签名方法：
      * raw_data：Ping++ 请求 body 的原始数据即 event ，不能格式化；
