@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ShopOrderPayment;
 use App\Services\PingXX\PingXX;
 use Illuminate\Http\Request;
+use Pingpp\Util\Util;
 
 class PayController extends Controller
 {
@@ -61,5 +62,18 @@ class PayController extends Controller
     public function confirm(Request $request)
     {
         echo "pingxxwebhooks";
+        $raw_data = file_get_contents('php://input');
+        $headers = Util::getRequestHeaders();
+        $signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : null;
+        $pingxx = new PingXX(self::APP_ID);
+        $result = $pingxx->verify_signature($raw_data,$signature);
+        if($result == 1){
+            $event = json_decode($raw_data,true);
+            return $this->jsonSuccessResponse($event);
+        }elseif ($result == 0) {
+            return response()->json(['msg' => "verification failed"], 400);
+        } else {
+            return response()->json(['msg' => "verification error"], 400);
+        }
     }
 }
