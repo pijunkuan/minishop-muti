@@ -31,19 +31,11 @@ class OrderController extends Controller
         return $this->jsonSuccessResponse(new OrderResource($order->refresh()));
     }
 
-    public function show($order_no)
+    public function show(Request $request)
     {
-        $order = auth('users')->user()->shopOrders()->where('no', $order_no)->first();
+        $order = auth('users')->user()->shopOrders()->where('no', $request->route()->parameter('order_no'))->first();
         return $this->jsonSuccessResponse(new OrderResource($order));
     }
 
-    public function success($payment_no)
-    {
-        $payment = ShopOrderPayment::where('no', $payment_no)->first();
-        if (!$payment) return $this->jsonErrorResponse(401, '不存在该支付单');
-        if ($payment->status == ShopOrderPayment::PAYMENT_STATUS_PAID) return $this->jsonErrorResponse(401, '已支付');
-        if ($payment->status == ShopOrderPayment::PAYMENT_STATUS_CLOSED) return $this->jsonErrorResponse(401, '已关闭');
-        event(new PaySuccessEvent($payment, 'test123'));
-        return $this->jsonSuccessResponse();
-    }
+
 }

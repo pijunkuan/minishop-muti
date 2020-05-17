@@ -11,6 +11,13 @@
 |
 */
 
+Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
+
+//Route::group([
+//    "domain"=>"pay.min-eshop.vip"
+//],function(){
+//    Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
+//});
 
 
 Route::group([

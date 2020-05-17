@@ -33,9 +33,6 @@ Route::group([
 //    Route::put('me', "AdminController@update");
 //});
 
-Route::prefix('pay/{no}')->namespace('Pay')->group(function () {
-    Route::get('wallet', "PayController@wallet")->middleware('auth:customers');
-});
 
 
 

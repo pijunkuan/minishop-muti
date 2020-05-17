@@ -17,6 +17,9 @@ Route::group([
     Route::get('template', "Template\TemplateController@get");
 
     Route::middleware('auth:customers')->group(function () {
+        Route::prefix('pay/{no}')->group(function () {
+            Route::get('wallet', "Pay\PayController@wallet");
+        });
         Route::prefix('cart')->namespace('Cart')->group(function () {
             Route::post('cache', 'CartController@cache_in');
             Route::get('cache/{key}', 'CartController@cache_out');

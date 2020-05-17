@@ -115,7 +115,7 @@ class OrderController extends Controller
         if($order->status !== Order::ORDER_STATUS_PENDING) return $this->jsonErrorResponse(404,"该状态无法支付");
         $payment_type = $request->route()->parameter('payment');
         $shop = $request->get('ori_shop');
-        if(!$shop->payment_methods()->where('$payment_method_code',$payment_type)->where('active',1)->first())
+        if(!$shop->payment_methods()->where('payment_method_code',$payment_type)->where('active',1)->first())
             return $this->jsonErrorResponse(404,"该支付方式不存在/未启用");
         event(new PayCreateEvent($order,$payment_type));
         $payment = $order->payments()

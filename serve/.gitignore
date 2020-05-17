@@ -5,6 +5,7 @@
 /public/theme
 /public/storage
 /storage/*.key
+/storage/Key
 /vendor
 .env
 .env.backup
