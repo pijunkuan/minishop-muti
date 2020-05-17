@@ -33,7 +33,7 @@ class PayController extends Controller
             "pay_no" => $payment['pay_no'],
             "amount" => $payment['amount'],
             "no" => $payment['no'],
-            "url" => "//account.min-eshop.vip/shops"
+            "url" => "http://account.min-eshop.vip/shops"
         ];
         switch ($payment['payment_method']) {
             case "alipay":
