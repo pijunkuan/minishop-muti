@@ -11,7 +11,7 @@ use Pingpp\Util\Util;
 
 class PayController extends Controller
 {
-    private const APP_ID = "app_PyXfXTDiXzPKKmnb";
+    private const APP_ID = "app_WHqDaLeTubb9ebnL";
 
     public function pay(Request $request)
     {
