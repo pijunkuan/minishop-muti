@@ -41,6 +41,11 @@ class OrderPayment extends Model
         return $this->belongsTo(Order::class,"order_id");
     }
 
+    public function customer()
+    {
+        return $this->hasOneThrough(Customer::class,Order::class,"id","id","order_id","customer_id");
+    }
+
     public static function findAvailableNo()
     {
         // 支付流水号前缀
