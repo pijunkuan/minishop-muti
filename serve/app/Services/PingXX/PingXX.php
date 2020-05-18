@@ -6,6 +6,7 @@ namespace App\Services\PingXX;
 
 use Pingpp\Charge;
 use Pingpp\Pingpp;
+use Pingpp\Transfer;
 
 class PingXX
 {
@@ -68,6 +69,26 @@ class PingXX
             ]
         ];
         $charge = Charge::create($c);
+        return $charge;
+    }
+
+    public function transfer_alipay($params)
+    {
+        $amount = ceil($params['amount'] * 100);
+        $c = [
+            'order_no' => $params['no'],
+            'app' => array('id' => $this->Ping_app_id),
+            'channel' => "alipay",
+            'amount' => $amount,
+            'currency' => 'cny',
+            'type' => 'b2c',
+            'recipient'   => $params['recipient'],
+            'description' => $params['description'],
+            'extra' => [
+                'recipient_name' => $params['name']
+            ]
+        ];
+        $charge = Transfer::create($c);
         return $charge;
     }
 
