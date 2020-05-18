@@ -2,5 +2,5 @@
 
 Route::get("","Web\WebController@web");
 
-Route::get("pay/order/{no}","Front\Pay\PayController@pay");
+Route::get("order/pay/{no}","Front\Pay\PayController@pay")->name('front.order.pay');
 
