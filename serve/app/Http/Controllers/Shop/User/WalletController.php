@@ -20,7 +20,7 @@ class WalletController extends Controller
         if(!$wallet = auth('users')->user()->wallet) return $this->jsonErrorResponse(404,"尚未创建钱包");
         return $this->jsonSuccessResponse([
            "balance"=>$wallet['balance'],
-           "locked_amount"=>$wallet['locked_amount'],
+           "locked_amount"=>$wallet->clear_lists()->sum('amount'),
         ]);
     }
 }
