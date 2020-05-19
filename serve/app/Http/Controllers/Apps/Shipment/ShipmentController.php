@@ -28,8 +28,6 @@ class ShipmentController extends Controller
 
     public function store(ShipmentRequest $request)
     {
-        //        if (Shipment::count() > 5) return $this->jsonErrorResponse(405, "超过最大运费模板设置范围（5）");
-
         $shop = $request->get('ori_shop');
 
         DB::beginTransaction();

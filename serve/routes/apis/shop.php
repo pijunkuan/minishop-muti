@@ -23,7 +23,16 @@ Route::namespace('Shop')->group(function () {
             Route::get('level', 'SysController@level');
             Route::get('template', 'SysController@template_list');
         });
+    });
 
+    Route::prefix('wallet')->namespace('User')->middleware('auth:users')->group(function(){
+        Route::get('account',"WalletController@show");
+        Route::post('account',"WalletController@store");
+    });
+
+    Route::prefix('withdraw')->namespace('User')->middleware('auth:users')->group(function(){
+        Route::get('account',"WithdrawController@account_index");
+        Route::post('account',"WithdrawController@account_store");
     });
 });
 

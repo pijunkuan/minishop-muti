@@ -43,6 +43,10 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $shop = $request->get('ori_shop');
+            if($shop->level->level['item_limit']){
+                if($shop->products()->count() >= $shop->level->level['ite_limit'])
+                    return $this->jsonErrorResponse(404,"商品数量超出版本限制");
+            }
             $product = $shop->products()->make();
             $product_spu = $request->get('product');
             $product['product_title'] = $product_spu['product_title'];

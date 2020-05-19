@@ -20,10 +20,12 @@ class ShopController extends Controller
         $shop = $request->get('ori_shop');
         if ($request->has('shop_name')) $shop->shop_name = $request->get('shop_name');
         if ($request->has('shop_url')) {
-            if (Shop::where('id', "<>", $shop['id'])->where('shop_url', $request->get('shop_url'))->first()) {
-                return $this->jsonErrorResponse(401, "商铺链接已存在，不可重复");
+            if ($shop->level->level['domain_edit']){
+                if (Shop::where('id', "<>", $shop['id'])->where('shop_url', $request->get('shop_url'))->first()) {
+                    return $this->jsonErrorResponse(401, "商铺链接已存在，不可重复");
+                }
+                $shop->shop_url = $request->get('shop_url');
             }
-            $shop->shop_url = $request->get('shop_url');
         }
         if ($request->has('status')) {
             if (!in_array($request->get('status'), [

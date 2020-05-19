@@ -20,6 +20,9 @@ class ShopResource extends JsonResource
         if($shop_level){
             $level = [
                 "level_name"=>$shop_level->level['level_name'],
+                "pic_limit"=>$shop_level->level['pic_limit'],
+                "item_limit"=>$shop_level->level['item_limit'],
+                "domain_edit"=>$shop_level->level['domain_edit'],
                 "exp_at"=>$shop_level['exp_at']
             ];
         }

@@ -52,6 +52,9 @@ class OrderStoreRequest extends FormRequest
                             if(!SysPluginVariant::where('id',$value)->first()) return $fail('不存在此插件');
                             if(!$this->input('shop_id')) return $fail('商铺id 不可为空');
                             break;
+                        case "sms":
+
+                            break;
                         default:
                             return $fail('类型错误');
                             break;

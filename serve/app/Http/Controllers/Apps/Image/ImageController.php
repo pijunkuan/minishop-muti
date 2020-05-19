@@ -23,6 +23,10 @@ class ImageController extends Controller
     public function store(ImageRequest $request)
     {
         $shop = $request->get('ori_shop');
+        $volume = $shop->level->level['pic_limit'];
+        if($shop->images()->sum('img_bytes') >= ($volume * pow(1024,3)))
+            return $this->jsonErrorResponse(401,"图片空间已使用完，无法创建");
+
         $file = $request->file('file');
         $fileName = date('YmdHis').str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT).".".$file->getClientOriginalExtension();
         $savePath = env("APP_NAME")."/images/".$fileName;
