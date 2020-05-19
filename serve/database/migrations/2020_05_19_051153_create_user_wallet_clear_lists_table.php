@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\UserWalletClearList;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ class CreateUserWalletClearListsTable extends Migration
             $table->decimal('amount');
             $table->decimal('fee');
             $table->integer('order_count');
-            $table->string('status',10);
+            $table->string('status',10)->default(UserWalletClearList::CLEAR_STATUS_PENDING);
             $table->timestamp('unlocked_at');
             $table->timestamps();
         });

@@ -36,6 +36,9 @@ Route::namespace('Shop')->group(function () {
         Route::post('account',"WithdrawController@account_store");
         Route::delete('account/{account}',"WithdrawController@account_destroy");
     });
+    Route::prefix('clear_list')->namespace('User')->middleware('auth:users')->group(function(){
+       Route::get('',"WalletClearController@index");
+    });
 });
 
 Route::prefix('sms')->namespace("Sms")->group(function(){
