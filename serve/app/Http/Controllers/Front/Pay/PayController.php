@@ -30,7 +30,7 @@ class PayController extends Controller
                 $pingxx = new PingXX(env("FRONT_PING_ID"),"test");
                 $params = [
                     "no"=>$payment['no'],
-                    "amount"=>$payment['amount'],
+                    "amount"=>$payment['pay_amount'],
                     "url"=>url('checksuc')
                 ];
                 $charge = $pingxx->m_alipay($params);
@@ -42,7 +42,7 @@ class PayController extends Controller
                 $pingxx = new PingXX(env("FRONT_PING_ID"),"test");
                 $params = [
                     "no"=>$payment['no'],
-                    "amount"=>$payment['amount'],
+                    "amount"=>$payment['pay_amount'],
                     "url"=>url('checksuc')
                 ];
                 $charge = $pingxx->m_wxpay($params);
@@ -63,7 +63,7 @@ class PayController extends Controller
         $raw_data = file_get_contents('php://input');
         $headers = Util::getRequestHeaders();
         $signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : null;
-        $pingxx = new PingXX(env('FRONT_PING_ID'));
+        $pingxx = new PingXX(env('FRONT_PING_ID'),"test");
         $result = $pingxx->verify_signature($raw_data, $signature);
         if ($result == 1) {
             $event = json_decode($raw_data, true);

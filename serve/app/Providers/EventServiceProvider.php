@@ -51,6 +51,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Order\Pay\PayCreateEvent'=>[
             'App\Listeners\Order\Pay\Create\WalletCreateConfirmation',
             'App\Listeners\Order\Pay\Create\CashCreateConfirmation',
+            'App\Listeners\Order\Pay\Create\AliPayCreateConfirmation',
+            'App\Listeners\Order\Pay\Create\WxPayCreateConfirmation',
         ],
 
         'App\Events\Order\Pay\PaySuccessEvent'=>[

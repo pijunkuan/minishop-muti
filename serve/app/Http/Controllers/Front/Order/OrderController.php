@@ -117,12 +117,14 @@ class OrderController extends Controller
         $shop = $request->get('ori_shop');
         if(!$shop->payment_methods()->where('payment_method_code',$payment_type)->where('active',1)->first())
             return $this->jsonErrorResponse(404,"该支付方式不存在/未启用");
+
         event(new PayCreateEvent($order,$payment_type));
         $payment = $order->payments()
             ->whereIn('status',[
                 OrderPayment::PAYMENT_STATUS_PENDING,
                 OrderPayment::PAYMENT_STATUS_SUCCESS,
             ])->orderBy('created_at','desc')->first();
+
         return $this->jsonSuccessResponse(new OrderPaymentResource($payment));
     }
 }
