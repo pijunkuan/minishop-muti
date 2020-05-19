@@ -18,7 +18,7 @@ class UserWallet extends Model
         return $this->hasMany(UserWalletAccount::class,"wallet_id");
     }
 
-    public function incommes()
+    public function incomes()
     {
         return $this->hasMany(UserWalletIncome::class,"wallet_id");
     }
