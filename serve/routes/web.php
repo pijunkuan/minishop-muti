@@ -14,6 +14,7 @@
 Route::get('paytest',"Front\Pay\PayController@test");
 
 Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
+Route::post('front/pay/confirm',"Front\Pay\PayController@confirm");
 
 //Route::group([
 //    "domain"=>"pay.min-eshop.vip"

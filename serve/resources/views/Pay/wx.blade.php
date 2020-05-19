@@ -8,7 +8,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-    <script src="{{asset('js/pingpp.js')}}"></script>
+{{--    <script src="{{asset('js/pingpp.js')}}"></script>--}}
     <script src="{{asset('js/qrcode.min.js')}}"></script>
     <!-- Styles -->
     <style>

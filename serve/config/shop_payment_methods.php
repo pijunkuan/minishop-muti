@@ -18,7 +18,7 @@ return [
             "need_setting" => false,
         ],
         [
-            "code" => "m_alipay",
+            "code" => "alipay",
             "title" => "支付宝",
             "img" => null,
             "des" => "支付宝手机支付",

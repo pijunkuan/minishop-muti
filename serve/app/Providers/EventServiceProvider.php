@@ -21,6 +21,11 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Sms\SmsEvent'=>[
             'App\Listeners\Sms\VerificationConfirmation'
         ],
+
+        'App\Events\User\Wallet\OrderEvent'=>[
+            'App\Listeners\User\Wallet\PaySuccessConfirmation'
+        ],
+
         'App\Events\Order\OrderCancelEvent'=>[
             'App\Listeners\Order\OrderCancelConfirmation'
         ],
