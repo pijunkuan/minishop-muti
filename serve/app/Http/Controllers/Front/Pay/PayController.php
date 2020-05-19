@@ -7,15 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\OrderPayment;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 
 class PayController extends Controller
 {
     public function pay(Request $request)
     {
         $payment = OrderPayment::where('no', $request->route()->parameter('no'))->firstOrFail();
-        if ($payment->status !== OrderPayment::PAYMENT_STATUS_SUCCESS) return view('Pay.front_info', ["message" => "无法支付（支付单状态错误）","url"=>url('checksuc')]);
-        if ($payment->status !== OrderPayment::PAYMENT_STATUS_PENDING) return view('Pay.front_info', ["message" => "该订单已支付","url"=>url('')]);
+        if ($payment->status == OrderPayment::PAYMENT_STATUS_SUCCESS) return view('Pay.front_info', ["message" => "该订单已支付","url"=>url('checksuc')]);
+        if ($payment->status !== OrderPayment::PAYMENT_STATUS_PENDING) return view('Pay.front_info', ["message" => "无法支付（支付单状态错误）","url"=>url('')]);
 
         switch ($payment->payment_method) {
             case "wallet":
