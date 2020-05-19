@@ -15,6 +15,7 @@ Route::group([
     Route::apiResource('product', 'Product\ProductController')->only(['index', 'show']);
     Route::get('category', 'Category\CategoryController@index');
     Route::get('template', "Template\TemplateController@get");
+    Route::get('payment_methods',"Payment\PaymentController@methods");
 
     Route::middleware('auth:customers')->group(function () {
         Route::prefix('pay/{no}')->group(function () {
