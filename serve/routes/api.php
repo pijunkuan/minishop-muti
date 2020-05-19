@@ -9,6 +9,9 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('paytest/{no}',"Front\Pay\PayController@test");
+
 require_once __DIR__ . "/apis/shop.php";
 
 Route::group([

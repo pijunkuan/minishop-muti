@@ -90,24 +90,27 @@ class PayController extends Controller
         }
     }
 
-    public function test()
+    public function test(Request $request)
     {
-        $pingxx = new PingXX(env("FRONT_PING_ID"));
-        $params = [
-            "no"=>"test123".time(),
-            "amount"=>10,
-            "url"=>url('checksuc')
-        ];
-        $charge = $pingxx->m_wxpay($params);
-        $data = [
-            "order"=>[
-                "amount"=>$charge['amount'],
-                "order_no"=>$charge['order_no']
-            ],
-            "url"=>$charge['credential']['wx_pub_qr']
-        ];
-        return view('Pay.wx',["data"=>$data]);
-//        $charge = $pingxx->m_alipay($params);
-        return $this->jsonSuccessResponse($charge);
+//        $payment = OrderPayment::where('no',$request->route()->parameter('no'))->firstOrFail();
+//        event(new OrderEvent($payment));
+
+//        $pingxx = new PingXX(env("FRONT_PING_ID"));
+//        $params = [
+//            "no"=>"test123".time(),
+//            "amount"=>10,
+//            "url"=>url('checksuc')
+//        ];
+//        $charge = $pingxx->m_wxpay($params);
+//        $data = [
+//            "order"=>[
+//                "amount"=>$charge['amount'],
+//                "order_no"=>$charge['order_no']
+//            ],
+//            "url"=>$charge['credential']['wx_pub_qr']
+//        ];
+//        return view('Pay.wx',["data"=>$data]);
+////        $charge = $pingxx->m_alipay($params);
+//        return $this->jsonSuccessResponse($charge);
     }
 }
