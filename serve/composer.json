@@ -11,8 +11,10 @@
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^1.0",
+        "jacobcyl/ali-oss-storage": "^2.1",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
+        "overtrue/easy-sms": "^1.1",
         "overtrue/laravel-lang": "~3.0",
         "pingplusplus/pingpp-php": "^2.4",
         "tymon/jwt-auth": "^1.0"

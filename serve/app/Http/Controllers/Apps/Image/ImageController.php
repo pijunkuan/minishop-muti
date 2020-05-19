@@ -25,7 +25,7 @@ class ImageController extends Controller
         $shop = $request->get('ori_shop');
         $file = $request->file('file');
         $fileName = date('YmdHis').str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT).".".$file->getClientOriginalExtension();
-        $savePath = "images/".$fileName;
+        $savePath = env("APP_NAME")."/images/".$fileName;
         Storage::put($savePath,File::get($file));
         $img = $shop->images()->create([
             "img_file"=>$savePath,

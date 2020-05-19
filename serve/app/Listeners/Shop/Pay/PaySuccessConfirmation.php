@@ -53,8 +53,8 @@ class PaySuccessConfirmation
             Log::error($exception->getMessage());
             throw (new HttpResponseException(response()->json([
                 'code' => 422,
-                "msg" => $exception->getMessage(),
-                "data" => null,
+                "message" => $exception->getMessage(),
+                "body" => null,
             ], 422)));
         }
         $order = $payment->shopOrder;

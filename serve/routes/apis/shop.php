@@ -4,6 +4,7 @@ Route::namespace('Shop')->group(function () {
     Route::prefix('user')->namespace('User')->group(function () {
         Route::post('register', 'UserController@register');
         Route::post('login', 'UserController@login');
+        Route::post('forget', 'UserController@forget');
         Route::put('edit', "UserController@edit");
         Route::get('refresh', "UserController@refresh");
         Route::get('info', 'UserController@info');
@@ -22,5 +23,10 @@ Route::namespace('Shop')->group(function () {
             Route::get('level', 'SysController@level');
             Route::get('template', 'SysController@template_list');
         });
+
     });
+});
+
+Route::prefix('sms')->namespace("Sms")->group(function(){
+    Route::post('verification',"SmsController@verification_code");
 });

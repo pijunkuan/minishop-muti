@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'App\Events\Sms\SmsEvent'=>[
+            'App\Listeners\Sms\VerificationConfirmation'
+        ],
         'App\Events\Order\OrderCancelEvent'=>[
             'App\Listeners\Order\OrderCancelConfirmation'
         ],
