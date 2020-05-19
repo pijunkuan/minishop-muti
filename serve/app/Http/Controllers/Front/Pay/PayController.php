@@ -47,7 +47,7 @@ class PayController extends Controller
     {
         $pingxx = new PingXX(env("FRONT_PING_ID"));
         $params = [
-            "no"=>"test123",
+            "no"=>"test123".time(),
             "amount"=>10,
             "url"=>url('checksuc')
         ];
