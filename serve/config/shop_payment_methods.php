@@ -16,6 +16,20 @@ return [
             "img" => null,
             "des" => "货到付款方式",
             "need_setting" => false,
-        ]
+        ],
+        [
+            "code" => "m_alipay",
+            "title" => "支付宝",
+            "img" => null,
+            "des" => "支付宝手机支付",
+            "need_setting" => false,
+        ],
+        [
+            "code" => "wxpay",
+            "title" => "微信",
+            "img" => null,
+            "des" => "微信支付",
+            "need_setting" => false,
+        ],
     ]
 ];

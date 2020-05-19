@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\Log\LogListCollection;
 use Illuminate\Http\Request;
 
 class WalletController extends Controller
@@ -22,5 +23,13 @@ class WalletController extends Controller
            "balance"=>$wallet['balance'],
            "locked_amount"=>$wallet->clear_lists()->sum('amount'),
         ]);
+    }
+
+    public function log_index(Request $request)
+    {
+        $wallet = auth('users')->user()->wallet;
+        $lists = $wallet->log_lists()->paginate(10);
+        return $this->jsonSuccessResponse(new LogListCollection($lists));
+
     }
 }

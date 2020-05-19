@@ -8,13 +8,13 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-    <script src="/public/js/pingpp.js"></script>
-    <script src="/public/js/qrcode.min.js"></script>
+    <script src="{{asset('js/pingpp.js')}}"></script>
+    <script src="{{asset('js/qrcode.min.js')}}"></script>
     <!-- Styles -->
     <style>
         body {
             background: #333;
-            margin:0;
+            margin: 0;
         }
 
         .wxqrcode {
@@ -23,82 +23,86 @@
             width: 600px;
             margin-left: -300px;
             height: 600px;
-            top:0;
-            background-color:#f2ebe6;
-            text-align:center;
-            box-shadow:0 0 10px rgba(0,0,0,.5);
+            top: 0;
+            background-color: #f2ebe6;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .5);
         }
-        .qrcode-title{
-            padding:20px 0;
-            background-color:#303133;
-            color:#fff;
-            font-size:18px;
+
+        .qrcode-title {
+            padding: 10px 0;
+            background-color: #303133;
+            color: #fff;
+            font-size: 18px;
         }
-        .qrcode-title span{
-            vertical-align:middle;
+
+        .qrcode-title span {
+            vertical-align: middle;
         }
-        .qrcode-title span:first-child{
-            height:25px;
-            width:30px;
-            display:inline-block;
+
+        .wxqrcode .quit {
+            border-top: dotted 1px #ccc;
+            background-color: #fff;
+            margin: 0 130px;
+            min-height: 480px;
         }
-        .qrcode-title span:first-child img{
-            max-height:100%;
-            max-width:100%;
+
+        #qrcode {
+            margin: 20px 25px 5px;
+            overflow: hidden;
         }
-        .wxqrcode .quit{
-            border-top:dotted 1px #ccc;
-            background-color:#fff;
-            margin:0 130px;
-            min-height:480px;
-        }
-        #qrcode{
-            margin:20px 25px 5px;
-            overflow:hidden;
-        }
-        #qrcode img{
-            max-width:90%;
+
+        #qrcode img {
+            max-width: 90%;
             max-height: 90%;
-            padding:5%;
-            border-radius:5px;
-            border:1px solid #DCDFE6;
+            padding: 5%;
+            border-radius: 5px;
+            border: 1px solid #DCDFE6;
         }
-        .qrcode-tip{
-            margin-bottom:20px;
-            font-size:13px;
-            color:#606266;
+
+        .qrcode-tip {
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #606266;
         }
-        .qr-shopname{
-            margin:10px 0;
-            padding:0 20px;
-            font-size:16px;
-            font-weight:600;
+
+        .qr-shopname {
+            margin: 10px 0;
+            padding: 0 20px;
+            font-size: 16px;
+            font-weight: 600;
         }
-        .qr-price{
-            font-size:24px;
+
+        .qr-price {
+            font-size: 24px;
             font-weight: bold;
-            color:#F56C6C;
-            margin:10px 0;
+            color: #F56C6C;
+            margin: 10px 0;
         }
-        .qr-orderno{
-            padding:5px 20px;
-            font-size:14px;
-            color:#606266;
-            border-top:1px solid #E4E7ED;
+
+        .qr-orderno {
+            padding: 5px 20px;
+            font-size: 14px;
+            color: #606266;
+            border-top: 1px solid #E4E7ED;
         }
-        .qr-orderno span:first-child{
-            float:left;
+
+        .qr-orderno span:first-child {
+            float: left;
         }
-        .qr-orderno span:last-child{
-            float:right;
+
+        .qr-orderno span:last-child {
+            float: right;
         }
-        @media (max-width:768px){
-            .wxqrcode{
-                width:320px;
-                margin-left:-160px;
+
+        @media (max-width: 768px) {
+            .wxqrcode {
+                width: 320px;
+                margin-left: -160px;
             }
-            .wxqrcode .quit{
-                margin:0 15px;
+
+            .wxqrcode .quit {
+                margin: 0 15px;
             }
         }
 
@@ -107,7 +111,6 @@
 <body>
 <div class="wxqrcode">
     <div class="qrcode-title">
-        <span><img src="https://img.pinuocaostudio.com/weixin.png"></span>
         <span>微信安全支付</span>
     </div>
     <div class="quit">
@@ -118,12 +121,12 @@
             @if(isset($data['shop']['name']))
                 {{$data['shop']['name']}}
             @else
-                商城名称商城名称商城名称商城名称商城名称商城名称商城名称
-                @endif
-            </div>
+                订单总额
+            @endif
+        </div>
         <div class="qr-price">¥
-        @if(isset($data['order']['amount']))
-            {{round($data['order']['amount']*0.01,2)}}
+            @if(isset($data['order']['amount']))
+                {{round($data['order']['amount']*0.01,2)}}
             @else
                 0.00
             @endif
@@ -154,8 +157,9 @@
             return false;
         }
     }
+
     new QRCode(document.getElementById('qrcode'), {
-        text: "{!! $data["pc_url"] !!}",
+        text: "{!! $data["url"] !!}",
         width: 256,
         height: 256,
         colorDark: '#000000',
@@ -163,7 +167,7 @@
         correctLevel: QRCode.CorrectLevel.H
     });
     if (isWeiXin()) {
-        window.location.href = '{!! $data['wxurl'] !!}';
+        window.location.href = '{!! $data['url'] !!}';
     }
 
 </script>

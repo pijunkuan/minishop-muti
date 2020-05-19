@@ -17,10 +17,8 @@ class CreateUserWalletLogListsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('wallet_id');
             $table->foreign('wallet_id')->references('id')->on('user_wallets')->onDelete('cascade');
-            $table->string('way',10);
             $table->string('type',10);
             $table->decimal('amount');
-            $table->decimal('fee');
             $table->decimal('last_balance');
             $table->decimal('next_balance');
             $table->string('no',45);

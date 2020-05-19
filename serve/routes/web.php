@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('paytest',"Front\Pay\PayController@test");
+
 Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
 
 //Route::group([

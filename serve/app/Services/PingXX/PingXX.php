@@ -72,6 +72,46 @@ class PingXX
         return $charge;
     }
 
+    public function m_alipay($params)
+    {
+        $amount = ceil($params['amount'] * 100);
+        $c = [
+            'order_no' => $params['no'],
+            'app' => array('id' => $this->Ping_app_id),
+            'channel' => "alipay_wap",
+            'amount' => $amount,
+            'client_ip' => $_SERVER['REMOTE_ADDR'],
+            'currency' => 'cny',
+            'subject' => "{$params['no']}",
+            'body' => "订单：{$params['no']}",
+            'extra' => [
+                'success_url' => $params['url']
+            ]
+        ];
+        $charge = Charge::create($c);
+        return $charge;
+    }
+
+    public function m_wxpay($params)
+    {
+        $amount = ceil($params['amount'] * 100);
+        $c = [
+            'order_no' => $params['no'],
+            'app' => array('id' => $this->Ping_app_id),
+            'channel' => "wx_pub_qr	",
+            'amount' => $amount,
+            'client_ip' => $_SERVER['REMOTE_ADDR'],
+            'currency' => 'cny',
+            'subject' => "{$params['no']}",
+            'body' => "订单：{$params['no']}",
+            'extra' => [
+                'product_id' => $params['no']
+            ]
+        ];
+        $charge = Charge::create($c);
+        return $charge;
+    }
+
     public function transfer_alipay($params)
     {
         $amount = ceil($params['amount'] * 100);
