@@ -14,10 +14,10 @@ class WithdrawController extends Controller
                 "way"=>"alipay",
                 "title"=>"支付宝"
             ],
-            [
-                "way"=>"wxpay",
-                "title"=>"微信"
-            ],
+//            [
+//                "way"=>"wxpay",
+//                "title"=>"微信"
+//            ],
         ];
         return $this->jsonSuccessResponse($lists);
     }
@@ -33,6 +33,18 @@ class WithdrawController extends Controller
         $data['account'] = $request->get('account');
         $account = $wallet->accounts()->create($data);
         return $this->jsonSuccessResponse($account);
+    }
 
+    public function account_index()
+    {
+        $accounts = auth('users')->user()->wallet->accounts;
+        return $this->jsonSuccessResponse($accounts);
+    }
+
+    public function account_destroy(Request $request)
+    {
+        $account = auth('users')->user()->wallet->accounts()->findOrFail($request->route()->parameter('account'));
+        $account->delete();
+        return $this->jsonSuccessResponse(null,"删除成功");
     }
 }

@@ -34,6 +34,7 @@ Route::namespace('Shop')->group(function () {
         Route::get('way_list',"WithdrawController@way_list");
         Route::get('account',"WithdrawController@account_index");
         Route::post('account',"WithdrawController@account_store");
+        Route::delete('account/{account}',"WithdrawController@account_destroy");
     });
 });
 

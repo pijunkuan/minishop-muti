@@ -19,7 +19,7 @@ class PayController extends Controller
         switch ($payment->payment_method) {
             case "wallet":
                 $customer = $payment->customer;
-                if ($customer->wallets()->sum('amount') < $payment['pay_amount']) return view('Pay.front_info', ["message" => "账户余额不足"]);
+                if ($customer->wallets()->sum('amount') < $payment['pay_amount']) return view('Pay.front_info', ["message" => "账户余额不足","url"=>url('')]);
                 $rs = $customer->wallets()->create(['amount' => 0 - $payment->pay_amount * 1.00, 'type' => Wallet::WALLET_OUT, "content" => "支付编号：{$payment->no} ， 订单编号：{$payment->order->no}"]);
                 event(new PaySuccessEvent($payment, $rs->no));
                 break;
