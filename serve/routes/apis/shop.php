@@ -36,6 +36,8 @@ Route::namespace('Shop')->group(function () {
         Route::get('account', "WithdrawController@account_index");
         Route::post('account', "WithdrawController@account_store");
         Route::delete('account/{account}', "WithdrawController@account_destroy");
+        Route::get('',"WithdrawController@withdraw_index");
+        Route::post('',"WithdrawController@withdraw_store");
     });
     Route::prefix('clear_list')->namespace('User')->middleware('auth:users')->group(function () {
         Route::get('income', "WalletClearController@income_list");

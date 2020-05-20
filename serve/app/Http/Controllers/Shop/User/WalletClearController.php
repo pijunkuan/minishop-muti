@@ -12,14 +12,14 @@ class WalletClearController extends Controller
     public function index(Request $request)
     {
         $wallet = auth('users')->user()->wallet;
-        $lists = $wallet->clear_lists()->paginate(10);
+        $lists = $wallet->clear_lists()->orderBy("created_at","desc")->paginate(10);
         return $this->jsonSuccessResponse(new ClearListCollection($lists));
     }
 
     public function income_list(Request $request)
     {
         $wallet = auth('users')->user()->wallet;
-        $lists = $wallet->incommes()->paginate(10);
+        $lists = $wallet->incommes()->orderBy("created_at","desc")->paginate(10);
         return $this->jsonSuccessResponse(new IncomeListCollection($lists));
     }
 }
