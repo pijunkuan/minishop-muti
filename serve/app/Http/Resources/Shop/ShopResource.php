@@ -34,6 +34,8 @@ class ShopResource extends JsonResource
             "status"=>Shop::shopStatusMap[$this['status']],
             "status_code"=>$this['status'],
             "active"=>$this['active'],
+            "auto_close_in"=>$this['auto_close_in'],
+            "auto_receive_in"=>$this['auto_receive_in'],
             "level"=>$level
         ];
     }
