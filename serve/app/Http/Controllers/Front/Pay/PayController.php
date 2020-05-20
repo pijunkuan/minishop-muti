@@ -27,7 +27,7 @@ class PayController extends Controller
                 event(new PaySuccessEvent($payment, $rs->no));
                 break;
             case "alipay";
-                $pingxx = new PingXX(env("FRONT_PING_ID"),"test");
+                $pingxx = new PingXX(env("FRONT_PING_ID"));
                 $params = [
                     "no"=>$payment['no'],
                     "amount"=>$payment['pay_amount'],
@@ -40,7 +40,7 @@ class PayController extends Controller
                 ]);
                 break;
             case "wxpay":
-                $pingxx = new PingXX(env("FRONT_PING_ID"),"test");
+                $pingxx = new PingXX(env("FRONT_PING_ID"));
                 if(isset($_GET['code'])){
                     $params = [
                         "no"=>$payment['no'],
@@ -74,7 +74,7 @@ class PayController extends Controller
         $raw_data = file_get_contents('php://input');
         $headers = Util::getRequestHeaders();
         $signature = isset($headers['X-Pingplusplus-Signature']) ? $headers['X-Pingplusplus-Signature'] : null;
-        $pingxx = new PingXX(env('FRONT_PING_ID'),"test");
+        $pingxx = new PingXX(env('FRONT_PING_ID'));
         $result = $pingxx->verify_signature($raw_data, $signature);
         if ($result == 1) {
             $event = json_decode($raw_data, true);

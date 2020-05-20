@@ -121,7 +121,7 @@
            订单总额
         </div>
         <div class="qr-price">¥
-            {{$amount ? round($amount*0.01,2):"0.00"}}
+            {{$amount ?? "0.00"}}
         </div>
         <div class="qr-orderno">
             <span>订单编号</span>
