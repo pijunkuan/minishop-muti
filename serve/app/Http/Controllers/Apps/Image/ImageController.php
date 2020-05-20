@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Apps\Image;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Image\ImageRequest;
 use App\Http\Resources\Image\ImageCollection;
+use App\Http\Resources\Image\ImageResource;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -36,7 +37,8 @@ class ImageController extends Controller
             "img_name"=>$fileName,
             "img_bytes"=>$file->getSize()
         ]);
-        return $this->jsonSuccessResponse($img);
+        $img->refresh();
+        return $this->jsonSuccessResponse(new ImageResource($img));
     }
 
     public function destroy(Request $request)
