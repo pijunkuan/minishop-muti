@@ -41,7 +41,7 @@ class PayController extends Controller
                 break;
             case "wxpay":
                 $pingxx = new PingXX(env("FRONT_PING_ID"),"test");
-                if($_GET['code']){
+                if(isset($_GET['code'])){
                     $params = [
                         "no"=>$payment['no'],
                         "amount"=>$payment['pay_amount'],
