@@ -4,6 +4,7 @@ namespace App\Listeners\User\Wallet;
 
 use App\Events\User\Wallet\OrderEvent;
 use App\Models\OrderPayment;
+use App\Models\UserWalletClearList;
 use App\Models\UserWalletIncome;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -51,7 +52,7 @@ class PaySuccessConfirmation
             $wallet = $user->wallet;
             $income = $wallet->incomes()->create($data);
             $income->refresh();
-            if ($clear = $wallet->clear_lists()->whereDate('user_wallet_clear_lists.created_at', now()->toDateString())->first()) {
+            if ($clear = $wallet->clear_lists()->where("status",UserWalletClearList::CLEAR_STATUS_PENDING)->whereDate('user_wallet_clear_lists.created_at', now()->toDateString())->first()) {
                 $clear->amount += $payment['pay_amount'];
                 $clear->fee += $fee;
                 $clear->order_count++;

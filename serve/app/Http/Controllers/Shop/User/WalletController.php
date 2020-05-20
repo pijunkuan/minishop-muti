@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Shop\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\Log\LogListCollection;
+use App\Models\UserWalletClearList;
 use Illuminate\Http\Request;
 
 class WalletController extends Controller
@@ -21,7 +22,7 @@ class WalletController extends Controller
         if(!$wallet = auth('users')->user()->wallet) return $this->jsonErrorResponse(404,"尚未创建钱包");
         return $this->jsonSuccessResponse([
            "balance"=>$wallet['balance'],
-           "locked_amount"=>$wallet->clear_lists()->sum('amount'),
+           "locked_amount"=>$wallet->clear_lists()->where('status',UserWalletClearList::CLEAR_STATUS_PENDING)->sum('amount'),
         ]);
     }
 

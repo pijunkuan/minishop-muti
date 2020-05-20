@@ -47,4 +47,11 @@ class WithdrawController extends Controller
         $account->delete();
         return $this->jsonSuccessResponse(null,"删除成功");
     }
+
+    public function withdraw_index(Request $request)
+    {
+        $lists = auth('users')->user()->wallet->withdraw_lists();
+        $lists = $lists->orderBy("created_at","desc")->paginate(10);
+        return $this->jsonSuccessResponse($lists);
+    }
 }
