@@ -13,6 +13,7 @@
 //Route::post('paytest/{no}',"Front\Pay\PayController@test");
 
 require_once __DIR__ . "/apis/shop.php";
+require_once __DIR__ . "/apis/admin.php";
 
 Route::group([
     "domain" => "{account}.minishop.test",
@@ -28,13 +29,7 @@ Route::group([
 
 });
 
-//Route::prefix('admin')->namespace('Admin')->group(function () {
-//    Route::post('login', "AdminController@login");
-//    Route::post('refresh', "AdminController@refresh");
-//    Route::get('logout', "AdminController@logout");
-//    Route::get('me', "AdminController@me");
-//    Route::put('me', "AdminController@update");
-//});
+
 
 
 

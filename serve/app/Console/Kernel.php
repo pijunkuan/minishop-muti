@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Admin\Init\AdminInit;
 use App\Console\Commands\Wallet\ClearDailyConfirm;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -14,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ClearDailyConfirm::class
+        ClearDailyConfirm::class,
+        AdminInit::class,
     ];
 
     /**
