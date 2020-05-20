@@ -19,7 +19,8 @@ class WithdrawAccountStoreRequest extends FormRequest
             "way"=>"required",
             "account"=>"required|array",
             "account.name"=>"required",
-            "account.id"=>"required"
+            "account.id"=>"required",
+            "account.bank"=>"nullable"
         ];
     }
 }
