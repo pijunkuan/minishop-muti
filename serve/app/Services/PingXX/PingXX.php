@@ -4,9 +4,11 @@
 namespace App\Services\PingXX;
 
 
+use App\Exceptions\ApiException;
 use Pingpp\Charge;
 use Pingpp\Pingpp;
 use Pingpp\Transfer;
+use Pingpp\WxpubOAuth;
 
 class PingXX
 {
@@ -92,24 +94,37 @@ class PingXX
         return $charge;
     }
 
-    public function m_wxpay($params)
+    public function m_wxpay($params, $code = null)
     {
+        try {
+            $open_id = WxpubOAuth::getOpenid($this->Wx_pub_id, $this->Wx_pub_key, $code);
+        } catch (\Exception $exception) {
+            throw new ApiException([$exception->getCode(), $exception->getMessage()]);
+        }
         $amount = ceil($params['amount'] * 100);
         $c = [
             'order_no' => $params['no'],
             'app' => array('id' => $this->Ping_app_id),
-            'channel' => "wx_pub_qr	",
+            'channel' => "wx_pub",
             'amount' => $amount,
             'client_ip' => $_SERVER['REMOTE_ADDR'],
             'currency' => 'cny',
             'subject' => "{$params['no']}",
             'body' => "订单：{$params['no']}",
             'extra' => [
-                'product_id' => $params['no']
+                'open_id' => $open_id
             ]
         ];
         $charge = Charge::create($c);
         return $charge;
+    }
+
+    public function wx_getToken($order_no)
+    {
+        $url = env("WX_PAY_HTTP");
+        $redirect_url = $url . $order_no;
+        $url = WxpubOAuth::createOauthUrlForCode($this->Wx_pub_id, $redirect_url);
+        return $url;
     }
 
     public function transfer_alipay($params)
@@ -122,7 +137,7 @@ class PingXX
             'amount' => $amount,
             'currency' => 'cny',
             'type' => 'b2c',
-            'recipient'   => $params['recipient'],
+            'recipient' => $params['recipient'],
             'description' => $params['description'],
             'extra' => [
                 'recipient_name' => $params['name']

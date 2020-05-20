@@ -35,20 +35,31 @@ class PayController extends Controller
                 ];
                 $charge = $pingxx->m_alipay($params);
                 return view('Pay.pay', [
-                    "charge" => $charge
+                    "charge" => $charge,
+                    "url"=>url('checksuc')
                 ]);
                 break;
             case "wxpay":
                 $pingxx = new PingXX(env("FRONT_PING_ID"),"test");
-                $params = [
-                    "no"=>$payment['no'],
-                    "amount"=>$payment['pay_amount'],
-                    "url"=>url('checksuc')
-                ];
-                $charge = $pingxx->m_wxpay($params);
-                return view('Pay.pay', [
-                    "charge" => $charge
-                ]);
+                if($_GET['code']){
+                    $params = [
+                        "no"=>$payment['no'],
+                        "amount"=>$payment['pay_amount'],
+                        "url"=>url('checksuc')
+                    ];
+                    $charge = $pingxx->m_wxpay($params,$_GET['code']);
+                    return view('Pay.pay', [
+                        "charge" => $charge,
+                        "url"=>url('checksuc')
+                    ]);
+                }else{
+                    $url = $pingxx->wx_getToken($payment['no']);
+                    return view('Pay.wx', [
+                        "amount" => $payment['pay_amount'],
+                        "order_no" => $payment['no'],
+                        "url"=>$url
+                    ]);
+                }
                 break;
             default:
                 return view('Pay.front_info', ["message" => "错误的支付方式！", "url" => url('')]);

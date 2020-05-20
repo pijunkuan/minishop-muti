@@ -24,9 +24,9 @@
 
     pingpp.createPayment(data, function(result, err) {
     	if (result == "success"){
-			window.location = 'http://cosmefancy.com.cn'
+			window.location = '{!! $url??"" !!}'
 		}else{
-    		window.location = 'http://cosmefancy.com.cn'
+    		window.location =  '{!! $url??"" !!}'
     	}
     });
 

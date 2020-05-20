@@ -11,10 +11,11 @@
 |
 */
 
-Route::post('paytest/{no}',"Front\Pay\PayController@test");
+//Route::post('paytest/{no}',"Front\Pay\PayController@test");
 
 Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
 Route::post('front/pay/confirm',"Front\Pay\PayController@confirm");
+Route::get('front/pay/wxpay/{no}',"Front\Pay\PayController@pay");
 
 //Route::group([
 //    "domain"=>"pay.min-eshop.vip"

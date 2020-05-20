@@ -118,27 +118,15 @@
         <div class="qrcode-tip">请使用微信扫描二维码支付</div>
         <div class="qrcode-tip">或下载图片用微信打开扫描支付</div>
         <div class="qr-shopname">
-            @if(isset($data['shop']['name']))
-                {{$data['shop']['name']}}
-            @else
-                订单总额
-            @endif
+           订单总额
         </div>
         <div class="qr-price">¥
-            @if(isset($data['order']['amount']))
-                {{round($data['order']['amount']*0.01,2)}}
-            @else
-                0.00
-            @endif
+            {{$amount ? round($amount*0.01,2):"0.00"}}
         </div>
         <div class="qr-orderno">
             <span>订单编号</span>
             <span>
-                @if(isset($data['order']['order_no']))
-                    {{$data['order']['order_no']}}
-                @else
-                    0000000000000
-                @endif
+                {{$order_no ?? '0000000000'}}
             </span>
         </div>
     </div>
@@ -159,7 +147,7 @@
     }
 
     new QRCode(document.getElementById('qrcode'), {
-        text: "{!! $data["url"] !!}",
+        text: "{!! $url !!}",
         width: 256,
         height: 256,
         colorDark: '#000000',
@@ -167,7 +155,7 @@
         correctLevel: QRCode.CorrectLevel.H
     });
     if (isWeiXin()) {
-        window.location.href = '{!! $data['url'] !!}';
+        window.location.href = '{!! $url !!}';
     }
 
 </script>
