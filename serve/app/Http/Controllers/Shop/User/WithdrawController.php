@@ -92,7 +92,7 @@ class WithdrawController extends Controller
                 ]
             ]);
             $withdraw->refresh();
-            event(new WalletLogEvent($wallet,$amount,'out',"{$withdraw['no']}提现（金额：{$amount}，手续费：{$fee}）"));
+            event(new WalletLogEvent($wallet,$amount+$fee,'out',"{$withdraw['no']}提现（金额：{$amount}，手续费：{$fee}）"));
             DB::commit();
         }catch (\Exception $exception){
             DB::rollBack();

@@ -17,7 +17,6 @@ class WithdrawListResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "real_amount"=>$this['amount'] - $this['fee'],
             "amount"=>$this['amount'],
             "fee"=>$this['fee'],
             "way"=>$this['way'],
