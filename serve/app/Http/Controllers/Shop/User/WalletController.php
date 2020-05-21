@@ -29,7 +29,7 @@ class WalletController extends Controller
     public function log_index(Request $request)
     {
         $wallet = auth('users')->user()->wallet;
-        $lists = $wallet->log_lists()->orderBy("created_at","desc")->paginate(5);
+        $lists = $wallet->log_lists()->orderBy("created_at","desc")->paginate(10);
         return $this->jsonSuccessResponse(new LogListCollection($lists));
 
     }

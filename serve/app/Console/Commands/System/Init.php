@@ -67,13 +67,13 @@ class Init extends Command
 //            ['way'=>'bank',"title"=>"银行卡","fee"=>0.1,"fee_min"=>1,"fee_max"=>25,"daily_limit"=>10000],
 //        ];
 //        SysAccountWay::insert($way_lists);
-        $payment_methods = [
-            ["code" => "wallet", "title" => "钱包支付", "img" => null, "des" => "钱包支付方式", "need_setting" => false, 'need_wallet'=>false,],
-            ["code" => "cash", "title" => "货到付款", "img" => null, "des" => "货到付款方式", "need_setting" => false, 'need_wallet'=>false,],
-            ["code" => "alipay", "title" => "支付宝", "img" => null, "des" => "支付宝手机支付", "need_setting" => false, 'need_wallet'=>true,],
-            ["code" => "wxpay", "title" => "微信", "img" => null, "des" => "微信支付", "need_setting" => false, 'need_wallet'=>true,],
-        ];
-        SysShopPaymentMethod::insert($payment_methods);
+//        $payment_methods = [
+//            ["code" => "wallet", "title" => "钱包支付", "img" => null, "des" => "钱包支付方式", "need_setting" => false, 'need_wallet'=>false,],
+//            ["code" => "cash", "title" => "货到付款", "img" => null, "des" => "货到付款方式", "need_setting" => false, 'need_wallet'=>false,],
+//            ["code" => "alipay", "title" => "支付宝", "img" => null, "des" => "支付宝手机支付", "need_setting" => false, 'need_wallet'=>true,],
+//            ["code" => "wxpay", "title" => "微信", "img" => null, "des" => "微信支付", "need_setting" => false, 'need_wallet'=>true,],
+//        ];
+//        SysShopPaymentMethod::insert($payment_methods);
         $this->info('初始化成功');
     }
 }
