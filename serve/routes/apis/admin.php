@@ -8,7 +8,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
     Route::put('me', "AdminController@update");
 
     Route::middleware('auth:admins')->group(function(){
-        Route::apiResource('withdraw',"Withdraw\WithdrawController");
+        Route::apiResource('withdraw',"Withdraw\WithdrawController")->only(["index","update"]);
     });
 
 });

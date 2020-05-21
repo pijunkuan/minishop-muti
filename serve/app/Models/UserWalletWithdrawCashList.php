@@ -17,7 +17,7 @@ class UserWalletWithdrawCashList extends Model
     const cashStatusMap = [
         self::CASH_STATUS_PENDING =>"在途",
         self::CASH_STATUS_SUCCESS =>"已到账",
-        self::CASH_STATUS_FAILED =>"体现失败",
+        self::CASH_STATUS_FAILED =>"提现失败",
     ];
 
     protected static function boot()
