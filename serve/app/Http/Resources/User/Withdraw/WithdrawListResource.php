@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User\Withdraw;
 
+use App\Models\SysAccountWay;
 use App\Models\UserWalletAccount;
 use App\Models\UserWalletWithdrawCashList;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,11 +17,12 @@ class WithdrawListResource extends JsonResource
      */
     public function toArray($request)
     {
+        $way = SysAccountWay::where("way",$this['way'])->first();
         return [
             "amount"=>$this['amount'],
             "fee"=>$this['fee'],
             "way"=>$this['way'],
-            "way_value"=>UserWalletAccount::accountWayMap[$this['way']],
+            "way_value"=>$way['title'],
             "no"=>$this['no'],
             "content"=>$this['content'],
             "status"=>$this['status'],
