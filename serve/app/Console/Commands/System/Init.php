@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Console\Commands\System\WxBankList;
+namespace App\Console\Commands\System;
 
 use App\Models\SysAccountWay;
 use App\Models\SysShopPaymentMethod;
 use App\Models\SysWxBankList;
 use Illuminate\Console\Command;
 
-class WxBankListInit extends Command
+class Init extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'system:wx_bank_init';
+    protected $signature = 'system:init';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '系统表格初始化';
 
     /**
      * Create a new command instance.
@@ -40,6 +40,7 @@ class WxBankListInit extends Command
      */
     public function handle()
     {
+
 //        $banklists = [
 //            ['open_bank_code'=>"0100","bank"=>"中国邮政储蓄银行"],
 //            ['open_bank_code'=>"0102","bank"=>"工商银行"],
