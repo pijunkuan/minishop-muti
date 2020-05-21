@@ -9,6 +9,7 @@ return [
             "img" => null,
             "des" => "钱包支付方式",
             "need_setting" => false,
+            'need_wallet'=>false,
         ],
         [
             "code" => "cash",
@@ -16,6 +17,7 @@ return [
             "img" => null,
             "des" => "货到付款方式",
             "need_setting" => false,
+            'need_wallet'=>false,
         ],
         [
             "code" => "alipay",
@@ -23,6 +25,8 @@ return [
             "img" => null,
             "des" => "支付宝手机支付",
             "need_setting" => false,
+            'need_wallet'=>true,
+
         ],
         [
             "code" => "wxpay",
@@ -30,6 +34,8 @@ return [
             "img" => null,
             "des" => "微信支付",
             "need_setting" => false,
+            'need_wallet'=>true,
+
         ],
     ]
 ];

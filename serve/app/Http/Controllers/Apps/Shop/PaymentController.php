@@ -37,6 +37,9 @@ class PaymentController extends Controller
         if($shop->payment_methods()->where('payment_method_code',$request->route()->parameter('code'))->first()){
             return $this->jsonErrorResponse(404, "已添加该支付方式");
         }
+        if($payment_method['need_wallet']){
+            if(!$shop->user->wallet) return $this->jsonErrorResponse(422,"尚未开启代收钱包，请先开启代收钱包");
+        }
         $rs = $shop->payment_methods()->create([
             "payment_method_code"=>$payment_method['code'],
             "payment_method_title"=>$payment_method['title'],
