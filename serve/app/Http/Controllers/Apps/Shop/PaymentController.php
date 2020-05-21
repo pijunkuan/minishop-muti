@@ -4,20 +4,15 @@ namespace App\Http\Controllers\Apps\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Payment\Method\MethodListResource;
+use App\Models\SysShopPaymentMethod;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public $payment_methods;
-
-    public function __construct()
+     public function sys_index()
     {
-        $this->payment_methods = config('shop_payment_methods.methods');
-    }
-
-    public function sys_index()
-    {
-        return $this->jsonSuccessResponse($this->payment_methods);
+        $payment_methods = SysShopPaymentMethod::where('active',1)->get();
+        return $this->jsonSuccessResponse($payment_methods);
     }
 
     public function index(Request $request)
@@ -30,8 +25,8 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $shop = $request->get('ori_shop');
-        $sys_methods = collect($this->payment_methods);
-        if (!$payment_method = $sys_methods->where('code', $request->route()->parameter('code'))->first()) {
+        $payment_method = SysShopPaymentMethod::where('active',1)->where('code', $request->route()->parameter('code'))->first();
+        if (!$payment_method ) {
             return $this->jsonErrorResponse(404, "无此支付方式");
         }
         if($shop->payment_methods()->where('payment_method_code',$request->route()->parameter('code'))->first()){
