@@ -34,6 +34,11 @@ class WithdrawController extends Controller
         return $this->jsonSuccessResponse($lists);
     }
 
+    public function bank_code()
+    {
+
+    }
+
     public function account_store(WithdrawAccountStoreRequest $request)
     {
         if (!$wallet = auth('users')->user()->wallet) return $this->jsonErrorResponse(404, "尚未创建钱包");
