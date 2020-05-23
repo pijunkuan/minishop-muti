@@ -22,6 +22,7 @@ class TemplateListResource extends JsonResource
             "template_img"=>asset("{$file}img.jpg"),
             "template_content"=>$this['template_content'],
             "price"=>$price,
+            "active"=>$this['active'],
             'variants'=>TemplateVariantResource::collection($this->variants)
         ];
     }

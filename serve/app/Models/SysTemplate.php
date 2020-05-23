@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SysTemplate extends Model
 {
     public $table = "sys_templates";
+    protected $guarded = [];
 
     protected $casts = [
         'active' => "boolean"
