@@ -17,11 +17,13 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::delete('template/{template}/variant/{variant}',"Template\TemplateController@variant_destroy");
         Route::apiResource("template","Template\TemplateController")->only(['index','update']);
 
+
         Route::get('level/{level}/variant',"Level\LevelController@variant_index");
         Route::post('level/{level}/variant',"Level\LevelController@variant_store");
         Route::put('level/{level}/variant/{variant}',"Level\LevelController@variant_update");
         Route::delete('level/{level}/variant/{variant}',"Level\LevelController@variant_destroy");
         Route::apiResource("level","Level\LevelController")->only(['index','update']);
+
     });
 
 });

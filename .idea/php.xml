@@ -97,6 +97,16 @@
       <path value="$PROJECT_DIR$/serve/vendor/facade/flare-client-php" />
       <path value="$PROJECT_DIR$/serve/vendor/vlucas/phpdotenv" />
       <path value="$PROJECT_DIR$/serve/vendor/facade/ignition-contracts" />
+      <path value="$PROJECT_DIR$/serve/vendor/jacobcyl/ali-oss-storage" />
+      <path value="$PROJECT_DIR$/serve/vendor/fruitcake/laravel-cors" />
+      <path value="$PROJECT_DIR$/serve/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/serve/vendor/pingplusplus/pingpp-php" />
+      <path value="$PROJECT_DIR$/serve/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/serve/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/serve/vendor/aliyuncs/oss-sdk-php" />
+      <path value="$PROJECT_DIR$/serve/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/serve/vendor/overtrue/easy-sms" />
+      <path value="$PROJECT_DIR$/serve/vendor/psr/http-message" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

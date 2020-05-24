@@ -22,32 +22,21 @@ class TemplateController extends Controller
         return $this->jsonSuccessResponse(new TemplateListCollection($templates));
     }
 
-    public function show(Request $request)
-    {
-        $template = SysTemplate::findOrFail($request->route()->parameter('template'));
-        return $this->jsonSuccessResponse(new TemplateListResource($template));
-    }
-
     public function update(Request $request)
     {
         $template = SysTemplate::findOrFail($request->route()->parameter('template'));
-        DB::beginTransaction();
-        try {
-            if ($request->has('template_name')) {
-                $template['template_name'] = $request->get('template_name');
+        $validator = Validator::make($request->all(), [
+            "template_name" => "nullable",
+            "template_content" => "nullable",
+            "active" => "nullable|boolean",
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonSuccessResponse($validator->errors()->first());
+        } else {
+            $data = $validator->validate();
+            if (count($data)) {
+                $template->update($data);
             }
-            if ($request->has('template_content')) {
-                $template['template_content'] = $request->get('template_content');
-            }
-            if ($request->has('active')) {
-                $template['active'] = $request->get('active') ? true : false;
-            }
-            $template->save();
-            DB::commit();
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            Log::error($exception->getMessage());
-            return $this->jsonErrorResponse(422, "更新错误");
         }
         return $this->jsonSuccessResponse(new TemplateListResource($template));
     }
