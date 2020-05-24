@@ -44,7 +44,8 @@
             border-top: dotted 1px #ccc;
             background-color: #fff;
             margin: 0 130px;
-            min-height: 480px;
+            min-height: 500px;
+            border-radius: 0 0 10px 10px;
         }
 
         #qrcode {
