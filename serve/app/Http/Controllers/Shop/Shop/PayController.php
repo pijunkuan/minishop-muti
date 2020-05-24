@@ -11,7 +11,6 @@ use Pingpp\Util\Util;
 
 class PayController extends Controller
 {
-    private const APP_ID = "app_WHqDaLeTubb9ebnL";
 
     public function pay(Request $request)
     {
@@ -37,11 +36,18 @@ class PayController extends Controller
         ];
         switch ($payment['payment_method']) {
             case "alipay":
-                $pingxx_serve = new PingXX(self::APP_ID);
+                $pingxx_serve = new PingXX(env("SHOP_PING_ID"));
                 $charge = $pingxx_serve->pc_alipay($data);
                 break;
             case "wxpay":
-
+                $pingxx_serve = new PingXX(env("SHOP_PING_ID"));
+                $charge = $pingxx_serve->scan_wxpay($data);
+                $url = $charge['credential']['wx_pub_qr'];
+                return view('Pay.wx',[
+                    "amount"=>$data['amount'],
+                    "order_no"=>$data['no'],
+                    "url"=>$url
+                ]);
                 break;
             default:
                 return view('Pay.info', [

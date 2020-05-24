@@ -119,6 +119,26 @@ class PingXX
         return $charge;
     }
 
+    public function scan_wxpay($params)
+    {
+        $amount = ceil($params['amount'] * 100);
+        $c = [
+            'order_no' => $params['no'],
+            'app' => array('id' => $this->Ping_app_id),
+            'channel' => "wx_pub_qr",
+            'amount' => $amount,
+            'client_ip' => $_SERVER['REMOTE_ADDR'],
+            'currency' => 'cny',
+            'subject' => "{$params['no']}",
+            'body' => "订单：{$params['no']}",
+            'extra' => [
+                'product_id' =>$params['no']
+            ]
+        ];
+        $charge = Charge::create($c);
+        return $charge;
+    }
+
     public function wx_getToken($order_no)
     {
         $url = env("WX_PAY_HTTP");
