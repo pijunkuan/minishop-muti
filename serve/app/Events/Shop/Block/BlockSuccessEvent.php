@@ -20,8 +20,10 @@ class BlockSuccessEvent
     /**
      * Create a new event instance.
      *
-     * @param ShopOrderItem $item
      * @param Shop $shop
+     * @param $item_type
+     * @param $sys_block_id
+     * @param $time
      */
     public function __construct(Shop $shop, $item_type, $sys_block_id, $time)
     {
