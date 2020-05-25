@@ -19,6 +19,7 @@ class WithdrawListResource extends JsonResource
     {
         $way = SysAccountWay::where("way",$this['way'])->first();
         return [
+            "mobile"=>$this['wallet']['user']['mobile'],
             "amount"=>$this['amount'],
             "fee"=>$this['fee'],
             "way"=>$this['way'],

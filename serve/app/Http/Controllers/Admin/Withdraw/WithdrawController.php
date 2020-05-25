@@ -24,6 +24,9 @@ class WithdrawController extends Controller
             if(!$wallet) return $this->jsonErrorResponse(422,"该用户未开启钱包");
             $withdraw = $withdraw->where('wallet_id',$wallet['id']);
         }
+        if($request->get('no')){
+            $withdraw = $withdraw->where('no',$request->get('no'));
+        }
         if ($request->get('wallet_id')) $withdraw = $withdraw->where('wallet_id', $request->get('wallet_id'));
         $withdraw = $withdraw->orderBy('created_at', 'desc')->paginate($request->get('pageSize'));
         return $this->jsonSuccessResponse(new WithdrawListCollection($withdraw));
