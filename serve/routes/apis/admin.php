@@ -9,6 +9,9 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
     Route::middleware('auth:admins')->group(function(){
         Route::get('wallet',"Wallet\WalletController@index");
+        Route::get('customer',"Customer\CustomerController@index");
+        Route::get('order',"Order\OrderController@index");
+
         Route::apiResource('withdraw',"Withdraw\WithdrawController")->only(["index","update"]);
         Route::apiResource('clear',"ClearList\ClearListController")->only(['index','update']);
 

@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
         $payment = $this->payments()->whereIn('status',[ShopOrderPayment::PAYMENT_STATUS_PAID,ShopOrderPayment::PAYMENT_STATUS_PENDING])->first();
         return [
             "id"=>$this['id'],
+            "mobile"=>$this['user']['mobile'],
             "no"=>$this['no'],
             "ori_amount"=>$this['ori_amount'],
             "discounts_amount"=>$this['discounts_amount'],

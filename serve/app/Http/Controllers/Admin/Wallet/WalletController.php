@@ -14,7 +14,7 @@ class WalletController extends Controller
     {
         $wallets = new UserWallet();
         if($request->get('mobile')){
-            $user = User::where('mobile',$request->get('mobile'))->first();
+            $user = User::where('mobile',$request->get('mobile'))->firstOrFail();
             $wallets = $wallets->where('user_id',$user['id']);
         }
         $wallets = $wallets->orderBy('created_at',"desc")->paginate($request->get('pageSize'));

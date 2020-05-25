@@ -19,7 +19,7 @@ class WithdrawController extends Controller
         $withdraw = new UserWalletWithdrawCashList();
         if ($request->get('status')) $withdraw = $withdraw->where("status", $request->get('status'));
         if ($request->get('mobile')) {
-            $user = User::where('mobile',$request->get('mobile'))->first();
+            $user = User::where('mobile',$request->get('mobile'))->firstOrFail();
             $wallet = $user->wallet;
             if(!$wallet) return $this->jsonErrorResponse(422,"该用户未开启钱包");
             $withdraw = $withdraw->where('wallet_id',$wallet['id']);
