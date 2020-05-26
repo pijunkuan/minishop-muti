@@ -97,6 +97,16 @@ class Shop extends Model
         return $this->hasMany(Image::class, "shop_id");
     }
 
+    public function signs()
+    {
+        return $this->hasMany(ShopSmsSign::class,"shop_id");
+    }
+
+    public function sms_templates()
+    {
+        return $this->belongsToMany(SysSmsTemplate::class,ShopSmsTemplate::class,"shop_id","sms_template_id");
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class,"user_id");
