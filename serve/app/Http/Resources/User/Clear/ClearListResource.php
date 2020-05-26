@@ -17,6 +17,8 @@ class ClearListResource extends JsonResource
     {
         return [
             "id"=>$this['id'],
+            "wallet_id"=>$this['wallet_id'],
+            "mobile"=>$this['wallet']['user']['mobile'],
             "amount"=>$this['amount'],
             "fee"=>$this['fee'],
             "order_count"=>$this['order_count'],

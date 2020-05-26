@@ -12,16 +12,13 @@
 */
 
 //Route::post('paytest/{no}',"Front\Pay\PayController@test");
+Route::get('sms_test',"Controller@test_sms");
 
 Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
 Route::post('front/pay/confirm',"Front\Pay\PayController@confirm");
 Route::get('front/pay/wxpay/{no}',"Front\Pay\PayController@pay");
 
-//Route::group([
-//    "domain"=>"pay.min-eshop.vip"
-//],function(){
-//    Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
-//});
+
 
 
 Route::group([
