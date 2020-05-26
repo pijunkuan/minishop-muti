@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\ClearList;
 use App\Events\User\Wallet\ClearEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\Clear\ClearListCollection;
+use App\Models\User;
 use App\Models\UserWalletClearList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,16 @@ class ClearListController extends Controller
     public function index(Request $request)
     {
         $lists = new UserWalletClearList();
+        if ($request->get('mobile')) {
+            $user = User::where('mobile', $request->get('mobile'))->firstOrFail();
+            $wallet = $user->wallet;
+            if (!$wallet) return $this->jsonErrorResponse(422, "该用户未开启钱包");
+            $lists = $lists->where('wallet_id', $wallet['id']);
+        }
+        if($no = $request->get('no')){
+            $lists = $lists->where('no',$no);
+        }
+        if ($wallet_id = $request->get('wallet_id')) $lists = $lists->where('wallet_id', $wallet_id);
         if ($status = $request->get('status')) $lists = $lists->where('status', $status);
         $lists = $lists->orderBy('created_at', 'desc')->paginate($request->get('pageSize'));
         return $this->jsonSuccessResponse(new ClearListCollection($lists));

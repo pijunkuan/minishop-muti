@@ -16,9 +16,7 @@ class ClearListResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id"=>$this['id'],
             "no"=>$this['no'],
-            "wallet_id"=>$this['wallet_id'],
             "mobile"=>$this['wallet']['user']['mobile'],
             "amount"=>$this['amount'],
             "fee"=>$this['fee'],

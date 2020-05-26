@@ -17,6 +17,9 @@ class IncomeListResource extends JsonResource
     {
         return [
             "pay_no" => $this['pay_no'],
+            "clear_no"=>$this['clear_no'],
+            "mobile"=>$this['wallet']['user']['mobile'],
+            "shop_name"=>$this['shop_name'],
             "no" => $this['no'],
             "way" => $this['way'],
             "way_value" => UserWalletIncome::wayMap[$this['way']],
