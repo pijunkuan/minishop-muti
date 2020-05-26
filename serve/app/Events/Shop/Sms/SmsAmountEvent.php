@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Events\Sms;
+namespace App\Events\Shop\Sms;
 
+use App\Models\Shop;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,28 +10,27 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Overtrue\EasySms\EasySms;
 
-class SmsEvent
+class SmsAmountEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $type, $param, $sign, $mobile, $easySms;
+    public $shop_id,$type,$content,$mobile,$amount;
 
     /**
      * Create a new event instance.
-     *
-     * @param $type
-     * @param $param
-     * @param $mobile
-     * @param string $sign
+     * @param $shop_id
+     * @param string $type
+     * @param null $content
+     * @param null $mobile
+     * @param null $amount
      */
-    public function __construct($type, $mobile, $param = null, $sign = null)
+    public function __construct($shop_id,$type = "in", $content = null, $mobile = null, $amount = null)
     {
-        $this->easySms = new EasySms(config('easysms'));
+        $this->shop_id = $shop_id;
+        $this->content = $content;
         $this->type = $type;
-        $this->param = $param;
         $this->mobile = $mobile;
-        $this->sign = $sign ? "【{$sign}】" : "【".env('DEFAULT_SIGN')."】";
+        $this->amount = $amount;
     }
 
     /**

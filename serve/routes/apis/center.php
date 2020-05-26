@@ -49,6 +49,7 @@ Route::group([
         Route::post('sign',"SmsController@sign_store");
         Route::delete('sign/{sign}',"SmsController@sign_destroy");
         Route::put('sign/{sign}',"SmsController@sign_update");
+        Route::get('log','SmsController@log');
         Route::put('{sms}', 'SmsController@update');
         Route::get('', 'SmsController@index');
     });

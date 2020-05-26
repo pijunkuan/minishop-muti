@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Events\Sms;
+namespace App\Events\Shop\Sms;
 
+use App\Models\Shop;
+use App\Models\SysSmsTemplate;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,26 +13,29 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Overtrue\EasySms\EasySms;
 
-class SmsEvent
+class SmsSendEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $type, $param, $sign, $mobile, $easySms;
 
+    public $shop,$mobile,$sms_template,$data,$easySms,$sign;
     /**
      * Create a new event instance.
      *
-     * @param $type
-     * @param $param
+     * @param Shop $shop
      * @param $mobile
-     * @param string $sign
+     * @param $template_code
+     * @param $data
      */
-    public function __construct($type, $mobile, $param = null, $sign = null)
+    public function __construct(Shop $shop, $mobile, $template_code, $data)
     {
         $this->easySms = new EasySms(config('easysms'));
-        $this->type = $type;
-        $this->param = $param;
+        $sign = $shop->signs()->where('active',true)->first();
+        $this->sign = $sign?"【{$sign['sign_name']}】":"【".env('DEFAULT_SIGN')."】";
+        $this->shop = $shop;
         $this->mobile = $mobile;
-        $this->sign = $sign ? "【{$sign}】" : "【".env('DEFAULT_SIGN')."】";
+        $this->sms_template = $shop->sms_templates()->where('template_code',$template_code)->first();
+        $this->data = $data;
+        if(!$this->sms_template) return false;
     }
 
     /**

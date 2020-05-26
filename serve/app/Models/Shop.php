@@ -112,6 +112,11 @@ class Shop extends Model
         return $this->belongsTo(User::class,"user_id");
     }
 
+    public function sms_logs()
+    {
+        return $this->hasMany(ShopSmsLog::class,"shop_id");
+    }
+
     public static function findAvailableNo()
     {
         // 订单流水号前缀

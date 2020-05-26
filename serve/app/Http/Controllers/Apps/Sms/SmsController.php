@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Apps\Sms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Shop\Sms\SmsLogListCollection;
 use App\Http\Resources\Shop\Sms\SmsResource;
 use App\Http\Resources\Shop\Sms\SmsSignCollection;
 use App\Http\Resources\Shop\Sms\SmsSignResource;
@@ -85,7 +86,15 @@ class SmsController extends Controller
             $sign = $sign->update($data);
         }
         return $this->jsonSuccessResponse(new SmsSignResource($sign));
+    }
 
+    public function log(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+        $logs = $shop->sms_logs();
+
+        $logs = $logs->orderBy('created_at','desc')->paginate($request->get('pageSize'));
+        return $this->jsonSuccessResponse(new SmsLogListCollection($logs));
     }
 
 
