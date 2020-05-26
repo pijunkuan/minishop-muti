@@ -19,11 +19,13 @@ class ShopOrder extends Model
     const ITEM_TYPE_LEVEL="level";
     const ITEM_TYPE_TEMPLATE="template";
     const ITEM_TYPE_PLUGIN="plugin";
+    const ITEM_TYPE_SMS="sms";
 
     const itemTypeMap = [
       self::ITEM_TYPE_LEVEL => "网站服务",
       self::ITEM_TYPE_TEMPLATE => "主题购买",
       self::ITEM_TYPE_PLUGIN => "插件购买",
+      self::ITEM_TYPE_SMS => "短信包购买",
     ];
 
     protected $guarded = [];

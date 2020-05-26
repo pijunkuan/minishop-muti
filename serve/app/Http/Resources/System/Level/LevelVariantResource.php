@@ -17,7 +17,9 @@ class LevelVariantResource extends JsonResource
         return [
             "variant_id"=>$this['id'],
             "price"=>$this['price'],
-            "time"=>$this['time']
+            "time"=>$this['time'],
+            "unit_price"=>round($this['price']/$this['time'],2)
+
         ];
     }
 }

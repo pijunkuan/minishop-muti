@@ -15,7 +15,9 @@ class TemplateListResource extends JsonResource
     public function toArray($request)
     {
         $file = $this['template_file'];
-        $price = $this->variants()->min('price');
+        $variants = TemplateVariantResource::collection($this['variants']);
+
+        $price =collect($variants)->min('unit_price');
         return [
             "template_id"=>$this['id'],
             "template_name"=>$this['template_name'],
@@ -23,7 +25,7 @@ class TemplateListResource extends JsonResource
             "template_content"=>$this['template_content'],
             "price"=>$price,
             "active"=>$this['active'],
-            'variants'=>TemplateVariantResource::collection($this->variants)
+            'variants'=>$variants
         ];
     }
 }

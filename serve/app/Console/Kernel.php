@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ClearDailyConfirm::class,
-        AdminInit::class,
         Init::class,
     ];
 

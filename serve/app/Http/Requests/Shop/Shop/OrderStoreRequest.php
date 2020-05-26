@@ -7,6 +7,7 @@ use App\Http\Requests\FormRequest;
 use App\Models\SysLevelVariant;
 use App\Models\SysPaymentMethod;
 use App\Models\SysPluginVariant;
+use App\Models\SysSmsVariant;
 use App\Models\SysTemplateVariant;
 
 class OrderStoreRequest extends FormRequest
@@ -53,7 +54,8 @@ class OrderStoreRequest extends FormRequest
                             if(!$this->input('shop_id')) return $fail('商铺id 不可为空');
                             break;
                         case "sms":
-
+                            if(!SysSmsVariant::where('id',$value)->first()) return $fail("不存在此短信包");
+                            if(!$this->input('shop_id')) return $fail('商铺id 不可为空');
                             break;
                         default:
                             return $fail('类型错误');

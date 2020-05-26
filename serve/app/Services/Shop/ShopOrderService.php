@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\ShopOrder;
 use App\Models\SysLevelVariant;
 use App\Models\SysPluginVariant;
+use App\Models\SysSmsVariant;
 use App\Models\SysTemplateVariant;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -83,6 +84,17 @@ class ShopOrderService
                         "sys_block_id"=>$temp->plugin['id'],
                         "item_id" => $temp['id'],
                         "item_name" => $temp->plugin['plugin_name'],
+                        "type" => $item['type'],
+                        "price" => $temp['price'],
+                        "time" => $temp['time']
+                    ];
+                    break;
+                case "sms":
+                    $temp = SysSmsVariant::find($item['item_id']);
+                    $order_item = [
+                        "sys_block_id"=>$temp->sms['id'],
+                        "item_id" => $temp['id'],
+                        "item_name" => $temp->sms['sms_name'],
                         "type" => $item['type'],
                         "price" => $temp['price'],
                         "time" => $temp['time']

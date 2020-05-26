@@ -85,10 +85,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Shop\Block\LevelConfirmation',
             'App\Listeners\Shop\Block\TemplateConfirmation',
             'App\Listeners\Shop\Block\PluginConfirmation',
+            'App\Listeners\Shop\Block\SmsConfirmation',
         ],
-
-
-
     ];
 
     /**

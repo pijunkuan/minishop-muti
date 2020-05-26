@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\System\Template;
+namespace App\Http\Resources\System\Sms;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TemplateVariantResource extends JsonResource
+class SmsVariantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

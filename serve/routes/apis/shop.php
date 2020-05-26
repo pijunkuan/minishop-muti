@@ -22,6 +22,7 @@ Route::namespace('Shop')->group(function () {
             Route::get('payment_method', 'SysController@payment');
             Route::get('level', 'SysController@level');
             Route::get('template', 'SysController@template_list');
+            Route::get('sms', 'SysController@sms_list');
         });
     });
 

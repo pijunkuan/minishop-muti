@@ -14,6 +14,8 @@ class LevelResource extends JsonResource
      */
     public function toArray($request)
     {
+        $variants = LevelVariantResource::collection($this['variants']);
+        $price = collect($variants)->min('unit_price');
         return [
             "id"=>$this['id'],
             "level_name"=>$this['level_name'],
@@ -24,7 +26,8 @@ class LevelResource extends JsonResource
             "domain_edit"=>$this['domain_edit'],
             "unlock_days"=>$this['unlock_days'],
             "fee_rate"=>$this['fee_rate'],
-            "variants"=>LevelVariantResource::collection($this['variants'])
+            "price"=>$price,
+            "variants"=>$variants
         ];
     }
 }
