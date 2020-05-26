@@ -52,19 +52,25 @@ class PaySuccessConfirmation
             $wallet = $user->wallet;
             $income = $wallet->incomes()->create($data);
             $income->refresh();
-            if ($clear = $wallet->clear_lists()->where("status",UserWalletClearList::CLEAR_STATUS_PENDING)->whereDate('user_wallet_clear_lists.created_at', now()->toDateString())->first()) {
+            if ($clear = $wallet->clear_lists()
+                ->where("status",UserWalletClearList::CLEAR_STATUS_PENDING)
+                ->where('unlock_days',$level['unlock_days'])
+                ->whereDate('user_wallet_clear_lists.created_at', now()->toDateString())->first()) {
                 $clear->amount += $payment['pay_amount'];
                 $clear->fee += $fee;
                 $clear->order_count++;
                 $clear->save();
             } else {
-                $wallet->clear_lists()->create([
+                $clear=$wallet->clear_lists()->create([
                     "amount" => $payment['pay_amount'],
                     "fee" => $fee,
+                    "unlock_days"=>$level['unlock_days'],
                     "order_count" => 1,
                     "unlocked_at" => now()->addDays($level['unlock_days'])->endOfDay(),
                 ]);
             }
+            $income->clear_no = $clear['no'];
+            $income->save();
             DB::commit();
         }catch(\Exception $exception){
             DB::rollBack();
