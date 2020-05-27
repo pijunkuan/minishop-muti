@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class SmsAmountConfirmation
 {
+
     /**
      * Create the event listener.
      *
