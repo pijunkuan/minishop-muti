@@ -24,5 +24,6 @@ class SmsController extends Controller
             Cache::put("FRONT_SMS_CODE{$data['mobile']}",$code,300);
             event(new SmsSendEvent($shop,$data['mobile'],"customer_verification",['code'=>$code]));
         }
+        return $this->jsonSuccessResponse();
     }
 }

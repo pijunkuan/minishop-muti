@@ -34,7 +34,7 @@ class SmsAmountConfirmation implements ShouldQueue
     {
         DB::beginTransaction();
         try {
-            $shop_sms_account = DB::table('shop_sms_accounts')->where('id', $event->shop_id)->sharedLock()->first();
+            $shop_sms_account = DB::table('shop_sms_accounts')->where('shop_id', $event->shop_id)->sharedLock()->first();
             $time = now();
             if ($shop_sms_account) {
                 $last_amount = $shop_sms_account->amount;
@@ -53,7 +53,7 @@ class SmsAmountConfirmation implements ShouldQueue
                         "created_at"=>$time,
                         "updated_at"=>$time,
                     ]);
-                    DB::table('shop_sms_accounts')->where('id', $event->shop_id)->decrement('amount', abs($amount));
+                    DB::table('shop_sms_accounts')->where('shop_id', $event->shop_id)->decrement('amount', abs($amount));
                 }
                 if ($event->type == ShopSmsLog::SMS_TYPE_IN) {
                     $amount = abs($event->amount);
@@ -70,7 +70,7 @@ class SmsAmountConfirmation implements ShouldQueue
                             "created_at"=>$time,
                             "updated_at"=>$time,
                         ]);
-                        DB::table('shop_sms_accounts')->where('id', $event->shop_id)->increment('amount', abs($amount));
+                        DB::table('shop_sms_accounts')->where('shop_id', $event->shop_id)->increment('amount', abs($amount));
                     }
                 }
             }

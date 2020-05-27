@@ -11,6 +11,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Overtrue\EasySms\EasySms;
 
 class SmsSendEvent
@@ -36,7 +37,8 @@ class SmsSendEvent
         $this->sms_template = $shop->sms_templates()->where('template_code',$template_code)->first();
         $this->data = $data;
         if(!$this->sms_template) return false;
-        if($shop->sms_account['amount'] < 0) return false;
+        if($shop['sms_account']['amount'] < 0) return false;
+        Log::info($shop['sms_account']['amount']);
     }
 
     /**
