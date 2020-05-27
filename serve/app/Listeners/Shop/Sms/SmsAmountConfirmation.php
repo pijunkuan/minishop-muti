@@ -31,7 +31,7 @@ class SmsAmountConfirmation
     {
         DB::beginTransaction();
         try {
-            $shop_sms_account = DB::table('shop_sms_accounts')->where('id', $event->shop_id)->lockForUpdate()->first();
+            $shop_sms_account = DB::table('shop_sms_accounts')->where('id', $event->shop_id)->sharedLock()->first();
             $time = now();
             if ($shop_sms_account) {
                 $last_amount = $shop_sms_account->amount;
