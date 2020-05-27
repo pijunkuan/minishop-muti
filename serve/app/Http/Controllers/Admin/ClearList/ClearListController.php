@@ -33,7 +33,7 @@ class ClearListController extends Controller
 
     public function update(Request $request)
     {
-        $list = UserWalletClearList::findOrFail($request->route()->parameter('clear'));
+        $list = UserWalletClearList::where("no",$request->route()->parameter('clear'))->firstOrFail();
         if ($list['status'] != UserWalletClearList::CLEAR_STATUS_PENDING) return $this->jsonErrorResponse(422, "该状态无法更新");
         if ($status = $request->get('status')) {
             DB::beginTransaction();
