@@ -5,8 +5,10 @@ namespace App\Listeners\Shop\Pay;
 use App\Events\Shop\Block\BlockSuccessEvent;
 use App\Events\Shop\CreateShopEvent;
 use App\Events\Shop\Pay\PaySuccessEvent;
+use App\Events\Shop\Sms\SmsAmountEvent;
 use App\Models\ShopOrder;
 use App\Models\ShopOrderPayment;
+use App\Models\SysLevel;
 use App\Models\SysLevelVariant;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -60,8 +62,11 @@ class PaySuccessConfirmation
         $order = $payment->shopOrder;
         if(!$order->shop){
             event(new CreateShopEvent($order->user,$order['no']));
+            $order->refresh();
+            $shop = $order->shop;
+            $level = SysLevel::find($order->item['sys_block_id']);
+            event(new SmsAmountEvent($shop['id'],'in',"版本赠送{$level['sms_amount']}",null,$level['sms_amount']));
         }
-        $order->refresh();
         event(new BlockSuccessEvent($order->shop,$order->item['type'],$order->item['sys_block_id'],$order->item['time']));
     }
 }
