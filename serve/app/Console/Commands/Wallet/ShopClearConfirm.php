@@ -5,6 +5,7 @@ namespace App\Console\Commands\Wallet;
 use App\Events\User\Wallet\ShopClearEvent;
 use App\Models\Shop;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ShopClearConfirm extends Command
 {
@@ -39,6 +40,7 @@ class ShopClearConfirm extends Command
      */
     public function handle()
     {
+        Log::channel('clear')->info("每日结算开始".now());
         Shop::chunk(100,function($shops){
             foreach($shops as $shop){
                 event(new ShopClearEvent($shop));
