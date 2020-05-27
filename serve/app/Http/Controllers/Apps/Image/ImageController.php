@@ -32,10 +32,12 @@ class ImageController extends Controller
         $fileName = date('YmdHis').str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT).".".$file->getClientOriginalExtension();
         $savePath = env("APP_NAME")."/images/".$fileName;
         Storage::put($savePath,File::get($file));
+        $url = Storage::url($savePath);
         $img = $shop->images()->create([
             "img_file"=>$savePath,
             "img_name"=>$fileName,
-            "img_bytes"=>$file->getSize()
+            "img_bytes"=>$file->getSize(),
+            "img_link"=>$url
         ]);
         $img->refresh();
         return $this->jsonSuccessResponse(new ImageResource($img));

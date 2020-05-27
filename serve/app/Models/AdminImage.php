@@ -11,10 +11,10 @@ class AdminImage extends Model
 
     public function getUrlAttribute()
     {
-        if($this->img_file){
-            return Storage::url($this->img_file);
-        }elseif($this->img_link){
+        if($this->img_link){
             return $this->img_link;
+        }elseif($this->img_file){
+            return Storage::url($this->img_file);
         }else{
             return null;
         }
