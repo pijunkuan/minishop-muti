@@ -25,6 +25,8 @@ class AdminProductResource extends JsonResource
             "id"=>$this->id,
             "product_title" => $this->product_title,
             "img" => $img_url,
+            "thumbnail"=>$img_url?$img_url."?x-oss-process=image/resize,h_80":null,
+            "medium"=>$img_url?$img_url."?x-oss-process=image/resize,h_400":null,
             "price" => $low_variant['price'],
             "stock"=>$quantity,
             "on_sale"=>$this->on_sale

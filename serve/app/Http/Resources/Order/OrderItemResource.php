@@ -26,6 +26,8 @@ class OrderItemResource extends JsonResource
             "variant_title" => $this['variant_title'],
             "price" => $this['price'],
             "img_url" => $img_url,
+            "thumbnail"=>$img_url?$img_url."?x-oss-process=image/resize,h_80":null,
+            "medium"=>$img_url?$img_url."?x-oss-process=image/resize,h_400":null,
             "product_unit" => $this['product_unit'],
             "quantity" => $this['quantity'],
             "total" => $this['quantity'] * $this['price']

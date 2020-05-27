@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class Image extends Model
+class AdminImage extends Model
 {
-    public $table = "app_images";
     protected $guarded = [];
 
     public function getUrlAttribute()

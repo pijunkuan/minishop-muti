@@ -15,10 +15,12 @@ class ImageResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id"=>$this->id,
-            "name"=>$this->img_name,
-            "url" => $this->url,
-            "bytes"=>$this->img_bytes
+            "id"=>$this['id'],
+            "name"=>$this['img_name'],
+            "url" => $this['url'],
+            "thumbnail"=>$this['url']."?x-oss-process=image/resize,h_80",
+            "medium"=>$this['url']."?x-oss-process=image/resize,h_400",
+            "bytes"=>$this['img_bytes']
         ];
     }
 }
