@@ -34,7 +34,7 @@ class SmsFrontSendConfirmation
      */
     public function handle(SmsSendEvent $event)
     {
-        if (in_array($event->sms_template['template_type'], ['customer', 'order'])) {
+        if (in_array($event->sms_template['template_type'], ['front_customer', 'front_order'])) {
             $content =$event->sign . SmsService::template($event->sms_template['template_content'], $event->data);
             try {
                 $event->easySms->send($event->mobile, [

@@ -6,6 +6,7 @@ use App\Console\Commands\Admin\Init\AdminInit;
 use App\Console\Commands\System\Init;
 use App\Console\Commands\System\WxBankList\WxBankListInit;
 use App\Console\Commands\Wallet\ClearDailyConfirm;
+use App\Console\Commands\Wallet\ShopClearConfirm;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -18,7 +19,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ClearDailyConfirm::class,
+        ShopClearConfirm::class,
         Init::class,
+
     ];
 
     /**

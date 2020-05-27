@@ -111,6 +111,11 @@ class Shop extends Model
         return $this->hasOne(ShopSmsAccount::class,"shop_id");
     }
 
+    public function incomes()
+    {
+        return $this->hasMany(UserWalletIncome::class,"shop_id");
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class,"user_id");

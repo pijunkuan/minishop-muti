@@ -94,24 +94,23 @@ class Init extends Command
 //        ];
 //        SysShopPaymentMethod::insert($payment_methods);
 //        $this->info('支付方式初始化成功');
-//        DB::table('sys_sms_templates')->delete();
-//        $sms_init = [
-//            ["id"=>1,"template_code" => "customer_register", "template_type" => "front_customer", "template_name" => "验证顾客注册手机号", "template_des" => "发送注册验证码至顾客手机", "template_content" => "您好，您的验证码是#code#，请尽快验证，如非本人操作请忽略。"],
-//            ["id"=>2,"template_code" => "customer_forget", "template_type" => "front_customer", "template_name" => "顾客密码重置验证", "template_des" => "顾客忘记密码，发送密码重置验证码至顾客手机", "template_content" => "您好，您的验证码是#code#，请尽快验证，如非本人操作请忽略。"],
-//            ["id"=>3,"template_code" => "order_create", "template_type" => "front_order", "template_name" => "订单生成通知", "template_des" => "订单提交后，提醒顾客支付订单", "template_content" => "感谢您的惠顾，您的订单#order_no#已提交，请在#time#内完成支付。"],
-//            ["id"=>4,"template_code" => "order_paid", "template_type" => "front_order", "template_name" => "订单生效", "template_des" => "订单付款完成后，通知顾客", "template_content" => "感谢您的惠顾，您的订单#order_no#已生效，我们将尽快为您处理。"],
-//            ["id"=>5,"template_code" => "order_cancel", "template_type" => "front_order", "template_name" => "订单取消", "template_des" => "订单被顾客主动取消或被网站管理员取消时，通知顾客", "template_content" => "您的订单#order_no#已取消，请登录查看订单详情。"],
-//            ["id"=>6,"template_code" => "order_sent", "template_type" => "front_order", "template_name" => "订单发货提醒", "template_des" => "订单发货时，通知顾客", "template_content" => "您的订单#order_no#正通过[#shipment_company#]配送，单号:#shipment_no#，请留意查收。"],
-//            ["id"=>7,"template_code" => "order_refund", "template_type" => "front_order", "template_name" => "退单申请结果", "template_des" => "退单申请经过管理员审核后，通知顾客退单是否通过", "template_content" => "您的订单#order_no#退单申请状态已更新，请登录进行查看。"],
-//            ["id"=>8,"template_code" => "order_payback", "template_type" => "front_order", "template_name" => "订单退款提醒", "template_des" => "订单退款成功后，通知顾客", "template_content" => "您的订单#order_no#已发起退款，款项#amount#将原路退回，请注意查收。"],
-//            ["id"=>9,"template_code" => "admin_order_create", "template_type" => "admin_order", "template_name" => "新订单", "template_des" => "当网站有新订单时，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
-//            ["id"=>10,"template_code" => "admin_order_paid", "template_type" => "admin_order", "template_name" => "订单付款通知", "template_des" => "新订单付款成功后，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
-//            ["id"=>11,"template_code" => "admin_order_cancel", "template_type" => "admin_order", "template_name" => "订单关闭通知", "template_des" => "订单被顾客关闭时，通知管理员", "template_content" => "网站订单取消通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
-//            ["id"=>12,"template_code" => "admin_order_success", "template_type" => "admin_order", "template_name" => "订单成功通知", "template_des" => "顾客确认收货时，通知管理员", "template_content" => "网站订单成功通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
-//            ["id"=>13,"template_code" => "admin_order_refunding", "template_type" => "admin_order", "template_name" => "退单通知", "template_des" => "顾客申请退单退款时，通知管理员", "template_content" => "网站订单退款通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
-//        ];
-//        SysSmsTemplate::insert($sms_init);
-//        $this->info('短信模板初始化成功');
+        DB::table('sys_sms_templates')->delete();
+        $sms_init = [
+            ["id"=>1,"template_code" => "customer_verification", "template_type" => "front_customer", "template_name" => "验证顾客（注册/重置密码）手机号", "template_des" => "发送（注册/重置密码）验证码至顾客手机", "template_content" => "您好，您的验证码是#code#，请尽快验证，如非本人操作请忽略。"],
+            ["id"=>2,"template_code" => "order_create", "template_type" => "front_order", "template_name" => "订单生成通知", "template_des" => "订单提交后，提醒顾客支付订单", "template_content" => "感谢您的惠顾，您的订单#order_no#已提交，请在#time#内完成支付。"],
+            ["id"=>3,"template_code" => "order_paid", "template_type" => "front_order", "template_name" => "订单生效", "template_des" => "订单付款完成后，通知顾客", "template_content" => "感谢您的惠顾，您的订单#order_no#已生效，我们将尽快为您处理。"],
+            ["id"=>4,"template_code" => "order_cancel", "template_type" => "front_order", "template_name" => "订单取消", "template_des" => "订单被顾客主动取消或被网站管理员取消时，通知顾客", "template_content" => "您的订单#order_no#已取消，请登录查看订单详情。"],
+            ["id"=>5,"template_code" => "order_sent", "template_type" => "front_order", "template_name" => "订单发货提醒", "template_des" => "订单发货时，通知顾客", "template_content" => "您的订单#order_no#正通过[#shipment_company#]配送，单号:#shipment_no#，请留意查收。"],
+            ["id"=>6,"template_code" => "order_refund", "template_type" => "front_order", "template_name" => "退单申请结果", "template_des" => "退单申请经过管理员审核后，通知顾客退单是否通过", "template_content" => "您的订单#order_no#退单申请状态已更新，请登录进行查看。"],
+            ["id"=>7,"template_code" => "order_payback", "template_type" => "front_order", "template_name" => "订单退款提醒", "template_des" => "订单退款成功后，通知顾客", "template_content" => "您的订单#order_no#已发起退款，款项#amount#将原路退回，请注意查收。"],
+            ["id"=>8,"template_code" => "admin_order_create", "template_type" => "admin_order", "template_name" => "新订单", "template_des" => "当网站有新订单时，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
+            ["id"=>9,"template_code" => "admin_order_paid", "template_type" => "admin_order", "template_name" => "订单付款通知", "template_des" => "新订单付款成功后，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
+            ["id"=>10,"template_code" => "admin_order_cancel", "template_type" => "admin_order", "template_name" => "订单关闭通知", "template_des" => "订单被顾客关闭时，通知管理员", "template_content" => "网站订单取消通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
+            ["id"=>11,"template_code" => "admin_order_success", "template_type" => "admin_order", "template_name" => "订单成功通知", "template_des" => "顾客确认收货时，通知管理员", "template_content" => "网站订单成功通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
+            ["id"=>12,"template_code" => "admin_order_refunding", "template_type" => "admin_order", "template_name" => "退单通知", "template_des" => "顾客申请退单退款时，通知管理员", "template_content" => "网站订单退款通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
+        ];
+        SysSmsTemplate::insert($sms_init);
+        $this->info('短信模板初始化成功');
 //        $template = [
 //            "id"=>1,
 //            "template_name"=>"基础主题",
@@ -202,11 +201,12 @@ class Init extends Command
 //            foreach ($variants as $variant) $sys_sms->variants()->create($variant);
 //        }
 //        $this->info('短信包初始化成功');
-        DB::table('admin_templates')->delete();
-        AdminTemplate::create([
-            'code'=>"template",
-            'setting'=>null
-        ]);
+//        DB::table('admin_templates')->delete();
+//        AdminTemplate::create([
+//            'code'=>"template",
+//            'setting'=>null
+//        ]);
+//        $this->info('前台模板初始化成功');
         $this->info('初始化成功');
     }
 }

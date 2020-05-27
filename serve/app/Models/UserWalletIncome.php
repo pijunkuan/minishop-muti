@@ -21,4 +21,9 @@ class UserWalletIncome extends Model
     {
         return $this->belongsTo(UserWallet::class, "wallet_id");
     }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class,"shop_id");
+    }
 }

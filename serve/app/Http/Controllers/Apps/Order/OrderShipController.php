@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Apps\Order;
 
+use App\Events\Shop\Sms\SmsSendEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\ShipmentStoreRequest;
 use App\Models\Order;
@@ -22,6 +23,7 @@ class OrderShipController extends Controller
     {
         $shop = $request->get('ori_shop');
         $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
+        $customer = $order->customer;
         if(!$order) return $this->jsonErrorResponse(404,"无此订单记录");
         if(in_array($order->status,[
             Order::ORDER_STATUS_CLOSED,
@@ -53,12 +55,15 @@ class OrderShipController extends Controller
             }else{
                 $order->status = Order::ORDER_STATUS_PARTIAL;
             }
+            $shipment->refresh();
             $order->save();
             DB::commit();
         }catch(\Exception $exception){
             DB::rollBack();
             return $this->jsonErrorResponse(404,$exception->getMessage());
         }
+        $data = ["order_no"=>$order['no'],"shipment_company"=>$shipment['shipment_company'],"shipment_no"=>$shipment['shipment_no']];
+        event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_sent", $data));
         return $this->jsonSuccessResponse();
     }
 }

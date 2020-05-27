@@ -15,7 +15,7 @@ class CreateSysSmsTemplatesTable extends Migration
     {
         Schema::create('sys_sms_templates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('template_code',20);
+            $table->string('template_code',45);
             $table->string('template_name',45);
             $table->string('template_type',20);
             $table->string('template_des');

@@ -51,28 +51,7 @@ class PaySuccessConfirmation
                 "content" => "订单{$payment['order']['no']}通过({$way_value})进行支付{$payment['pay_amount']}(手续费：{$fee})"
             ];
             $wallet = $user->wallet;
-            $income = $wallet->incomes()->create($data);
-            $income->refresh();
-            if ($clear = $wallet->clear_lists()
-                ->where("status", UserWalletClearList::CLEAR_STATUS_PENDING)
-                ->where('unlock_days', $level['unlock_days'])
-                ->whereDate('user_wallet_clear_lists.created_at', now()->toDateString())
-                ->first()) {
-                $clear->amount += $payment['pay_amount'];
-                $clear->fee += $fee;
-                $clear->order_count++;
-                $clear->save();
-            } else {
-                $clear = $wallet->clear_lists()->create([
-                    "amount" => $payment['pay_amount'],
-                    "fee" => $fee,
-                    "unlock_days" => $level['unlock_days'],
-                    "order_count" => 1,
-                    "unlocked_at" => now()->addDays($level['unlock_days'])->endOfDay(),
-                ]);
-            }
-            $income->clear_no = $clear['no'];
-            $income->save();
+            $wallet->incomes()->create($data);
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();

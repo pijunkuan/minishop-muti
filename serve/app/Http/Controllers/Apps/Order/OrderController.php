@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Apps\Order;
 use App\Events\Order\OrderCloseEvent;
 use App\Events\Order\OrderRefundRefuseEvent;
 use App\Events\Order\OrderRefundSuccessEvent;
+use App\Events\Shop\Sms\SmsSendEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AdminOrderUpdateRequest;
 use App\Http\Resources\Order\AdminOrderDetail;
@@ -63,16 +64,21 @@ class OrderController extends Controller
     {
         $shop = $request->get('ori_shop');
         $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
+        $customer = $order->customer;
+        $data = ["order_no"=>$order['no']];
         if ($request->has("status")) {
             switch ($request->get('status')) {
                 case "closed":
                     event(new OrderCloseEvent($order, $request->get('reason') ?: "商家关闭订单"));
+                    event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_cancel", $data));
                     break;
                 case "refunded":
                     event(new OrderRefundSuccessEvent($order, $request->get('reason')));
+                    event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_refund", $data));
                     break;
                 case "refund_refuse":
                     event(new OrderRefundRefuseEvent($order, $request->get('reason')));
+                    event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_refund", $data));
                     break;
                 default:
                     return $this->jsonErrorResponse(404, "无此状态码");

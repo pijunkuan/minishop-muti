@@ -38,6 +38,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\User\Wallet\ClearDayConfirmation'
         ],
 
+        'App\Events\User\Wallet\ShopClearEvent'=>[
+            'App\Listeners\User\Wallet\ShopClearDayConfirmation'
+        ],
+
         'App\Events\User\Wallet\WalletLogEvent'=>[
             'App\Listeners\User\Wallet\WalletLogConfirmation'
         ],

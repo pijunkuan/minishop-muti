@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front\Pay;
 
 use App\Events\Order\Pay\PaySuccessEvent;
+use App\Events\Shop\Sms\SmsSendEvent;
 use App\Events\User\Wallet\OrderEvent;
 use App\Http\Controllers\Controller;
 use App\Models\OrderPayment;
@@ -88,6 +89,12 @@ class PayController extends Controller
                     if($payment['status'] == OrderPayment::PAYMENT_STATUS_SUCCESS)return response()->json(['msg' => "already paid"], 400);
                     event(new PaySuccessEvent($payment, $charge['id']));
                     event(new OrderEvent($payment));
+                    $order = $payment->order;
+                    $shop = $order->shop;
+                    $customer = $order->customer;
+                    $data = ["order_no"=>$order['no'],"amount"=>$order['amount']];
+                    event(new SmsSendEvent($shop['id'],$customer['mobile'],"order_paid",$data));
+                    event(new SmsSendEvent($shop['id'],$shop['user']['mobile'],"admin_order_paid",$data));
                     break;
                 default:
                     return response()->json(['msg' => "error type"], 400);
