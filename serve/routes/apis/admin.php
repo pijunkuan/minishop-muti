@@ -37,7 +37,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::delete('sms/{sms}/variant/{variant}',"Sms\SmsController@variant_destroy");
         Route::apiResource('sms',"Sms\SmsController")->only(['index',"update"]);
 
-        Route::apiResource('image','Image\ImageController')->only(['index','update','destroy']);
+        Route::apiResource('image','Image\ImageController')->only(['index','store','destroy']);
 
 
     });
