@@ -22,7 +22,7 @@ class SmsController extends Controller
             $data = $validator->validate();
             $code = random_int(1000,9999);
             Cache::put("FRONT_SMS_CODE{$data['mobile']}",$code,300);
-            event(new SmsSendEvent($shop['id'],$data['mobile'],"customer_verification",['code'=>$code]));
+            event(new SmsSendEvent($shop,$data['mobile'],"customer_verification",['code'=>$code]));
         }
     }
 }
