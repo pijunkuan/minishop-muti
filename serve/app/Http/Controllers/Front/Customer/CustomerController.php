@@ -7,23 +7,51 @@ use App\Http\Requests\Customer\Edit;
 use App\Http\Requests\Customer\Login;
 use App\Http\Requests\Customer\Register;
 use App\Http\Resources\Customer\CustomerResource;
-use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:customers', ['except' => ['register', 'login']]);
+        $this->middleware('auth:customers', ['except' => ['register', 'login','forget']]);
     }
 
+    public function forget(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+
+        $validator = Validator::make($request->all(),[
+            "mobile"=>"required",
+            "password"=>"required|min:6|alpha_dash",
+            "verification_code"=>"required"
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonSuccessResponse($validator->errors()->first());
+        } else {
+            $data = $validator->validate();
+            $customer = $shop->customers()->where('mobile',$data['mobile'])->firstOrFail();
+            $code = Cache::get("FRONT_SMS_CODE{$data['mobile']}");
+            if(!$code) return $this->jsonErrorResponse(422,"验证码不存在");
+            if($code != $data('verification_code')) return $this->jsonErrorResponse(422,"验证码不正确");
+            $customer->password = Hash::make($data['password']);
+            $customer->save();
+            $customer->refresh();
+            return $this->jsonSuccessResponse($this->respondWithToken(auth('customers')->login($customer)));
+        }
+    }
     public function register(Register $request)
     {
+
         $shop = $request->get('ori_shop');
         if ($shop->customers()->where('mobile', $request->get('mobile'))->first()) {
             return $this->jsonErrorResponse(422, '该手机号已注册');
         }
+        $code = Cache::get("FRONT_SMS_CODE{$request->get('mobile')}");
+        if(!$code) return $this->jsonErrorResponse(422,"验证码不存在");
+        if($code != $request->get('verification_code')) return $this->jsonErrorResponse(422,"验证码不正确");
         $customer = $shop->customers()->make([
             "mobile" => $request->get('mobile'),
             "password" => Hash::make($request->get('password'))
@@ -38,6 +66,7 @@ class CustomerController extends Controller
 
     public function login(Login $request)
     {
+
         $shop = $request->get('ori_shop');
         $customer = $shop->customers()->where('mobile', $request->get('mobile'))->first();
         if (!$customer) return $this->jsonErrorResponse(422, '不存在该用户');
