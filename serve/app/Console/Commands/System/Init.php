@@ -3,6 +3,7 @@
 namespace App\Console\Commands\System;
 
 use App\Models\Admin;
+use App\Models\AdminTemplate;
 use App\Models\Shop;
 use App\Models\SysAccountWay;
 use App\Models\SysLevel;
@@ -201,12 +202,11 @@ class Init extends Command
 //            foreach ($variants as $variant) $sys_sms->variants()->create($variant);
 //        }
 //        $this->info('短信包初始化成功');
-        $shops = Shop::get();
-        foreach($shops as $shop){
-            if(!$shop->sms_account){
-                $shop->sms_account()->create();
-            }
-        }
+        DB::table('admin_templates')->delete();
+        AdminTemplate::create([
+            'code'=>"template",
+            'setting'=>null
+        ]);
         $this->info('初始化成功');
     }
 }

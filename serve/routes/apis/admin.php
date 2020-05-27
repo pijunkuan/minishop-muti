@@ -39,6 +39,8 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
         Route::apiResource('image','Image\ImageController')->only(['index','store','destroy']);
 
+        Route::get('sys_template','SysTemplate\SysTemplateController@show');
+        Route::put('sys_template','SysTemplate\SysTemplateController@update');
 
     });
 
