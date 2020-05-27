@@ -26,6 +26,7 @@ class LevelResource extends JsonResource
             "domain_edit"=>$this['domain_edit'],
             "unlock_days"=>$this['unlock_days'],
             "fee_rate"=>$this['fee_rate'],
+            "sms_amount"=>$this['sms_amount'],
             "price"=>$price,
             "variants"=>$variants
         ];
