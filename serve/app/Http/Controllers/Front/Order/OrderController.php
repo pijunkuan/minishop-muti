@@ -16,6 +16,7 @@ use App\Http\Resources\Order\OrderCollection;
 use App\Http\Resources\Order\OrderDetail;
 use App\Http\Resources\Order\OrderPaymentResource;
 use App\Http\Resources\Order\OrderResource;
+use App\Jobs\Order\CloseOrder;
 use App\Models\Order;
 use App\Models\OrderAddress;
 use App\Models\OrderPayment;
@@ -76,6 +77,7 @@ class OrderController extends Controller
         $shop = $request->get('ori_shop');
         $time = $shop['auto_close_in'] > 60 ? ceil($shop['auto_close_in'] / 60)."小时" : $shop['auto_close_in']."分钟";
         $data = ["order_no" => $order['no'], "amount" => $order['amount'], "time" => $time];
+        CloseOrder::dispatch($order,$shop['auto_close_in']);
         event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_create", $data));
         event(new SmsSendEvent($shop['id'], $shop['user']['mobile'], "admin_order_create", $data));
         return $this->jsonSuccessResponse(new OrderResource($order));
