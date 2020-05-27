@@ -33,11 +33,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-        $schedule->call(function(){
-            Log::info(now());
-        })->everyFiveMinutes();
+         $schedule->command('wallet:clear_shop_check')
+                  ->hourly()->between('1:00','5:00')->withoutOverlapping()->runInBackground();
     }
 
     /**
