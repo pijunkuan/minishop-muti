@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Log;
 use Overtrue\EasySms\Exceptions\InvalidArgumentException;
 use Overtrue\EasySms\Exceptions\NoGatewayAvailableException;
 
-class SmsFrontSendConfirmation
+class SmsFrontSendConfirmation implements ShouldQueue
 {
+    public $connection = "redis";
+
+    public $queue = "front_sms";
     /**
      * Create the event listener.
      *

@@ -112,6 +112,7 @@ class SmsController extends Controller
     public function sign_update(Request $request)
     {
         $sign = ShopSmsSign::findOrFail($request->route()->parameter('sign'));
+        if(in_array($sign['status'],[ShopSmsSign::SIGN_STATUS_SUCCESS, ShopSmsSign::SIGN_STATUS_FAILED])) return $this->jsonErrorResponse(422,"该签名已经审核");
         $validator = Validator::make($request->all(), [
             'status' => 'required|string',
         ]);
