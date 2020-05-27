@@ -39,7 +39,7 @@ class ClearDayConfirmation
                 $clearList->status = UserWalletClearList::CLEAR_STATUS_SUCCESS;
                 $clearList->save();
                 $amount = $clearList['amount'] - $clearList['fee'];
-                event(new WalletLogEvent($wallet, $amount, "in", "{$clearList['no']}资金解冻（实际到账金额：{$amount} ,解冻金额：{$clearList['amount']} , 手续费： {$clearList['fee']}）"));
+                event(new WalletLogEvent($wallet, $amount, "in", "{$clearList['no']}资金解冻金额：{$amount} （结算金额：{$clearList['amount']} - 结算手续费： {$clearList['fee']}）"));
                 DB::commit();
             } catch (\Exception $exception) {
                 DB::rollBack();
