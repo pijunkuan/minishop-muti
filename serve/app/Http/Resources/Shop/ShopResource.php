@@ -36,7 +36,8 @@ class ShopResource extends JsonResource
             "active"=>$this['active'],
             "auto_close_in"=>$this['auto_close_in'],
             "auto_receive_in"=>$this['auto_receive_in'],
-            "level"=>$level
+            "level"=>$level,
+            "sms_amount"=>$this['sms_account']['amount']
         ];
     }
 }

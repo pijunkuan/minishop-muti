@@ -19,7 +19,6 @@ class Shop extends Model
     ];
 
     protected $casts = [
-        "sms_active" => "boolean"
     ];
 
     protected static function boot()
@@ -105,6 +104,11 @@ class Shop extends Model
     public function sms_templates()
     {
         return $this->belongsToMany(SysSmsTemplate::class,ShopSmsTemplate::class,"shop_id","sms_template_id");
+    }
+
+    public function sms_account()
+    {
+        return $this->hasOne(ShopSmsAccount::class,"shop_id");
     }
 
     public function user()

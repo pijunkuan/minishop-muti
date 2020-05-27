@@ -36,6 +36,7 @@ class SmsSendEvent
         $this->sms_template = $shop->sms_templates()->where('template_code',$template_code)->first();
         $this->data = $data;
         if(!$this->sms_template) return false;
+        if($shop->sms_account['amount'] < 0) return false;
     }
 
     /**
