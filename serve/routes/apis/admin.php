@@ -29,6 +29,13 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::delete('level/{level}/variant/{variant}',"Level\LevelController@variant_destroy");
         Route::apiResource("level","Level\LevelController")->only(['index','update']);
 
+        Route::get('sms/sign',"Sms\SmsController@sign_index");
+        Route::put('sms/sign/{sign}',"Sms\SmsController@sign_update");
+        Route::get('sms/{sms}/variant',"Sms\SmsController@variant_index");
+        Route::post('sms/{sms}/variant',"Sms\SmsController@variant_store");
+        Route::put('sms/{sms}/variant/{variant}',"Sms\SmsController@variant_update");
+        Route::delete('sms/{sms}/variant/{variant}',"Sms\SmsController@variant_destroy");
+        Route::apiResource('sms',"Sms\SmsController")->only(['index',"update"]);
     });
 
 });

@@ -38,6 +38,7 @@ class TemplateController extends Controller
                 $template->update($data);
             }
         }
+        $template->refresh();
         return $this->jsonSuccessResponse(new TemplateListResource($template));
     }
 
