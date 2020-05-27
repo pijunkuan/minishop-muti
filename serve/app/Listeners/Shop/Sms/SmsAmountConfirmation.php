@@ -9,9 +9,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class SmsAmountConfirmation
+class SmsAmountConfirmation implements ShouldQueue
 {
+    public $connection = "redis";
 
+    public $queue = "sms_account";
     /**
      * Create the event listener.
      *

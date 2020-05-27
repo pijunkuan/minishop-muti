@@ -17,7 +17,7 @@ class SmsSignResource extends JsonResource
     {
         return [
             "sign_id"=>$this['id'],
-            "shop_id"=>$this['shop']['shop_name'],
+            "shop_name"=>$this['shop']['shop_name'],
             "sign_name"=>$this['sign_name'],
             "active"=>$this['active'],
             "status"=>$this['status'],
