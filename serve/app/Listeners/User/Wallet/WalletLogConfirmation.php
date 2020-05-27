@@ -37,8 +37,8 @@ class WalletLogConfirmation
             $wallet->log_lists()->create([
                 "type" => $event->type,
                 "amount"=>$event->amount,
-                "last_balance"=>$lock_wallet['balance'],
-                "next_balance"=>$lock_wallet['balance'] + $event->amount,
+                "last_balance"=>$lock_wallet->balance,
+                "next_balance"=>$lock_wallet->balance + $event->amount,
                 "content"=>$event->content
             ]);
             $wallet['balance'] += $event->amount;
