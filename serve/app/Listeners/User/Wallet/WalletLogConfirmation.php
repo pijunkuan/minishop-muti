@@ -33,12 +33,12 @@ class WalletLogConfirmation
         $wallet = $event->wallet;
         DB::beginTransaction();
         try {
-
+            $lock_wallet = DB::table("user_wallets")->lockForUpdate()->find($wallet['id']);
             $wallet->log_lists()->create([
                 "type" => $event->type,
                 "amount"=>$event->amount,
-                "last_balance"=>$wallet['balance'],
-                "next_balance"=>$wallet['balance'] + $event->amount,
+                "last_balance"=>$lock_wallet['balance'],
+                "next_balance"=>$lock_wallet['balance'] + $event->amount,
                 "content"=>$event->content
             ]);
             $wallet['balance'] += $event->amount;
