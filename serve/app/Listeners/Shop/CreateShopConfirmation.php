@@ -4,6 +4,7 @@ namespace App\Listeners\Shop;
 
 use App\Events\Shop\CreateShopEvent;
 use App\Models\ShopOrder;
+use App\Models\SysSmsTemplate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -22,22 +23,23 @@ class CreateShopConfirmation
     /**
      * Handle the event.
      *
-     * @param  CreateShopEvent  $event
+     * @param CreateShopEvent $event
      * @return void
      */
     public function handle(CreateShopEvent $event)
     {
         $user = $event->user;
-        $shop =$user->shops()->create();
+        $shop = $user->shops()->create();
         $shop->refresh();
-        if($event->order_no){
-            $order = ShopOrder::where('no',$event->order_no)->first();
+        if ($event->order_no) {
+            $order = ShopOrder::where('no', $event->order_no)->first();
             $order->update([
-                'shop_id'=>$shop['id'],
-                "shop_name"=>$shop['shop_name']
+                'shop_id' => $shop['id'],
+                "shop_name" => $shop['shop_name']
             ]);
             $shop->sms_account()->create();
-
+            $sms_template = SysSmsTemplate::where('template_code', 'customer_verification')->first();
+            if ($sms_template) $shop->sms_templates()->attach($sms_template['id']);
         }
     }
 }
