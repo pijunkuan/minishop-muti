@@ -15,6 +15,8 @@
 require_once __DIR__ . "/apis/shop.php";
 require_once __DIR__ . "/apis/admin.php";
 
+Route::get('common/home_template',"Controller@home_template");
+
 Route::group([
     "domain" => "{account}.minishop.test",
 ], function () {
