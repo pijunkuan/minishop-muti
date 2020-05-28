@@ -82,10 +82,10 @@ class PayController extends Controller
         if ($result == 1) {
             $event = json_decode($raw_data, true);
             $object = $event['data']['object'];
-            $charge = $pingxx->charge_retrieve($object['id']);
-            if (!$charge) return response()->json(['msg' => "no object"], 400);
             switch ($event['type']) {
                 case "charge.succeeded":
+                    $charge = $pingxx->charge_retrieve($object['id']);
+                    if (!$charge) return response()->json(['msg' => "no object"], 400);
                     if(!$charge['paid']) return response()->json(['msg' => "no paid"], 400);
                     $payment=OrderPayment::where("no",$charge['order_no'])->firstOrFail();
                     if($payment['status'] == OrderPayment::PAYMENT_STATUS_SUCCESS)return response()->json(['msg' => "already paid"], 400);
@@ -99,9 +99,14 @@ class PayController extends Controller
                     event(new SmsSendEvent($shop['id'],$shop['user']['mobile'],"admin_order_paid",$data));
                     break;
                 case "refund.succeeded":
-                    if(!$charge['succeed']) return response()->json(['msg'=>"not succeeded"],422);
-                    $list = UserWalletRefundList::where('refund_no',$charge['id'])->firstOrFail();
+                    $list = UserWalletRefundList::where('refund_no',$object['id'])->firstOrFail();
                     if($list['status'] == UserWalletRefundList::RECORD_STATUS_SUCCESS)return response()->json(['msg' => "already succeeded"], 400);
+                    $params = [
+                        "pay_no"=>$list['pay_no'],
+                        "refund_no"=>$list['refund_no']
+                    ];
+                    $charge = $pingxx->refund_retrieve($params);
+                    if(!$charge['succeed']) return response()->json(['msg'=>"not succeeded"],422);
                     event(new WalletRefundConfirmEvent($list,'success'));
                     break;
                 default:
