@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Front\Pay;
 use App\Events\Order\Pay\PaySuccessEvent;
 use App\Events\Shop\Sms\SmsSendEvent;
 use App\Events\User\Wallet\OrderEvent;
+use App\Events\User\Wallet\Refund\WalletRefundConfirmEvent;
 use App\Http\Controllers\Controller;
 use App\Models\OrderPayment;
+use App\Models\UserWalletRefundList;
 use App\Models\Wallet;
 use App\Services\PingXX\PingXX;
 use Illuminate\Http\Request;
@@ -95,6 +97,12 @@ class PayController extends Controller
                     $data = ["order_no"=>$order['no'],"amount"=>$order['amount']];
                     event(new SmsSendEvent($shop['id'],$customer['mobile'],"order_paid",$data));
                     event(new SmsSendEvent($shop['id'],$shop['user']['mobile'],"admin_order_paid",$data));
+                    break;
+                case "refund.succeeded":
+                    if(!$charge['succeed']) return response()->json(['msg'=>"not succeeded"],422);
+                    $list = UserWalletRefundList::where('refund_no',$charge['id'])->firstOrFail();
+                    if($list['status'] == UserWalletRefundList::RECORD_STATUS_SUCCESS)return response()->json(['msg' => "already succeeded"], 400);
+                    event(new WalletRefundConfirmEvent($list,'success'));
                     break;
                 default:
                     return response()->json(['msg' => "error type"], 400);

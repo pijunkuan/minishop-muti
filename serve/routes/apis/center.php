@@ -39,6 +39,8 @@ Route::group([
     Route::prefix('order')->namespace('Order')->group(function () {
         Route::get('', 'OrderController@index');
         Route::put('status/{order}', "OrderController@status");
+        Route::get('refund_record/{order}',"OrderController@refund_record_list");
+        Route::post('refund_record/{order}',"OrderController@refund_record_store");
         Route::put('{order}', "OrderController@update");
         Route::get('{order}/shipment', 'OrderShipController@index');
         Route::post('{order}/shipment', 'OrderShipController@store');

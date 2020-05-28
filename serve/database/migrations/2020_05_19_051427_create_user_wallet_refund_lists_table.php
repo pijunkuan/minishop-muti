@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\UserWalletRefundList;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ class CreateUserWalletRefundListsTable extends Migration
             $table->decimal('amount');
             $table->decimal('fee');
             $table->string('content')->nullable();
-            $table->string('status',10);
+            $table->string('status',10)->default(UserWalletRefundList::RECORD_STATUS_PENDING);
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Apps\Order;
 
 use App\Events\Order\OrderCloseEvent;
+use App\Events\Order\OrderRefundRecordCreateEvent;
 use App\Events\Order\OrderRefundRefuseEvent;
 use App\Events\Order\OrderRefundSuccessEvent;
 use App\Events\Shop\Sms\SmsSendEvent;
@@ -10,9 +11,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AdminOrderUpdateRequest;
 use App\Http\Resources\Order\AdminOrderDetail;
 use App\Http\Resources\Order\OrderCollection;
+use App\Http\Resources\OrderRefundRecord\OrderRefundRecordResource;
 use App\Models\Order;
 use App\Models\OrderAddress;
+use App\Models\OrderPayment;
+use App\Models\OrderRefundRecord;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -21,31 +26,31 @@ class OrderController extends Controller
         $shop = $request->get('ori_shop');
         $orders = $shop->orders();
         $orders = $orders->orderBy('created_at', 'desc');
-        if($name = $request->get('name')){
-            $orders_id = OrderAddress::where('name','like',"%{$name}%")->pluck('order_id');
-            $orders = $orders->whereIn('id',$orders_id);
+        if ($name = $request->get('name')) {
+            $orders_id = OrderAddress::where('name', 'like', "%{$name}%")->pluck('order_id');
+            $orders = $orders->whereIn('id', $orders_id);
         }
-        if($no =$request->get('no')){
-            $orders = $orders->where('no','like',"%{$no}%");
+        if ($no = $request->get('no')) {
+            $orders = $orders->where('no', 'like', "%{$no}%");
         }
-        if($status = $request->get('status')){
-            switch($status){
+        if ($status = $request->get('status')) {
+            switch ($status) {
                 //待付款
                 case Order::ORDER_STATUS_PENDING:
-                    $orders = $orders->where('status',Order::ORDER_STATUS_PENDING);
+                    $orders = $orders->where('status', Order::ORDER_STATUS_PENDING);
                     break;
                 //待发货
                 case Order::ORDER_STATUS_PROCESSING:
-                    $orders = $orders->where('status',Order::ORDER_STATUS_PROCESSING)->where('refund_status',null);
+                    $orders = $orders->where('status', Order::ORDER_STATUS_PROCESSING)->where('refund_status', null);
                     break;
                 //已发货
                 case Order::ORDER_STATUS_PARTIAL:
                 case Order::ORDER_STATUS_SENT:
-                    $orders = $orders->whereIn('status',[Order::ORDER_STATUS_PARTIAL,Order::ORDER_STATUS_SENT])->where('refund_status',null);
+                    $orders = $orders->whereIn('status', [Order::ORDER_STATUS_PARTIAL, Order::ORDER_STATUS_SENT])->where('refund_status', null);
                     break;
                 //退款中
                 case Order::REFUND_STATUS_REFUNDING:
-                    $orders = $orders->where('refund_status',Order::REFUND_STATUS_REFUNDING);
+                    $orders = $orders->where('refund_status', Order::REFUND_STATUS_REFUNDING);
                     break;
             }
         }
@@ -65,7 +70,7 @@ class OrderController extends Controller
         $shop = $request->get('ori_shop');
         $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
         $customer = $order->customer;
-        $data = ["order_no"=>$order['no']];
+        $data = ["order_no" => $order['no']];
         if ($request->has("status")) {
             switch ($request->get('status')) {
                 case "closed":
@@ -116,11 +121,54 @@ class OrderController extends Controller
             if ($order->status != Order::ORDER_STATUS_PENDING)
                 return $this->jsonErrorResponse(405, "订单不允许更改价格");
             $order->amount = $request->get('amount');
-            if($order->amount == 0){
+            if ($order->amount == 0) {
                 $order->status = Order::ORDER_STATUS_PROCESSING;
             }
             $order->save();
         }
         return $this->jsonSuccessResponse();
+    }
+
+    public function refund_record_list(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
+        $order_amount = $order['amount'];
+        $refund_amount_pending = $order->refund_records()->where('status', OrderRefundRecord::RECORD_STATUS_PENDING)->sum('amount');
+        $refund_amount_success = $order->refund_records()->where('status', OrderRefundRecord::RECORD_STATUS_SUCCESS)->sum('amount');
+        $refund_records = $order->refund_records;
+
+        $rs = [
+            "order_amount" => $order_amount,
+            "refund_amount_pending" => $refund_amount_pending,
+            "refund_amount_success" => $refund_amount_success,
+            "refund_amount_rest" => $order_amount - $refund_amount_pending - $refund_amount_success,
+            "refund_record_list"=> OrderRefundRecordResource::collection($refund_records)
+        ];
+        return $this->jsonSuccessResponse($rs);
+    }
+
+    public function refund_record_store(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
+        $payment = $order->payments()->where('status',OrderPayment::PAYMENT_STATUS_SUCCESS)->first();
+        if(!$payment) return $this->jsonErrorResponse(422,"该订单未存在支付，无法进行退款");
+        $validator = Validator::make($request->all(),[
+            "amount"=>"required|numeric",
+            "content"=>"required"
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonSuccessResponse($validator->errors()->first());
+        } else {
+            $data = $validator->validate();
+            $order_amount = $order['amount'];
+            $refund_amount_pending = $order->refund_records()->where('status', OrderRefundRecord::RECORD_STATUS_PENDING)->sum('amount');
+            $refund_amount_success = $order->refund_records()->where('status', OrderRefundRecord::RECORD_STATUS_SUCCESS)->sum('amount');
+            $refund_amount_rest = $order_amount - $refund_amount_pending - $refund_amount_success;
+            if($data['amount'] > $refund_amount_rest) return $this->jsonErrorResponse(422,"退款总金额不能超过订单支付总金额");
+            event(new OrderRefundRecordCreateEvent($order,$data));
+            return $this->jsonSuccessResponse();
+        }
     }
 }

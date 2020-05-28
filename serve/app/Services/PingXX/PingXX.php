@@ -172,6 +172,21 @@ class PingXX
         return Charge::retrieve($id);
     }
 
+    public function refund_create($params)
+    {
+        $ch = $this->charge_retrieve($params['pay_no']);
+        $data = array();
+        $data['description'] = $params['content'];
+        if(isset($params['amount']) && !is_null($params['amount'])) $data['amount'] = ceil($params['amount'] * 100);
+        return $ch->refunds->create($data);
+    }
+
+    public function refund_retrieve($params)
+    {
+        $ch = $this->charge_retrieve($params['pay_no']);
+        return $ch->refunds->retrieve($params['refund_no']);
+    }
+
     /**
      * 验证 webhooks 签名方法：
      * raw_data：Ping++ 请求 body 的原始数据即 event ，不能格式化；

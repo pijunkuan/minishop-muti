@@ -56,6 +56,11 @@ class Order extends Model
         return $this->belongsTo(Customer::class, "customer_id");
     }
 
+    public function shop()
+    {
+        return $this->hasOneThrough(Shop::class,Customer::class,"id","id","customer_id","shop_id");
+    }
+
     public function address()
     {
         return $this->hasOne(OrderAddress::class, "order_id");
@@ -84,6 +89,11 @@ class Order extends Model
     public function refunds()
     {
         return $this->hasMany(OrderRefund::class, "order_id");
+    }
+
+    public function refund_records()
+    {
+        return $this->hasMany(OrderRefundRecord::class,"order_id");
     }
 
     public function suborders()

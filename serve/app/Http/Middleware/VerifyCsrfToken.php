@@ -21,5 +21,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         "/shop/pay/confirm",
         "/front/pay/confirm",
+        '/order_refund',
     ];
 }

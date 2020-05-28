@@ -46,11 +46,24 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\User\Wallet\WalletLogConfirmation'
         ],
 
+        'App\Events\User\Wallet\Refund\WalletRefundConfirmEvent'=>[
+            'App\Listeners\User\Wallet\Refund\WalletRefundSuccess',
+            'App\Listeners\User\Wallet\Refund\WalletRefundFailed',
+        ],
+
         'App\Events\Order\OrderCancelEvent'=>[
             'App\Listeners\Order\OrderCancelConfirmation'
         ],
         'App\Events\Order\OrderRefundEvent'=>[
             'App\Listeners\Order\OrderRefundConfirmation'
+        ],
+        'App\Events\Order\OrderRefundRecordCreateEvent'=>[
+            'App\Listeners\Order\RefundRecord\Create\OrderRefundWalletConfirm',
+            'App\Listeners\Order\RefundRecord\Create\OrderRefundCashConfirm',
+            'App\Listeners\Order\RefundRecord\Create\OrderRefundPingPayConfirm',
+        ],
+        'App\Events\Order\OrderRefundRecordConfirmEvent'=>[
+            'App\Listeners\Order\RefundRecord\Confirm\OrderRefundRecordConfirmation'
         ],
         'App\Events\Order\OrderSuccessEvent'=>[
             'App\Listeners\Order\OrderSuccessConfirmation'
