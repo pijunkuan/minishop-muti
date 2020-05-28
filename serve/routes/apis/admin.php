@@ -44,6 +44,15 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::get('sys_template','SysTemplate\SysTemplateController@show');
         Route::put('sys_template','SysTemplate\SysTemplateController@update');
 
+        Route::prefix('dashboard')->namespace('Dashboard')->group(function(){
+            Route::get('user_static','DashboardController@user_static');
+            Route::get('shop_static','DashboardController@shop_static');
+            Route::get('income_static','DashboardController@income_static');
+            Route::get('clear_static','DashboardController@clear_static');
+            Route::get('withdraw_static','DashboardController@withdraw_static');
+            Route::get('refund_static','DashboardController@refund_static');
+        });
+
     });
 
 });
