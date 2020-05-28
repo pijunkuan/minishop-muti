@@ -12,8 +12,10 @@
 */
 
 //Route::post('paytest/{no}',"Front\Pay\PayController@test");
-Route::get('sms_test',"Controller@test_sms");
-Route::post('order_refund',"Controller@order_refund_test");
+//Route::get('sms_test',"Controller@test_sms");
+//Route::post('order_refund',"Controller@order_refund_test");
+
+Route::get('home_template',"Controller@home_template");
 
 Route::post('shop/pay/confirm',"Shop\Shop\PayController@confirm");
 Route::post('front/pay/confirm',"Front\Pay\PayController@confirm");
