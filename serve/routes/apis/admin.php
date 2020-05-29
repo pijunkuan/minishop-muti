@@ -51,6 +51,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::get('clear_static','DashboardController@clear_static');
             Route::get('withdraw_static','DashboardController@withdraw_static');
             Route::get('refund_static','DashboardController@refund_static');
+            Route::get('system',"DashboardController@system_info");
         });
 
     });

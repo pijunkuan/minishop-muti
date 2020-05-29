@@ -21,7 +21,7 @@ return[
             'file'=>'/tmp/easy-sms.log',
         ],
         'yunpian'=>[
-            'api_key'=>'e32f5d966467710bdaeb1eb03ad86bb4'
+            'api_key'=>env('YUNPIAN_API')
         ]
     ]
 ];

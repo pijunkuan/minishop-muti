@@ -27,7 +27,7 @@ class PingXX
     private $Ping_app_id;
     private $Ping_app_id_meiztong = 'app_PyXfXTDiXzPKKmnb';
 
-    public function __construct($ping_app_id, $model = "live")
+    public function __construct($ping_app_id)
     {
         $this->Ping_key_path = storage_path('/Key/private_key.pem');
         $this->Ping_pub_key_path = storage_path('/Key/public_key.pem');
@@ -36,7 +36,7 @@ class PingXX
         $this->Ping_live_key = env('PING_LIVE_KEY');
         $this->Ping_test_key = env('PING_TEST_KEY');
         $this->Ping_app_id = $ping_app_id;
-        switch ($model) {
+        switch (env('PING_MODEL')) {
             case "test":
                 $ping_key = $this->Ping_test_key;
                 break;
