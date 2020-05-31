@@ -19,7 +19,7 @@ class Address extends Model
 
     public function getFullAddressAttribute()
     {
-        return "{$this['province']} {$this['city']} {$this['district']} {$this['detail']}";
+        return "{$this->province} {$this->city} {$this->district} {$this->detail}";
     }
 
 }
