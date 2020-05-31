@@ -28,13 +28,10 @@ class AdminOrderListResource extends JsonResource
             "status"=>$this['refund_status']?$this['refund_status']:$this['status'],
             "status_value"=>$this['refund_status']?Order::refundStatusMap[$this['refund_status']]:Order::orderStatusMap[$this['status']],
             "amount"=>$this['amount'],
-            "items_amount"=>$this['items_amount'],
-            "shipments_amount"=>$this['shipments_amount'],
-            "discounts_amount"=>$this['discounts_amount'],
             "items" => OrderItemResource::collection($this['items']),
-            "suborders"=>SuborderResource::collection($this['suborders']),
             "remark" => $this['remark'],
             "created_at" => $this['created_at']->toDateTimeString(),
+            "tips"=>array(),
         ];
     }
 }
