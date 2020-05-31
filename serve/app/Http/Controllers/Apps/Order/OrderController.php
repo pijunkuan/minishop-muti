@@ -181,7 +181,7 @@ class OrderController extends Controller
             "tip"=>"required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
            $tip = $order->tips()->create($data);

@@ -45,7 +45,7 @@ class RefundListController extends Controller
             "content" => "nullable"
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             switch ($data['status']) {

@@ -31,7 +31,7 @@ class TemplateController extends Controller
             "active" => "nullable|boolean",
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (count($data)) {
@@ -50,7 +50,7 @@ class TemplateController extends Controller
             'time' => 'required|numeric'
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if ($template->variants()->where('time', $data['time'])->first()) return $this->jsonErrorResponse(422, "该时间已存在");
@@ -69,7 +69,7 @@ class TemplateController extends Controller
             'time' => 'nullable|numeric'
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (count($data)) {

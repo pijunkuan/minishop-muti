@@ -32,7 +32,7 @@ class LevelController extends Controller
             "fee_rate" => "nullable|numeric",
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (count($data)) {
@@ -58,7 +58,7 @@ class LevelController extends Controller
             'time' => 'nullable|numeric'
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (count($data)) {
@@ -82,7 +82,7 @@ class LevelController extends Controller
             'time' => 'required|numeric'
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if ($level->variants()->where('time', $data['time'])->first()) return $this->jsonErrorResponse(422, "该时间已存在");

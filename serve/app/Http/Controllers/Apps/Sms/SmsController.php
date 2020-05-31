@@ -53,7 +53,7 @@ class SmsController extends Controller
             "sign_name" => "required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             $sign = $shop->signs()->create($data);
@@ -80,7 +80,7 @@ class SmsController extends Controller
             "active" => "required|boolean"
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (isset($data['active']) && $data('active')) {
