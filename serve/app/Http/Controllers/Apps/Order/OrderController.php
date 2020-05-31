@@ -73,7 +73,7 @@ class OrderController extends Controller
                     event(new OrderStatusEvent($order, Order::ORDER_STATUS_CANCEL,"商家取消订单"));
                     break;
                 case "refunded":
-                    event(new OrderStatusEvent($order, Order::REFUND_STATUS_REFUNDED,"商家取消订单"));
+                    event(new OrderStatusEvent($order, Order::REFUND_STATUS_REFUNDED,$request->get('reason')));
                     break;
                 case "refund_refuse":
                     event(new OrderStatusEvent($order, "refund_refuse",$request->get('reason')));
