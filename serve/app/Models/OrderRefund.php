@@ -15,10 +15,10 @@ class OrderRefund extends Model
     const REFUND_STATUS_REFUSE = "refuse";
 
     const refundStatusMap = [
-      self::REFUND_STATUS_REFUNDING => "退款中",
-      self::REFUND_STATUS_REFUNDED => "已退款",
-      self::REFUND_STATUS_CANCEL => "取消",
-      self::REFUND_STATUS_REFUSE => "拒绝",
+      self::REFUND_STATUS_REFUNDING => "退单申请",
+      self::REFUND_STATUS_REFUNDED => "退单完成",
+      self::REFUND_STATUS_CANCEL => "退单取消",
+      self::REFUND_STATUS_REFUSE => "退单拒绝",
     ];
 
 

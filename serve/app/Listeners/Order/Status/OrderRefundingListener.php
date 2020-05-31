@@ -35,7 +35,7 @@ class OrderRefundingListener
         if($event->status = Order::REFUND_STATUS_REFUNDING){
             $order = $event->order;
             if (in_array($order['status'], [Order::ORDER_STATUS_PENDING, Order::ORDER_STATUS_CANCEL, Order::ORDER_STATUS_CLOSED,]) || !is_null($order['refund_status'])) {
-                throw (new HttpResponseException(response()->json(['code' => 422, "message" => "该订单状态下无法申请退款", "body" => $order['refund_status'],], 422)));
+                throw (new HttpResponseException(response()->json(['code' => 422, "message" => "该订单状态下无法申请退单", "body" => $order['refund_status'],], 422)));
             }
             DB::beginTransaction();
             try {

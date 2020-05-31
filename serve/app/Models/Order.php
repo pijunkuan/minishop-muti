@@ -27,8 +27,8 @@ class Order extends Model
     ];
 
     const refundStatusMap = [
-        self::REFUND_STATUS_REFUNDING => "退款中",
-        self::REFUND_STATUS_REFUNDED => "已退款",
+        self::REFUND_STATUS_REFUNDING => "退单申请",
+        self::REFUND_STATUS_REFUNDED => "退单完成",
     ];
 
     public $table = "app_orders";

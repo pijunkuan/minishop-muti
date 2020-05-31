@@ -37,7 +37,7 @@ class OrderRefundCancelListener
             DB::beginTransaction();
             try {
                 if($refund = $order->refunds()->where('status',OrderRefund::REFUND_STATUS_REFUNDING)->first()){
-                    $refund->update(["status"=>OrderRefund::REFUND_STATUS_CANCEL,"reason"=>"{$refund['reason']}【客户主动取消退款】"]);
+                    $refund->update(["status"=>OrderRefund::REFUND_STATUS_CANCEL,"reason"=>"{$refund['reason']}【客户主动取消退单】"]);
                 }
                 $order->update([
                     "refund_status"=> null
