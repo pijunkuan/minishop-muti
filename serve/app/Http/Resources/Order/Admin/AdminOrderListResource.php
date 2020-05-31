@@ -17,7 +17,7 @@ class AdminOrderListResource extends JsonResource
      */
     public function toArray($request)
     {
-        $address = $this['address'];
+        $address = $this->address;
         return [
             "id" => $this['id'],
             "no" => $this['no'],
