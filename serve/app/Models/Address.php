@@ -17,4 +17,9 @@ class Address extends Model
         return $this->belongsTo(Customer::class,"customer_id");
     }
 
+    public function getFullAddressAttribute()
+    {
+        return "{$this['province']} {$this['city']} {$this['district']} {$this['detail']}";
+    }
+
 }

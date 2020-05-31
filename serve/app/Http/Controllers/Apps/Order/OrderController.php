@@ -6,8 +6,8 @@ use App\Events\Order\OrderRefundRecordCreateEvent;
 use App\Events\Order\Status\OrderStatusEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AdminOrderUpdateRequest;
+use App\Http\Resources\Order\Admin\AdminOrderListCollection;
 use App\Http\Resources\Order\AdminOrderDetail;
-use App\Http\Resources\Order\OrderCollection;
 use App\Http\Resources\OrderRefundRecord\OrderRefundRecordResource;
 use App\Models\Order;
 use App\Models\OrderAddress;
@@ -52,7 +52,7 @@ class OrderController extends Controller
             }
         }
         $orders = $orders->paginate($request->get('pageSize'));
-        return $this->jsonSuccessResponse(new OrderCollection($orders));
+        return $this->jsonSuccessResponse(new AdminOrderListCollection($orders));
     }
 
     public function show(Request $request)
