@@ -14,9 +14,7 @@ class CloseOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $connection = "redis";
 
-    public $queue = "order_queue";
 
     protected $order;
 
@@ -28,6 +26,8 @@ class CloseOrder implements ShouldQueue
      */
     public function __construct(Order $order, $delay)
     {
+        $this->connection = "redis";
+        $this->queue = "order";
         $this->order = $order;
         // 设置延迟的时间，delay() 方法的参数代表多少秒之后执行
         $this->delay($delay * 60);
