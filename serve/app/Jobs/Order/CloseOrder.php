@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class CloseOrder implements ShouldQueue
 {
@@ -41,6 +42,7 @@ class CloseOrder implements ShouldQueue
     public function handle()
     {
         $order = $this->order;
+        Log::info("关闭订单测试启动");
         if ($order['status'] != Order::ORDER_STATUS_PENDING) return;
         event(new OrderStatusEvent($order, Order::ORDER_STATUS_CANCEL, "付款超时"));
     }
