@@ -16,7 +16,6 @@ class OrderPaymentResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             "pay_no" => $this['pay_no'],
             "no" => $this['no'],

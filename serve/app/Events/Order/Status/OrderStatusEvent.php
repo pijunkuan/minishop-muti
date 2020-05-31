@@ -3,7 +3,6 @@
 namespace App\Events\Order\Status;
 
 use App\Models\Order;
-use App\Models\ShopOrder;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -31,7 +30,7 @@ class OrderStatusEvent
         $this->reason = $reason;
         $this->shop = $order['shop'];
         $this->customer = $order['customer'];
-        $this->data = ["order_no" => $order['no'], "amount" => $order['amount'], "order_status" => ShopOrder::orderStatusMap[$order['status']]];
+        $this->data = ["order_no" => $order['no'], "amount" => $order['amount'], "order_status" => Order::orderStatusMap[$order['status']]];
     }
 
     /**
