@@ -38,7 +38,6 @@ class SmsSendEvent
         $this->data = $data;
         if(!$this->sms_template) return false;
         if($shop['sms_account']['amount'] < 0) return false;
-        Log::info($shop['sms_account']['amount']);
     }
 
     /**

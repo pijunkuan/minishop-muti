@@ -35,7 +35,7 @@ class CustomerController extends Controller
             $customer = $shop->customers()->where('mobile',$data['mobile'])->firstOrFail();
             $code = Cache::get("FRONT_SMS_CODE{$data['mobile']}");
             if(!$code) return $this->jsonErrorResponse(422,"验证码不存在");
-            if($code != $data('verification_code')) return $this->jsonErrorResponse(422,"验证码不正确");
+            if($code != $data['verification_code']) return $this->jsonErrorResponse(422,"验证码不正确");
             $customer->password = Hash::make($data['password']);
             $customer->save();
             $customer->refresh();
