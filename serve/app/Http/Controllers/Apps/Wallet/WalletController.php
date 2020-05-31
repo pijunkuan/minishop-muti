@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Apps\Wallet;
 
+use App\Events\Customer\Wallet\WalletAmountEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wallet\WalletStoreRequest;
 use App\Http\Resources\Wallet\WalletCollection;
@@ -23,23 +24,8 @@ class WalletController extends Controller
     {
         $shop = $request->get('ori_shop');
         $customer = $shop->customers()->findOrFail($request->route()->parameter('customer'));
-        $amount = 0;
-        $type = $request->get('type');
-        switch($type){
-            case Wallet::WALLET_IN:
-                $amount = abs($request->get('amount'));
-                break;
-            case Wallet::WALLET_OUT:
-                $amount = 0 - abs($request->get('amount'));
-                break;
-        }
-        $content = $request->get('content');
-        $wallet = $customer->wallets()->create([
-            "amount"=>$amount,
-            "type"=>$type,
-            "content"=>$content
-        ]);
-        return $this->jsonSuccessResponse($wallet);
+        event(new WalletAmountEvent($customer, $request->get('amount'), $request->get('type'), $request->get('content')));
+        return $this->jsonSuccessResponse();
     }
 
     public function balance(Request $request)
@@ -47,7 +33,7 @@ class WalletController extends Controller
         $shop = $request->get('ori_shop');
         $customer = $shop->customers()->findOrFail($request->route()->parameter('customer'));
         return $this->jsonSuccessResponse([
-            "balance"=>$customer->wallets()->sum('amount')
+            "balance" => $customer->wallets()->sum('amount')
         ]);
     }
 }

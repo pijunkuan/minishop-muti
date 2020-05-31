@@ -2,7 +2,6 @@
 
 namespace App\Listeners\User\Wallet\Refund;
 
-use App\Events\Order\OrderRefundEvent;
 use App\Events\Order\OrderRefundRecordConfirmEvent;
 use App\Events\User\Wallet\Refund\WalletRefundConfirmEvent;
 use App\Models\UserWalletRefundList;
@@ -31,7 +30,7 @@ class WalletRefundSuccess
     {
         if ($event->status == "success") {
             $event->refund_list->update(['status'=>UserWalletRefundList::RECORD_STATUS_SUCCESS]);
-            event(new OrderRefundRecordConfirmEvent($event->refund_list->refund_record));
+            event(new OrderRefundRecordConfirmEvent($event->refund_list['refund_record']));
         }
 
     }

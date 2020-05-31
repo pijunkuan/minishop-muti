@@ -50,13 +50,16 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\User\Wallet\Refund\WalletRefundSuccess',
             'App\Listeners\User\Wallet\Refund\WalletRefundFailed',
         ],
+        'App\Events\Order\Status\OrderStatusEvent'=>[
+            "App\Listeners\Order\Status\OrderCancelListener",
+            "App\Listeners\Order\Status\OrderCloseListener",
+            "App\Listeners\Order\Status\OrderRefundingListener",
+            "App\Listeners\Order\Status\OrderRefundRefuseListener",
+            "App\Listeners\Order\Status\OrderRefundCancelListener",
+            "App\Listeners\Order\Status\OrderRefundedListener",
+            "App\Listeners\Order\Status\OrderSuccessListener",
+        ],
 
-        'App\Events\Order\OrderCancelEvent'=>[
-            'App\Listeners\Order\OrderCancelConfirmation'
-        ],
-        'App\Events\Order\OrderRefundEvent'=>[
-            'App\Listeners\Order\OrderRefundConfirmation'
-        ],
         'App\Events\Order\OrderRefundRecordCreateEvent'=>[
             'App\Listeners\Order\RefundRecord\Create\OrderRefundWalletConfirm',
             'App\Listeners\Order\RefundRecord\Create\OrderRefundCashConfirm',
@@ -64,21 +67,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Order\OrderRefundRecordConfirmEvent'=>[
             'App\Listeners\Order\RefundRecord\Confirm\OrderRefundRecordConfirmation'
-        ],
-        'App\Events\Order\OrderSuccessEvent'=>[
-            'App\Listeners\Order\OrderSuccessConfirmation'
-        ],
-        'App\Events\Order\OrderCloseEvent'=>[
-            'App\Listeners\Order\OrderCloseConfirmation'
-        ],
-        'App\Events\Order\OrderRefundSuccessEvent'=>[
-            'App\Listeners\Order\OrderRefundSuccessConfirmation'
-        ],
-        'App\Events\Order\OrderRefundRefuseEvent'=>[
-            'App\Listeners\Order\OrderRefundRefuseConfirmation'
-        ],
-        'App\Events\Order\OrderRefundCancelEvent'=>[
-            'App\Listeners\Order\OrderRefundCancelConfirmation'
         ],
 
         'App\Events\Order\Pay\PayCreateEvent'=>[
@@ -104,6 +92,11 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Shop\Block\PluginConfirmation',
             'App\Listeners\Shop\Block\SmsConfirmation',
         ],
+
+        'App\Events\Customer\Wallet\WalletAmountEvent'=>[
+            'App\Listeners\Customer\Wallet\WalletAmountInListener',
+            'App\Listeners\Customer\Wallet\WalletAmountOutListener',
+        ]
     ];
 
     /**

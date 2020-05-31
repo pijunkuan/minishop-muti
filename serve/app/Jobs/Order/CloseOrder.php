@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Order;
 
-use App\Events\Order\OrderCancelEvent;
+use App\Events\Order\Status\OrderStatusEvent;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -42,6 +42,5 @@ class CloseOrder implements ShouldQueue
     {
         $order = $this->order;
         if($order['status'] != Order::ORDER_STATUS_PENDING) return;
-        event(new OrderCancelEvent($order,"付款超时"));
-    }
+        event(new OrderStatusEvent($order, Order::ORDER_STATUS_CANCEL,"付款超时"));    }
 }
