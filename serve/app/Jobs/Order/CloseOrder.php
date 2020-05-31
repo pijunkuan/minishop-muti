@@ -16,7 +16,7 @@ class CloseOrder implements ShouldQueue
 
     public $connection = "redis";
 
-    public $queue = "order";
+    public $queue = "order_queue";
 
     protected $order;
 
@@ -26,11 +26,11 @@ class CloseOrder implements ShouldQueue
      * @param Order $order
      * @param $delay
      */
-    public function __construct(Order $order , $delay)
+    public function __construct(Order $order, $delay)
     {
         $this->order = $order;
         // 设置延迟的时间，delay() 方法的参数代表多少秒之后执行
-        $this->delay($delay*60);
+        $this->delay($delay * 60);
     }
 
     /**
@@ -41,6 +41,7 @@ class CloseOrder implements ShouldQueue
     public function handle()
     {
         $order = $this->order;
-        if($order['status'] != Order::ORDER_STATUS_PENDING) return;
-        event(new OrderStatusEvent($order, Order::ORDER_STATUS_CANCEL,"付款超时"));    }
+        if ($order['status'] != Order::ORDER_STATUS_PENDING) return;
+        event(new OrderStatusEvent($order, Order::ORDER_STATUS_CANCEL, "付款超时"));
+    }
 }
