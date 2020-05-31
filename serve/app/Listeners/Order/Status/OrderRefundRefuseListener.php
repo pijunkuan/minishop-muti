@@ -53,7 +53,7 @@ class OrderRefundRefuseListener
                 Log::error($exception->getMessage());
                 throw (new HttpResponseException(response()->json(['code' => 422, "message" => "系统错误", "body" => null,], 422)));
             }
-            event(new SmsSendEvent($event->shop['id'], $event->customer['mobile'], "order_refund", $event->data));
+            event(new SmsSendEvent($event->shop, $event->customer['mobile'], "order_refund", $event->data));
         }
 
     }

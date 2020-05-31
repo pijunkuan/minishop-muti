@@ -52,7 +52,7 @@ class OrderSuccessListener
                 Log::error($exception->getMessage());
                 throw (new HttpResponseException(response()->json(['code' => 422, "message" => "系统错误", "body" => null,], 422)));
             }
-            event(new SmsSendEvent($event->shop['id'], $event->shop['user']['mobile'], "admin_order_success", $event->data));
+            event(new SmsSendEvent($event->shop, $event->shop['user']['mobile'], "admin_order_success", $event->data));
 
         }
     }
