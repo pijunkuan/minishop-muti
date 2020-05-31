@@ -63,7 +63,7 @@ class OrderShipController extends Controller
             return $this->jsonErrorResponse(404,$exception->getMessage());
         }
         $data = ["order_no"=>$order['no'],"shipment_company"=>$shipment['shipment_company'],"shipment_no"=>$shipment['shipment_no']];
-        event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_sent", $data));
+        event(new SmsSendEvent($shop, $customer['mobile'], "order_sent", $data));
         return $this->jsonSuccessResponse();
     }
 }

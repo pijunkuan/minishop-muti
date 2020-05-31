@@ -95,8 +95,8 @@ class PayController extends Controller
                     $shop = $order->shop;
                     $customer = $order->customer;
                     $data = ["order_no"=>$order['no'],"amount"=>$order['amount']];
-                    event(new SmsSendEvent($shop['id'],$customer['mobile'],"order_paid",$data));
-                    event(new SmsSendEvent($shop['id'],$shop['user']['mobile'],"admin_order_paid",$data));
+                    event(new SmsSendEvent($shop,$customer['mobile'],"order_paid",$data));
+                    event(new SmsSendEvent($shop,$shop['user']['mobile'],"admin_order_paid",$data));
                     break;
                 case "refund.succeeded":
                     $list = UserWalletRefundList::where('refund_no',$object['id'])->firstOrFail();

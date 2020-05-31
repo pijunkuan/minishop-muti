@@ -75,18 +75,16 @@ class OrderController extends Controller
         $time = $shop['auto_close_in'] > 60 ? ceil($shop['auto_close_in'] / 60)."小时" : $shop['auto_close_in']."分钟";
         $data = ["order_no" => $order['no'], "amount" => $order['amount'], "time" => $time];
         CloseOrder::dispatch($order,$shop['auto_close_in']);
-        event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_create", $data));
-        event(new SmsSendEvent($shop['id'], $shop['user']['mobile'], "admin_order_create", $data));
+        event(new SmsSendEvent($shop, $customer['mobile'], "order_create", $data));
+        event(new SmsSendEvent($shop, $shop['user']['mobile'], "admin_order_create", $data));
         return $this->jsonSuccessResponse(new FrontOrderListResource($order));
     }
 
     public function update(Request $request)
     {
-        $shop = $request->get('ori_shop');
         $customer = auth('customers')->user();
         $order = $customer->orders()->where('no', $request->route()->parameter('order'))->first();
         if (!$order) return $this->jsonErrorResponse(404, "未找到此订单");
-        $data = ["order_no" => $order['no'], "amount" => $order['amount'], "order_status" => ShopOrder::orderStatusMap[$order['status']]];
         if ($request->has("status")) {
             switch ($request->get('status')) {
                 case "cancel":
