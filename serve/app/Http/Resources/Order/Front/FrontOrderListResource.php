@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Http\Resources\Order;
+namespace App\Http\Resources\Order\Front;
 
+use App\Http\Resources\Order\OrderItemResource;
+use App\Http\Resources\Order\SuborderResource;
 use App\Models\Order;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderResource extends JsonResource
+class FrontOrderListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -21,7 +23,7 @@ class OrderResource extends JsonResource
             "no" => $this['no'],
             "name" => $address['name'],
             "mobile" => $address['mobile'],
-            "address" => "{$address['province']} {$address['city']} {$address['district']} {$address['detail']}",
+            "address" => $address['full_address'],
             "zip"=>$address['zip'],
             "status"=>$this['refund_status']?$this['refund_status']:$this['status'],
             "status_value"=>$this['refund_status']?Order::refundStatusMap[$this['refund_status']]:Order::orderStatusMap[$this['status']],

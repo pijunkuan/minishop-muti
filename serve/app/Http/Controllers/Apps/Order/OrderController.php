@@ -6,8 +6,8 @@ use App\Events\Order\OrderRefundRecordCreateEvent;
 use App\Events\Order\Status\OrderStatusEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AdminOrderUpdateRequest;
+use App\Http\Resources\Order\Admin\AdminOrderDetailResource;
 use App\Http\Resources\Order\Admin\AdminOrderListCollection;
-use App\Http\Resources\Order\AdminOrderDetail;
 use App\Http\Resources\OrderRefundRecord\OrderRefundRecordResource;
 use App\Models\Order;
 use App\Models\OrderAddress;
@@ -59,15 +59,13 @@ class OrderController extends Controller
     {
         $shop = $request->get('ori_shop');
         $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
-        return $this->jsonSuccessResponse(new AdminOrderDetail($order));
+        return $this->jsonSuccessResponse(new AdminOrderDetailResource($order));
     }
 
     public function status(Request $request)
     {
         $shop = $request->get('ori_shop');
         $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
-        $customer = $order->customer;
-        $data = ["order_no" => $order['no']];
         if ($request->has("status")) {
             switch ($request->get('status')) {
                 case "cancel":

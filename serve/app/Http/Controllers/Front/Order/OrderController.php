@@ -8,11 +8,11 @@ use App\Events\Shop\Sms\SmsSendEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderCalcRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
+use App\Http\Resources\Order\Front\FrontOrderDetailResource;
+use App\Http\Resources\Order\Front\FrontOrderListCollection;
+use App\Http\Resources\Order\Front\FrontOrderListResource;
 use App\Http\Resources\Order\OrderCalcResource;
-use App\Http\Resources\Order\OrderCollection;
-use App\Http\Resources\Order\OrderDetail;
 use App\Http\Resources\Order\OrderPaymentResource;
-use App\Http\Resources\Order\OrderResource;
 use App\Jobs\Order\CloseOrder;
 use App\Models\Order;
 use App\Models\OrderAddress;
@@ -55,14 +55,14 @@ class OrderController extends Controller
             }
         }
         $orders = $orders->orderBy('created_at', 'desc')->paginate($request->get('pageSize'));
-        return $this->jsonSuccessResponse(new OrderCollection($orders));
+        return $this->jsonSuccessResponse(new FrontOrderListCollection($orders));
     }
 
     public function show(Request $request)
     {
         $order = auth('customers')->user()->orders()->where('no', $request->route()->parameter('order'))->first();
         if (!$order) return $this->jsonErrorResponse(404, "未找到此订单");
-        return $this->jsonSuccessResponse(new OrderDetail($order));
+        return $this->jsonSuccessResponse(new FrontOrderDetailResource($order));
     }
 
     public function store(OrderStoreRequest $request)
@@ -77,7 +77,7 @@ class OrderController extends Controller
         CloseOrder::dispatch($order,$shop['auto_close_in']);
         event(new SmsSendEvent($shop['id'], $customer['mobile'], "order_create", $data));
         event(new SmsSendEvent($shop['id'], $shop['user']['mobile'], "admin_order_create", $data));
-        return $this->jsonSuccessResponse(new OrderResource($order));
+        return $this->jsonSuccessResponse(new FrontOrderListResource($order));
     }
 
     public function update(Request $request)

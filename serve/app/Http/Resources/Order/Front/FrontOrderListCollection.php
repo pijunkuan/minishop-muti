@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Order;
+namespace App\Http\Resources\Order\Front;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class OrderCollection extends ResourceCollection
+class FrontOrderListCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class OrderCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            "data" => OrderResource::collection($this->collection),
+            "data" => FrontOrderListResource::collection($this->collection),
             'page' => [
                 'total' => $this->total(),
                 'count' => $this->count(),
