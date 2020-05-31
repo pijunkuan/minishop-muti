@@ -23,7 +23,7 @@ class AdminOrderListResource extends JsonResource
             "no" => $this['no'],
             "name" => $address['name'],
             "mobile" => $address['mobile'],
-            "address" => $address['full_address'],
+            "address" => $address->full_address,
             "zip"=>$address['zip'],
             "status"=>$this['refund_status']?$this['refund_status']:$this['status'],
             "status_value"=>$this['refund_status']?Order::refundStatusMap[$this['refund_status']]:Order::orderStatusMap[$this['status']],
