@@ -44,6 +44,8 @@ Route::group([
         Route::put('{order}', "OrderController@update");
         Route::get('{order}/shipment', 'OrderShipController@index');
         Route::post('{order}/shipment', 'OrderShipController@store');
+        Route::get('{order}/tip', 'OrderController@tips_index');
+        Route::post('{order}/tip', 'OrderController@tips_store');
         Route::get('{order}', "OrderController@show");
     });
     Route::prefix('sms')->namespace('Sms')->group(function () {

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AdminOrderUpdateRequest;
 use App\Http\Resources\Order\Admin\AdminOrderDetailResource;
 use App\Http\Resources\Order\Admin\AdminOrderListCollection;
+use App\Http\Resources\Order\Admin\AdminOrderTipsResource;
 use App\Http\Resources\OrderRefundRecord\OrderRefundRecordResource;
 use App\Models\Order;
 use App\Models\OrderAddress;
@@ -162,5 +163,29 @@ class OrderController extends Controller
             event(new OrderRefundRecordCreateEvent($order,$data));
             return $this->jsonSuccessResponse();
         }
+    }
+
+    public function tips_index(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
+        $tips = $order->tips;
+        return $this->jsonSuccessResponse(AdminOrderTipsResource::collection($tips));
+    }
+
+    public function tips_store(Request $request)
+    {
+        $shop = $request->get('ori_shop');
+        $order = $shop->orders()->findOrFail($request->route()->parameter('order'));
+        $validator = Validator::make($request->all(),[
+            "tip"=>"required"
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonSuccessResponse($validator->errors()->first());
+        } else {
+            $data = $validator->validate();
+           $tip = $order->tips()->create($data);
+        }
+        return $this->jsonSuccessResponse(new AdminOrderTipsResource($tip));
     }
 }

@@ -50,7 +50,7 @@ class AdminOrderDetailResource extends JsonResource
             "status_value" => Order::orderStatusMap[$this['status']],
             "refund_status" => $this['refund_status'] ?: null,
             "refund_status_value" => $this['refund_status'] ? Order::refundStatusMap[$this['refund_status']] : null,
-            "tips"=>array(),
+            "tips"=>AdminOrderTipsResource::collection($this['tips']),
             "send_at" => is_null($this['send_at']) ? null : $this['send_at'],
             "pay_at" => is_null($this['pay_at']) ? null : $this['pay_at'],
             "success_at" => is_null($this['success_at']) ? null : $this['success_at'],

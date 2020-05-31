@@ -31,7 +31,7 @@ class AdminOrderListResource extends JsonResource
             "items" => OrderItemResource::collection($this['items']),
             "remark" => $this['remark'],
             "created_at" => $this['created_at']->toDateTimeString(),
-            "tips"=>array(),
+            "tips"=>AdminOrderTipsResource::collection($this['tips']),
         ];
     }
 }

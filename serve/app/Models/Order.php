@@ -101,6 +101,11 @@ class Order extends Model
         return $this->hasMany(OrderSuborder::class,"order_id");
     }
 
+    public function tips()
+    {
+        return $this->hasMany(OrderTip::class,"order_id");
+    }
+
     public static function findAvailableNo()
     {
         // 订单流水号前缀
