@@ -33,7 +33,7 @@ class OrderCancelListener
      */
     public function handle(OrderStatusEvent $event)
     {
-        if ($event->status == Order::ORDER_STATUS_CANCEL) {
+        if ($event->status == Order::ORDER_STATUS_PENDING) {
             $order = $event->order;
             if ($order['status'] != Order::ORDER_STATUS_PENDING) throw (new HttpResponseException(response()->json(['code' => 422, "message" => "该订单状态下无法取消订单", "data" => null,], 422)));
             DB::beginTransaction();
