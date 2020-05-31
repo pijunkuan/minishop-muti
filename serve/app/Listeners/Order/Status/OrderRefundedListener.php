@@ -32,7 +32,7 @@ class OrderRefundedListener
      */
     public function handle(OrderStatusEvent $event)
     {
-        if ($event->status = Order::REFUND_STATUS_REFUNDED) {
+        if ($event->status == Order::REFUND_STATUS_REFUNDED) {
             $order = $event->order;
             if (in_array($order['status'], [
                 Order::ORDER_STATUS_PENDING, Order::ORDER_STATUS_CANCEL, Order::ORDER_STATUS_CLOSED,

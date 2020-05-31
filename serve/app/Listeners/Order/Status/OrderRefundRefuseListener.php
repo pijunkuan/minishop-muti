@@ -32,7 +32,7 @@ class OrderRefundRefuseListener
      */
     public function handle(OrderStatusEvent $event)
     {
-        if ($event->status = "refund_refuse") {
+        if ($event->status == "refund_refuse") {
             $order = $event->order;
             if ($order['refund_status'] != Order::REFUND_STATUS_REFUNDING)
                 throw (new HttpResponseException(response()->json(['code' => 422, "message" => "该订单没有申请退单", "body" => null,], 422)));
