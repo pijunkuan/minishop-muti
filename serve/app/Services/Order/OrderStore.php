@@ -176,7 +176,8 @@ class OrderStore
         foreach ($suborders as $suborder) {
             $temp = $order->suborders()->create([
                 "items_amount" => $suborder['items_amount'],
-                "shipments_amount" => $suborder['shipments_amount']
+                "shipments_amount" => $suborder['shipments_amount'],
+                "shipment_name" => $suborder['shipment_name']
             ]);
             foreach ($suborder['items'] as $item) {
                 $temp->items()->create([
