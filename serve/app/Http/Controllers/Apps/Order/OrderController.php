@@ -152,7 +152,7 @@ class OrderController extends Controller
             "content"=>"required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonSuccessResponse($validator->errors()->first());
+            return $this->jsonErrorResponse($validator->errors()->first());
         } else {
             $data = $validator->validate();
             $order_amount = $order['amount'];
