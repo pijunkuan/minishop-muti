@@ -164,6 +164,7 @@ class OrderStore
                         $shipments_amount += ceil($calc_value / $shipment['value_2']) * $shipment['price_2'];
                     }
                     $suborders[$key]['shipments_amount'] = $shipments_amount;
+                    $suborders[$key]['shipment_name']= $shipment['shipment_name'];
                 }
             }
         }

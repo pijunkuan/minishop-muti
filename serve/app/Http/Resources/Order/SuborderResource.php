@@ -17,6 +17,7 @@ class SuborderResource extends JsonResource
         return [
             "shipments_amount"=>$this['shipments_amount'],
             "items_amount"=>$this['items_amount'],
+            "shipment_name"=>$this['shipment_name'],
             "items"=>OrderItemResource::collection($this['items'])
         ];
     }
