@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Order;
 
 use App\Models\Order;
+use App\Models\OrderPayment;
 use App\Models\OrderRefund;
 use App\Models\ProductVariant;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -36,10 +37,11 @@ class AdminOrderDetail extends JsonResource
             }
         }
 
+
         return [
             "no" => $this['no'],
             "customer" => $this['customer'],
-            "payment" => $this->payments()->orderBy('created_at', "desc")->first(),
+            "payment" => new OrderPaymentResource($this->payments()->whereIn('status',[OrderPayment::PAYMENT_STATUS_SUCCESS,OrderPayment::PAYMENT_STATUS_PENDING])->orderBy('created_at', "desc")->first()),
             "shipments" => OrderShipmentResource::collection($this->shipments),
             "address" => $address,
             "items" => OrderItemResource::collection($this['items']),

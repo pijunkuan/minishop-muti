@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Order;
 
 use App\Models\OrderPayment;
+use App\Models\SysPaymentMethod;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderPaymentResource extends JsonResource
@@ -20,8 +21,8 @@ class OrderPaymentResource extends JsonResource
             "pay_no" => $this['pay_no'],
             "no" => $this['no'],
             "payment_method" => $this['payment_method'],
+            "payment_method_value"=>SysPaymentMethod::where('method_code',$this['payment_method'])->value('method_title'),
             "pay_amount" => $this['pay_amount'],
-//            "pay_url" => route('front.order.pay', ["no" => $this['no']]),
             "pay_url"=>asset("order/pay/{$this['no']}"),
             "status" => $this['status'],
             "status_value" => OrderPayment::paymentStatusMap[$this['status']],
