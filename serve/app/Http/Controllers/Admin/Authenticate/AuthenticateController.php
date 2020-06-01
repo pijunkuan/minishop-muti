@@ -35,7 +35,7 @@ class AuthenticateController extends Controller
     public function update(Request $request)
     {
         $authenticate = ShopAuthenticate::findOrFail($request->route()->parameter('authenticate'));
-        if($authenticate != ShopAuthenticate::AUTH_STATUS_PENDING) return $this->jsonErrorResponse(422,"该状态无法认证");
+        if($authenticate['status'] != ShopAuthenticate::AUTH_STATUS_PENDING) return $this->jsonErrorResponse(422,"该状态无法认证");
         $validator = Validator::make($request->all(),[
             "status"=>["required",Rule::in([ShopAuthenticate::AUTH_STATUS_SUCCESS,ShopAuthenticate::AUTH_STATUS_FAILED])],
         ]);
