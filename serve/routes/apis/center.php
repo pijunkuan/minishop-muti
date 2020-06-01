@@ -7,6 +7,9 @@ Route::group([
     Route::group(["prefix" => "shop", "namespace" => "Shop"], function () {
         Route::get('info', "ShopController@info");
         Route::put('update', "ShopController@update");
+        Route::get('authenticate',"ShopController@authenticate_show");
+        Route::post('authenticate',"ShopController@authenticate_store");
+        Route::put('authenticate',"ShopController@authenticate_update");
         Route::group(['prefix' => "payment"], function () {
             Route::get('sys_payment', 'PaymentController@sys_index');
             Route::post('{code}', 'PaymentController@store');

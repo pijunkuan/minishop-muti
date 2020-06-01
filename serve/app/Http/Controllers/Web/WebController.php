@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class WebController extends Controller
@@ -23,9 +24,11 @@ class WebController extends Controller
 
     public function center(Request $request)
     {
+        $web_name = "MINISHOP";
         $file = "templates/center/";
         return view("center",[
-            "file" => $file
+            "file" => $file,
+            "web_name"=>$web_name
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Shop;
 
+use App\Http\Resources\Shop\Authenticate\AuthenticateResource;
 use App\Models\Shop;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -37,7 +38,8 @@ class ShopResource extends JsonResource
             "auto_close_in"=>$this['auto_close_in'],
             "auto_receive_in"=>$this['auto_receive_in'],
             "level"=>$level,
-            "sms_amount"=>$this['sms_account']['amount']
+            "sms_amount"=>$this['sms_account']['amount'],
+            "authenticate"=>new AuthenticateResource($this['authenticate'])
         ];
     }
 }
