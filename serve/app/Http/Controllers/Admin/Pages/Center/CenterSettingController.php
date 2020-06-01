@@ -22,6 +22,7 @@ class CenterSettingController extends Controller
             "meta"=>"nullable",
             "logo"=>"nullable",
             "description"=>"nullable",
+            "service_qr_code"=>"nullable"
         ]);
         if ($validator->fails()) {
             return $this->jsonErrorResponse(422,$validator->errors()->first());
