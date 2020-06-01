@@ -44,6 +44,9 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::get('sys_template','SysTemplate\SysTemplateController@show');
         Route::put('sys_template','SysTemplate\SysTemplateController@update');
 
+        Route::get('sys_content','SysContent\SysContentController@show');
+        Route::put('sys_content','SysContent\SysContentController@update');
+
         Route::prefix('dashboard')->namespace('Dashboard')->group(function(){
             Route::get('user_static','DashboardController@user_static');
             Route::get('shop_static','DashboardController@shop_static');
