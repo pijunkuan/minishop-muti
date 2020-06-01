@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\SysAccountSetting;
+use App\Models\SysCenterSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,7 @@ class WebController extends Controller
 
     public function center(Request $request)
     {
-        $config = SysAccountSetting::first();
+        $config = SysCenterSetting::first();
         $file = "templates/center/";
         return view("center", [
             "file" => $file,
