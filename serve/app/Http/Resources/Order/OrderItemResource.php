@@ -19,9 +19,12 @@ class OrderItemResource extends JsonResource
         $img_url = null;
         if ($ori_variant) {
             if ($img = $ori_variant->product->product_images()->orderBy('sort', 'asc')->first()) $img_url = $img->image->url;
+            $product = $ori_variant['product'];
         }
+
         return [
             "variant_id"=>$this['variant_id'],
+            "product_id"=>isset($product)?$product['id']:null,
             "product_title" => $this['product_title'],
             "variant_title" => $this['variant_title'],
             "price" => $this['price'],
