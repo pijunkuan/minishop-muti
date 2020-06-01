@@ -12,7 +12,7 @@
 */
 
 //Route::post('paytest/{no}',"Front\Pay\PayController@test");
-//Route::get('sms_test',"Controller@test_sms");
+Route::get('sms_test',"Controller@test_sms");
 //Route::post('order_refund',"Controller@order_refund_test");
 
 

@@ -6,6 +6,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
     Route::get('logout', "AdminController@logout");
     Route::get('me', "AdminController@me");
     Route::put('me', "AdminController@update");
+    Route::get('config',"AdminController@config");
 
     Route::middleware('auth:admins')->group(function(){
         Route::get('wallet',"Wallet\WalletController@index");
@@ -58,6 +59,25 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         });
 
         Route::apiResource('authenticate',"Authenticate\AuthenticateController")->only(['index','update']);
+
+        Route::prefix('pages')->namespace('Pages')->group(function(){
+           Route::prefix('center')->namespace('Center')->group(function(){
+             Route::get('','CenterSettingController@show');
+             Route::put('','CenterSettingController@update');
+           });
+            Route::prefix('account')->namespace('Account')->group(function(){
+                Route::get('','AccountSettingController@show');
+                Route::put('','AccountSettingController@update');
+            });
+            Route::prefix('home')->namespace('Home')->group(function(){
+                Route::get('','HomeSettingController@show');
+                Route::put('','HomeSettingController@update');
+            });
+            Route::prefix('system')->namespace('System')->group(function(){
+                Route::get('','SystemSettingController@show');
+                Route::put('','SystemSettingController@update');
+            });
+        });
 
     });
 

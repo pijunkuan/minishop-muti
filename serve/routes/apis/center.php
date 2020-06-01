@@ -1,5 +1,11 @@
 <?php
 Route::group([
+    "prefix"=>"center",
+    "namespace"=>"Apps"
+],function(){
+    Route::get('config',"AppController@config");
+});
+Route::group([
     'prefix' => "center",
     "middleware" => ["auth:users", "shop_center"],
     "namespace" => "Apps"

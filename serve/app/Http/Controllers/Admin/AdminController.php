@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Edit;
 use App\Http\Requests\Admin\Login;
+use App\Models\SysSystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +13,7 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admins',['except'=>['login']]);
+        $this->middleware('auth:admins',['except'=>['login','config']]);
     }
 
     public function login(Login $request)
@@ -58,5 +59,10 @@ class AdminController extends Controller
             'token_type' => 'Bearer',
             'expires_in' => auth('admins')->factory()->getTTL() * 60
         ];
+    }
+
+    public function config()
+    {
+        return SysSystemSetting::first();
     }
 }

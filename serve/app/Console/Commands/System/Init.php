@@ -6,11 +6,15 @@ use App\Models\Admin;
 use App\Models\AdminContent;
 use App\Models\AdminTemplate;
 use App\Models\Shop;
+use App\Models\SysAccountSetting;
 use App\Models\SysAccountWay;
+use App\Models\SysCenterSetting;
+use App\Models\SysHomeSetting;
 use App\Models\SysLevel;
 use App\Models\SysShopPaymentMethod;
 use App\Models\SysSms;
 use App\Models\SysSmsTemplate;
+use App\Models\SysSystemSetting;
 use App\Models\SysTemplate;
 use App\Models\SysWxBankList;
 use Illuminate\Console\Command;
@@ -216,7 +220,14 @@ class Init extends Command
 //            ]);
 //        }
 //        $this->info('前台协议模板初始化成功');
-
+        if (!SysCenterSetting::first()) SysCenterSetting::create([]);
+        $this->info('Center配置文件初始化成功');
+        if (!SysAccountSetting::first()) SysAccountSetting::create([]);
+        $this->info('Account配置文件初始化成功');
+        if (!SysHomeSetting::first()) SysHomeSetting::create([]);
+        $this->info('Home配置文件初始化成功');
+        if (!SysSystemSetting::first()) SysSystemSetting::create([]);
+        $this->info('System配置文件初始化成功');
         $this->info('初始化成功');
     }
 }
