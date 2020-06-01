@@ -152,7 +152,7 @@ class OrderController extends Controller
             "content"=>"required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             $order_amount = $order['amount'];
@@ -181,7 +181,7 @@ class OrderController extends Controller
             "tip"=>"required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
            $tip = $order->tips()->create($data);

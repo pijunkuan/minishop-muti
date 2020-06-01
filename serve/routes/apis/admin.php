@@ -54,6 +54,8 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::get('system',"DashboardController@system_info");
         });
 
+        Route::apiResource('authenticate',"Authenticate\AuthenticateController")->only(['index','update']);
+
     });
 
 });

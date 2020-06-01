@@ -75,7 +75,7 @@ class ShopController extends Controller
             'images' => "required|array",
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             if ($shop->authenticate) $shop->authenticate->delete();
@@ -99,10 +99,13 @@ class ShopController extends Controller
             'images' => "nullable|array",
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
-            $shop->authenticate->update($data);
+            if(count($data)){
+                $data['status'] = ShopAuthenticate::AUTH_STATUS_PENDING;
+                $shop->authenticate->update($data);
+            }
             $shop->authenticate->refresh();
         }
         return $this->jsonSuccessResponse(new AuthenticateResource($shop->authenticate));

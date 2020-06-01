@@ -29,7 +29,7 @@ class CustomerController extends Controller
             "verification_code"=>"required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             $customer = $shop->customers()->where('mobile',$data['mobile'])->firstOrFail();

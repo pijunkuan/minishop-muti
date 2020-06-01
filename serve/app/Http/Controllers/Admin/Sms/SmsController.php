@@ -30,7 +30,7 @@ class SmsController extends Controller
             "sms_content" => "nullable",
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (count($data)) {
@@ -57,7 +57,7 @@ class SmsController extends Controller
             'time' => 'nullable|numeric'
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (count($data)) {
@@ -81,7 +81,7 @@ class SmsController extends Controller
             'time' => 'required|numeric'
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             if ($sms->variants()->where('time', $data['time'])->first()) return $this->jsonErrorResponse(422, "该条数已存在");
@@ -117,7 +117,7 @@ class SmsController extends Controller
             'status' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             if (!in_array($data['status'], [ShopSmsSign::SIGN_STATUS_SUCCESS, ShopSmsSign::SIGN_STATUS_FAILED])) return $this->jsonErrorResponse(422, "非法状态码");

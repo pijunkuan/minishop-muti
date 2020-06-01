@@ -17,7 +17,7 @@ class SmsController extends Controller
             "mobile"=>"required"
         ]);
         if ($validator->fails()) {
-            return $this->jsonErrorResponse($validator->errors()->first());
+            return $this->jsonErrorResponse(422,$validator->errors()->first());
         } else {
             $data = $validator->validate();
             $code = random_int(1000,9999);
