@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Apps\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Image\ImageResource;
 use App\Http\Resources\Shop\Authenticate\AuthenticateResource;
 use App\Http\Resources\Shop\ShopResource;
 use App\Models\Shop;
 use App\Models\ShopAuthenticate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -109,5 +112,15 @@ class ShopController extends Controller
             $shop->authenticate->refresh();
         }
         return $this->jsonSuccessResponse(new AuthenticateResource($shop->authenticate));
+    }
+
+    public function authenticate_pic(Request $request)
+    {
+        $file = $request->file('file');
+        $fileName = date('YmdHis').str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT).".".$file->getClientOriginalExtension();
+        $savePath = env("APP_NAME")."/authenticate/images/".$fileName;
+        Storage::put($savePath,File::get($file));
+        $url = Storage::url($savePath);
+        return $this->jsonSuccessResponse($url);
     }
 }

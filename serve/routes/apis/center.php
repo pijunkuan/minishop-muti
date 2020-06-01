@@ -10,6 +10,7 @@ Route::group([
         Route::get('authenticate',"ShopController@authenticate_show");
         Route::post('authenticate',"ShopController@authenticate_store");
         Route::put('authenticate',"ShopController@authenticate_update");
+        Route::post('authenticate/image',"ShopController@authenticate_pic");
         Route::group(['prefix' => "payment"], function () {
             Route::get('sys_payment', 'PaymentController@sys_index');
             Route::post('{code}', 'PaymentController@store');
