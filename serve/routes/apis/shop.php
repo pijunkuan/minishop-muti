@@ -2,6 +2,7 @@
 
 Route::namespace('Shop')->group(function () {
     Route::get('account/config','AccountController@config');
+    Route::get('account/contrast',"AccountController@contrast");
 
     Route::prefix('user')->namespace('User')->group(function () {
         Route::post('register', 'UserController@register');
