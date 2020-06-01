@@ -21,6 +21,7 @@ class AdminAuthenticateResource extends JsonResource
             "type"=>$this['type'],
             "type_value"=>ShopAuthenticate::authTypeMap[$this['type']],
             "name"=>$this['name'],
+            "company_name"=>$this['company_name'],
             "id_no"=>$this['id_no'],
             "address"=>$this['address'],
             "mobile"=>$this['mobile'],
