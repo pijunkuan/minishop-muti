@@ -32,6 +32,13 @@ Route::group(["domain" => "back.minishop.test",], function () {
     require __DIR__ . "/webs/admin.php";
 });
 
+Route::group(["domain" => "back-admin." . env('SHOP_HOST'),], function () {
+    require __DIR__ . "/webs/admin.php";
+});
+
+Route::group(["domain" => "www." . env('SHOP_HOST'),], function () {
+    require __DIR__ . "/webs/home.php";
+});
 
 Route::group(["domain" => "account." . env('SHOP_HOST'),], function () {
     require __DIR__ . "/webs/account.php";
@@ -41,10 +48,8 @@ Route::group(["domain" => "{account}." . env('SHOP_HOST'), "middleware" => ["sho
     require __DIR__ . "/webs/center.php";
     require __DIR__ . "/webs/shop.php";
 });
-Route::group(["domain" => "back." . env('SHOP_HOST'),], function () {
-    require __DIR__ . "/webs/admin.php";
-});
 
-require __DIR__ . "/webs/home.php";
+
+
 
 
