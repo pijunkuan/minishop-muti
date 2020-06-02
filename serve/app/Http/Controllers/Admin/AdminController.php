@@ -20,7 +20,7 @@ class AdminController extends Controller
     {
         $credentials = \request(['username','password']);
         if (!$token = auth('admins')->attempt($credentials)) {
-            return $this->jsonErrorResponse(401,"用户认证失败");
+            return $this->jsonErrorResponse(422,"用户认证失败");
         }
         return $this->jsonSuccessResponse($this->respondWithToken($token));
     }

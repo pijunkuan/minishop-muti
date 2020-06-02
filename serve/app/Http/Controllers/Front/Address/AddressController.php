@@ -42,7 +42,7 @@ class AddressController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
-            return $this->jsonErrorResponse(401, $exception->getMessage());
+            return $this->jsonErrorResponse(422, $exception->getMessage());
         }
         return $this->jsonSuccessResponse(new AddressResource($address), "地址创建成功");
     }
@@ -73,12 +73,12 @@ class AddressController extends Controller
                 DB::commit();
             } catch (\Exception $exception) {
                 DB::rollBack();
-                return $this->jsonErrorResponse(401, $exception->getMessage());
+                return $this->jsonErrorResponse(422, $exception->getMessage());
             }
 
             return $this->jsonSuccessResponse();
         } else {
-            return $this->jsonErrorResponse(401, "没有此记录");
+            return $this->jsonErrorResponse(422, "没有此记录");
         }
     }
 
@@ -91,7 +91,7 @@ class AddressController extends Controller
                     auth('customers')->user()->addresses()->first()->update(['default' => true]);
             return $this->jsonSuccessResponse();
         } else {
-            return $this->jsonErrorResponse(401, "没有此记录");
+            return $this->jsonErrorResponse(422, "没有此记录");
         }
     }
 }

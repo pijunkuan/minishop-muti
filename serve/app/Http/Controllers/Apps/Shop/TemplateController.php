@@ -29,7 +29,7 @@ class TemplateController extends Controller
     {
         $shop = $request->get('ori_shop');
         if (!$request->has('setting') || !$request->get('setting'))
-            return $this->jsonErrorResponse(401, "setting不能为空");
+            return $this->jsonErrorResponse(422, "setting不能为空");
         $template = $shop->templates()->findOrFail($request->route()->parameter('template'));
         $setting = $template['setting'];
         $setting->setting = $request->get('setting');

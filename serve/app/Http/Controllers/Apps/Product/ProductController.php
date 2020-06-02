@@ -53,7 +53,7 @@ class ProductController extends Controller
             $product['product_title'] = $product_spu['product_title'];
             $product['on_sale'] = $product_spu['on_sale'];
             if (!$shop->shipments()->find($product_spu['shipment_id']))
-                return $this->jsonErrorResponse(401, "无该运输模板");
+                return $this->jsonErrorResponse(422, "无该运输模板");
             $product['shipment_id'] = $product_spu['shipment_id'];
             if (isset($product_spu['product_unit'])) $product['product_unit'] = $product_spu['product_unit'];
             if (isset($product_spu['product_des'])) $product['product_des'] = $product_spu['product_des'];
@@ -89,7 +89,7 @@ class ProductController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
-            return $this->jsonErrorResponse(401, "创建失败");
+            return $this->jsonErrorResponse(422, "创建失败");
         }
         return $this->jsonSuccessResponse(new AdminProductDetailResource($product));
     }
@@ -104,7 +104,7 @@ class ProductController extends Controller
                 $product_spu = $request->get('product');
                 if (isset($product_spu['shipment_id'])) {
                     if (!$shop->shipments()->find($product_spu['shipment_id']))
-                        return $this->jsonErrorResponse(401, "无该运输模板");
+                        return $this->jsonErrorResponse(422, "无该运输模板");
                     $product['shipment_id'] = $product_spu['shipment_id'];
                 }
                 if (isset($product_spu['product_title'])) $product['product_title'] = $product_spu['product_title'];
@@ -165,7 +165,7 @@ class ProductController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
-            return $this->jsonErrorResponse(401, "创建失败" . "，原因：" . $exception->getMessage());
+            return $this->jsonErrorResponse(422, "创建失败" . "，原因：" . $exception->getMessage());
         }
         return $this->jsonSuccessResponse(new AdminProductDetailResource($product));
     }

@@ -21,8 +21,8 @@ class UserController extends Controller
     public function register(UserRegisterRequest $request)
     {
         $code = Cache::get("SMS_CODE{$request->get('mobile')}");
-        if(!$code) return $this->jsonErrorResponse(401,"验证码不存在");
-        if((string)$code != (string)$request->get('verification_code')) return $this->jsonErrorResponse(401,"验证码不正确");
+        if(!$code) return $this->jsonErrorResponse(422,"验证码不存在");
+        if((string)$code != (string)$request->get('verification_code')) return $this->jsonErrorResponse(422,"验证码不正确");
         $user = User::create([
             'mobile'=>$request->get('mobile'),
             "password"=>Hash::make($request->get('password'))
@@ -31,7 +31,7 @@ class UserController extends Controller
             Cache::forget("SMS_CODE{$request->get('mobile')}");
             return $this->jsonSuccessResponse($this->respondWithToken(auth('users')->login($user)),"注册成功");
         }else{
-            return $this->jsonErrorResponse(401,"创建失败");
+            return $this->jsonErrorResponse(422,"创建失败");
         }
     }
 
@@ -39,7 +39,7 @@ class UserController extends Controller
     {
         $credentials = \request(['mobile','password']);
         if (!$token = auth('users')->attempt($credentials)) {
-            return $this->jsonErrorResponse(401,"用户认证失败（如：密码错误）");
+            return $this->jsonErrorResponse(422,"用户认证失败（如：密码错误）");
         }
         return $this->jsonSuccessResponse($this->respondWithToken($token));
     }
@@ -47,8 +47,8 @@ class UserController extends Controller
     public function forget(UserLoginRequest $request)
     {
         $code = Cache::get("SMS_CODE{$request->get('mobile')}");
-        if(!$code) return $this->jsonErrorResponse(401,"验证码不存在");
-        if($code != $request->get('verification_code')) return $this->jsonErrorResponse(401,"验证码不正确");
+        if(!$code) return $this->jsonErrorResponse(422,"验证码不存在");
+        if($code != $request->get('verification_code')) return $this->jsonErrorResponse(422,"验证码不正确");
         $user = User::where('mobile',$request->get('mobile'))->firstOrFail();
         $user['password']= Hash::make($request->get('password'));
         $user->save();

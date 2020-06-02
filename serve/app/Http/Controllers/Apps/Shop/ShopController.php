@@ -29,7 +29,7 @@ class ShopController extends Controller
         if ($request->has('shop_url')) {
             if ($shop->level->level['domain_edit']) {
                 if (Shop::where('id', "<>", $shop['id'])->where('shop_url', $request->get('shop_url'))->first()) {
-                    return $this->jsonErrorResponse(401, "商铺链接已存在，不可重复");
+                    return $this->jsonErrorResponse(422, "商铺链接已存在，不可重复");
                 }
                 $shop->shop_url = $request->get('shop_url');
             }
@@ -39,7 +39,7 @@ class ShopController extends Controller
                 Shop::SHOP_STATUS_ACTIVE,
                 Shop::SHOP_STATUS_PENDING,
             ])) {
-                return $this->jsonErrorResponse(401, '非法status代码');
+                return $this->jsonErrorResponse(422, '非法status代码');
             }
             $shop->status = $request->get('status');
         }

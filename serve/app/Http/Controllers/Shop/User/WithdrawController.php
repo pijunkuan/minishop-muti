@@ -35,7 +35,7 @@ class WithdrawController extends Controller
         $way = $request->get('way');
         $bank = null;
         if (!in_array($way, ['alipay', 'wxpay', 'bank']))
-            return $this->jsonErrorResponse(401, "方式代码不存在");
+            return $this->jsonErrorResponse(422, "方式代码不存在");
         $data['way'] = $way;
         $account = $request->get('account');
         if ($way == "bank") {

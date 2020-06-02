@@ -60,7 +60,7 @@ class CustomerController extends Controller
         if ($customer) {
             return $this->jsonSuccessResponse($this->respondWithToken(auth('customers')->login($customer)), "注册成功");
         } else {
-            return $this->jsonErrorResponse(401, "创建失败");
+            return $this->jsonErrorResponse(422, "创建失败");
         }
     }
 

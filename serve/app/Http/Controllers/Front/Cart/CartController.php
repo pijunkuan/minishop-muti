@@ -50,7 +50,7 @@ class CartController extends Controller
         if($cart_item = auth('customers')->user()->cartItems()->where('variant_id',$request->get('variant_id'))->first()){
             $cart_item->update(['quantity'=>$request->get('quantity')]);
         }else{
-            return $this->jsonErrorResponse(401,"购物车不存在该商品");
+            return $this->jsonErrorResponse(422,"购物车不存在该商品");
         }
         return $this->jsonSuccessResponse();
     }
@@ -76,7 +76,7 @@ class CartController extends Controller
     {
         $cart = Cache::get($request->route()->parameter('key'));
         if(!$cart) return $this->jsonErrorResponse(404,'该key不存在');
-        if($cart['customer_id'] !== auth('customers')->user()->id) return $this->jsonErrorResponse(401,'没有权限');
+        if($cart['customer_id'] !== auth('customers')->user()->id) return $this->jsonErrorResponse(422,'没有权限');
         return $this->jsonSuccessResponse(["items"=>$cart['items']]);
     }
 }
