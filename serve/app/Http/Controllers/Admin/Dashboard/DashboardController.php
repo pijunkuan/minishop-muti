@@ -120,6 +120,7 @@ class DashboardController extends Controller
             "server_time" => now(),
             "php_version" => PHP_VERSION,
             "php_run_type" => php_sapi_name(),
+            "soft_ware_version"=>config('app.soft_version'),
             "laravel_version" => app()::VERSION,
             "app_name"=>env('APP_NAME'),
             "app_url"=>env('APP_URL'),

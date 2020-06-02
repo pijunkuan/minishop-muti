@@ -35,6 +35,7 @@ class Controller extends BaseController
 
     public function test_sms(Request $request)
     {
+        return redirect("http://baidu.com",302);
 //        config(['center_setting.name'=>"test"]);
 //        echo config('center_setting.name');
 //        echo mb_strlen(null);
@@ -43,16 +44,5 @@ class Controller extends BaseController
 //        event(new SmsSendEvent($shop, "13032319853", "order_create", ['code' => '1234']));
     }
 
-    public function order_refund_test(Request $request)
-    {
-//        $params = [
-//            "pay_no" => $request->get('pay_no'),
-//            "refund_no"=>$request->get('refund_no'),
-//            "content" => "协商退款",
-//            "amount" => $request->get('amount')
-//        ];
-//        $pingxx = new PingXX(env('FRONT_PING_ID'));
-//        return $pingxx->refund_create($params);
-//        return $pingxx->refund_retrieve($params);
-    }
+
 }
