@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <meta name="keywords" content="{{$meta}}">
     <meta name="description" content="{{$description}}">
-    <link rel=stylesheet href="//at.alicdn.com/t/font_1789330_ptlh42r5dqn.css">
+    <link rel=stylesheet href="//at.alicdn.com/t/font_1789330_us8cukpmgy.css">
     <title>{{$title}}</title>
     <link href="{{asset($file.'css/app.css')}}" rel=stylesheet>
 
