@@ -35,6 +35,20 @@ php artisan migrate
 php artisan system:init
 ```
 
+>系统需要配置以下设置：
+>* 定时任务开启
+>* redis缓存
+>* supervisor监控以下队列：
+>```php
+>php artisan queue:work redis --queue=sms_account
+>```
+>```php
+>php artisan queue:work redis --queue=front_sms
+>```
+>```php
+>php artisan queue:work redis --queue=order
+>```
+
 ## License
 
 MINISHOP 框架遵循 [MIT license](https://opensource.org/licenses/MIT).
