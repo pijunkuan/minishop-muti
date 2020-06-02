@@ -5,6 +5,8 @@ namespace App\Services\PingXX;
 
 
 use App\Exceptions\ApiException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
 use Pingpp\Charge;
 use Pingpp\Pingpp;
 use Pingpp\Transfer;
@@ -25,7 +27,6 @@ class PingXX
     private $Wx_pub_key;
 
     private $Ping_app_id;
-    private $Ping_app_id_meiztong = 'app_PyXfXTDiXzPKKmnb';
 
     public function __construct($ping_app_id)
     {
@@ -99,7 +100,12 @@ class PingXX
         try {
             $open_id = WxpubOAuth::getOpenid($this->Wx_pub_id, $this->Wx_pub_key, $code);
         } catch (\Exception $exception) {
-            throw new ApiException([$exception->getCode(), $exception->getMessage()]);
+            Log::error($exception->getMessage());
+            throw (new HttpResponseException(response()->json([
+                'code' => 422,
+                "message" => $exception->getMessage(),
+                "body" => null,
+            ], 422)));
         }
         $amount = ceil($params['amount'] * 100);
         $c = [

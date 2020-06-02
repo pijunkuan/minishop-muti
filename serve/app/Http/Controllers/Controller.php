@@ -36,12 +36,6 @@ class Controller extends BaseController
     public function test_sms(Request $request)
     {
         return redirect("http://baidu.com",302);
-//        config(['center_setting.name'=>"test"]);
-//        echo config('center_setting.name');
-//        echo mb_strlen(null);
-//        event(new SmsAmountEvent(13,'out',"测试短信时间","13033339999"));
-//        $shop = Shop::find(13);
-//        event(new SmsSendEvent($shop, "13032319853", "order_create", ['code' => '1234']));
     }
 
 

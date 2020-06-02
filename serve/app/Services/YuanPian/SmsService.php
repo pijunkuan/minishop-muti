@@ -22,8 +22,8 @@ class SmsService
                 if(!isset($data[$key]))
                     throw (new HttpResponseException(response()->json([
                         'code' => 422,
-                        "msg" => "缺少 {$key} 参数",
-                        "data" => null,
+                        "message" => "缺少 {$key} 参数",
+                        "body" => null,
                     ], 422)));
                 $content = str_replace("#{$key}#",$data[$key],$content);
             }

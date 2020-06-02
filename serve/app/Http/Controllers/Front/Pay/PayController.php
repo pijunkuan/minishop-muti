@@ -51,9 +51,11 @@ class PayController extends Controller
                         "url"=>url('checksuc')
                     ];
                     $charge = $pingxx->m_wxpay($params,$_GET['code']);
+                    $shop = $payment->order->shop;
+                    $url = "//{$shop['shop_url']}.".env("SHOP_HOST")."/checksuc";
                     return view('Pay.pay', [
                         "charge" => $charge,
-                        "url"=>url('checksuc')
+                        "url"=>$url
                     ]);
                 }else{
                     $url = $pingxx->wx_getToken($payment['no']);
@@ -119,29 +121,5 @@ class PayController extends Controller
         } else {
             return response()->json(['msg' => "verification error"], 400);
         }
-    }
-
-    public function test(Request $request)
-    {
-//        $payment = OrderPayment::where('no',$request->route()->parameter('no'))->firstOrFail();
-//        event(new OrderEvent($payment));
-
-//        $pingxx = new PingXX(env("FRONT_PING_ID"));
-//        $params = [
-//            "no"=>"test123".time(),
-//            "amount"=>10,
-//            "url"=>url('checksuc')
-//        ];
-//        $charge = $pingxx->m_wxpay($params);
-//        $data = [
-//            "order"=>[
-//                "amount"=>$charge['amount'],
-//                "order_no"=>$charge['order_no']
-//            ],
-//            "url"=>$charge['credential']['wx_pub_qr']
-//        ];
-//        return view('Pay.wx',["data"=>$data]);
-////        $charge = $pingxx->m_alipay($params);
-//        return $this->jsonSuccessResponse($charge);
     }
 }
