@@ -53,7 +53,7 @@ class WebController extends Controller
         ]);
     }
 
-    public function system_admin()
+    public function admin_system()
     {
         $file = "templates/system/";
         $config = SysSystemSetting::first();
