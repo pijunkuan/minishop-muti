@@ -5,7 +5,7 @@
 * 通过Git克隆本项目
 
 ```$xslt
-git clone https://github.com/pijunkuan/minishop-multi.git
+git clone https://github.com/pijunkuan/minishop-muti.git
 ```
 
 * 进入文件夹然后安装依赖
