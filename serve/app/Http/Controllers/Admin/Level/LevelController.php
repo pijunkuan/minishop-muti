@@ -30,6 +30,7 @@ class LevelController extends Controller
             "domain_edit" => "nullable|boolean",
             "unlock_days" => "nullable|numeric",
             "fee_rate" => "nullable|numeric",
+            "sms_amount" => "nullable|numeric"
         ]);
         if ($validator->fails()) {
             return $this->jsonErrorResponse(422,$validator->errors()->first());

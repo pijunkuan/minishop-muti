@@ -60,13 +60,14 @@ class PaySuccessConfirmation
             ], 422)));
         }
         $order = $payment->shopOrder;
-        if(!$order->shop){
-            event(new CreateShopEvent($order->user,$order['no']));
+        if (!$order->shop) {
+            event(new CreateShopEvent($order->user, $order['no']));
             $order->refresh();
             $shop = $order->shop;
             $level = SysLevel::find($order->item['sys_block_id']);
-            event(new SmsAmountEvent($shop['id'],'in',"版本赠送{$level['sms_amount']}",null,$level['sms_amount']));
+            $sms_amount = $level['sms_amount'] * $order->item['time'];
+            event(new SmsAmountEvent($shop['id'], 'in', "版本赠送{$sms_amount}", null, $sms_amount));
         }
-        event(new BlockSuccessEvent($order->shop,$order->item['type'],$order->item['sys_block_id'],$order->item['time']));
+        event(new BlockSuccessEvent($order->shop, $order->item['type'], $order->item['sys_block_id'], $order->item['time']));
     }
 }
