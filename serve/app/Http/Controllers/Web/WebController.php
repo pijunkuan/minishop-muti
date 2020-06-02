@@ -36,7 +36,8 @@ class WebController extends Controller
             "title" => $config['title'],
             "meta" => $config['meta'],
             "logo" => $config['logo'],
-            "description" => $config['description']
+            "description" => $config['description'],
+            'ico'=>$config['ico']
         ]);
     }
 
@@ -49,7 +50,8 @@ class WebController extends Controller
             "title" => $config['title'],
             "meta" => $config['meta'],
             "logo" => $config['logo'],
-            "description" => $config['description']
+            "description" => $config['description'],
+            'ico'=>$config['ico']
         ]);
     }
 
@@ -62,7 +64,8 @@ class WebController extends Controller
             "title" => $config['title'],
             "meta" => $config['meta'],
             "logo" => $config['logo'],
-            "description" => $config['description']
+            "description" => $config['description'],
+            'ico'=>$config['ico']
         ]);
     }
 
@@ -75,7 +78,8 @@ class WebController extends Controller
             "title" => $config['title'],
             "meta" => $config['meta'],
             "logo" => $config['logo'],
-            "description" => $config['description']
+            "description" => $config['description'],
+            'ico'=>$config['ico']
         ]);
     }
 

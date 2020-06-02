@@ -22,6 +22,7 @@ class AccountSettingController extends Controller
             "meta"=>"nullable",
             "logo"=>"nullable",
             "description"=>"nullable",
+            "ico"=>"nullable",
         ]);
         if ($validator->fails()) {
             return $this->jsonErrorResponse(422,$validator->errors()->first());
