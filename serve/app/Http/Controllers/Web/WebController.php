@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\SysAccountSetting;
 use App\Models\SysCenterSetting;
+use App\Models\SysHomeSetting;
+use App\Models\SysSystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
@@ -43,6 +45,32 @@ class WebController extends Controller
         $file = "templates/account/";
         $config = SysAccountSetting::first();
         return view('account', [
+            "file" => $file,
+            "title" => $config['title'],
+            "meta" => $config['meta'],
+            "logo" => $config['logo'],
+            "description" => $config['description']
+        ]);
+    }
+
+    public function system_admin()
+    {
+        $file = "templates/system/";
+        $config = SysSystemSetting::first();
+        return view('system', [
+            "file" => $file,
+            "title" => $config['title'],
+            "meta" => $config['meta'],
+            "logo" => $config['logo'],
+            "description" => $config['description']
+        ]);
+    }
+
+    public function home()
+    {
+        $file = "templates/home/";
+        $config = SysHomeSetting::first();
+        return view('home', [
             "file" => $file,
             "title" => $config['title'],
             "meta" => $config['meta'],
