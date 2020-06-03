@@ -1,9 +1,9 @@
 <?php
 Route::group([
-    "prefix"=>"center",
-    "namespace"=>"Apps"
-],function(){
-    Route::get('config',"AppController@config");
+    "prefix" => "center",
+    "namespace" => "Apps"
+], function () {
+    Route::get('config', "AppController@config");
 });
 Route::group([
     'prefix' => "center",
@@ -13,10 +13,10 @@ Route::group([
     Route::group(["prefix" => "shop", "namespace" => "Shop"], function () {
         Route::get('info', "ShopController@info");
         Route::put('update', "ShopController@update");
-        Route::get('authenticate',"ShopController@authenticate_show");
-        Route::post('authenticate',"ShopController@authenticate_store");
-        Route::put('authenticate',"ShopController@authenticate_update");
-        Route::post('authenticate/image',"ShopController@authenticate_pic");
+        Route::get('authenticate', "ShopController@authenticate_show");
+        Route::post('authenticate', "ShopController@authenticate_store");
+        Route::put('authenticate', "ShopController@authenticate_update");
+        Route::post('authenticate/image', "ShopController@authenticate_pic");
         Route::group(['prefix' => "payment"], function () {
             Route::get('sys_payment', 'PaymentController@sys_index');
             Route::post('{code}', 'PaymentController@store');
@@ -49,8 +49,8 @@ Route::group([
     Route::prefix('order')->namespace('Order')->group(function () {
         Route::get('', 'OrderController@index');
         Route::put('status/{order}', "OrderController@status");
-        Route::get('refund_record/{order}',"OrderController@refund_record_list");
-        Route::post('refund_record/{order}',"OrderController@refund_record_store");
+        Route::get('refund_record/{order}', "OrderController@refund_record_list");
+        Route::post('refund_record/{order}', "OrderController@refund_record_store");
         Route::put('{order}', "OrderController@update");
         Route::get('{order}/shipment', 'OrderShipController@index');
         Route::post('{order}/shipment', 'OrderShipController@store');
@@ -59,15 +59,18 @@ Route::group([
         Route::get('{order}', "OrderController@show");
     });
     Route::prefix('sms')->namespace('Sms')->group(function () {
-        Route::get('sign',"SmsController@sign_index");
-        Route::post('sign',"SmsController@sign_store");
-        Route::delete('sign/{sign}',"SmsController@sign_destroy");
-        Route::put('sign/{sign}',"SmsController@sign_update");
-        Route::get('log','SmsController@log');
+        Route::get('sign', "SmsController@sign_index");
+        Route::post('sign', "SmsController@sign_store");
+        Route::delete('sign/{sign}', "SmsController@sign_destroy");
+        Route::put('sign/{sign}', "SmsController@sign_update");
+        Route::get('log', 'SmsController@log');
         Route::put('{sms}', 'SmsController@update');
         Route::get('', 'SmsController@index');
     });
 
     Route::get('dashboard/{type}', "Dashboard\DashboardController@dashboard_static");
 
+    Route::prefix('tools')->group(function () {
+        Route::post('img2base64', "AppController@img2base64");
+    });
 });
