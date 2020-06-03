@@ -71,7 +71,8 @@ class RefundListController extends Controller
                     }
                     break;
                 case "failed":
-                    event(new WalletRefundConfirmEvent($list,"failed"));
+
+                    event(new WalletRefundConfirmEvent($list,"failed",isset($data['content'])?$data['content']:null));
                     break;
                 default:
                     return $this->jsonErrorResponse(422, "非法的状态码");
