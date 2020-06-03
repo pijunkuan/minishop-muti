@@ -10,26 +10,19 @@
 |
 */
 
-//Route::post('paytest/{no}',"Front\Pay\PayController@test");
 
-require_once __DIR__ . "/apis/shop.php";
+require __DIR__ . "/apis/shop.php";
 require_once __DIR__ . "/apis/admin.php";
 
 Route::get('common/home_template',"Controller@home_template");
 Route::get('common/home_config',"Controller@home_config");
 
 Route::group([
-    "domain" => "{account}.minishop.test",
+    "domain" => "{account}.". env('SHOP_HOST'),
 ], function () {
     require __DIR__ . "/apis/center.php";
     require __DIR__ . "/apis/front.php";
-});
-Route::group([
-    "domain" => "{account}.min-eshop.vip",
-], function () {
-    require __DIR__ . "/apis/center.php";
-    require __DIR__ . "/apis/front.php";
-
+    require __DIR__ . "/apis/shop.php";
 });
 
 
