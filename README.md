@@ -27,12 +27,13 @@ Laravel 6+，PHP 7.1+，Mysql5.7
 
 ### 域名说明
 SHOP_HOST 是主域名地址，不要带http://或者https://
+
 举例：SHOP_HOST = minishop.test
-back-admin.minishop.test 系统后台
-www.minishop.test 首页
-account.minishop.test 商城中心
-shop123.minishop.test 商城首页
-shop123.minishop.test/center 商城后台
+* back-admin.minishop.test 系统后台
+* www.minishop.test 首页
+* account.minishop.test 商城中心
+* shop123.minishop.test 商城首页
+* shop123.minishop.test/center 商城后台
 
 喜欢的亲可以帮忙点亮小星星，你们的支持是我们前进的动力。
 

@@ -132,10 +132,10 @@ class OrderController extends Controller
         $refund_records = $order->refund_records;
 
         $rs = [
-            "order_amount" => $order_amount,
-            "refund_amount_pending" => $refund_amount_pending,
-            "refund_amount_success" => $refund_amount_success,
-            "refund_amount_rest" => $order_amount - $refund_amount_pending - $refund_amount_success,
+            "order_amount" => round($order_amount,2),
+            "refund_amount_pending" => round($refund_amount_pending,2),
+            "refund_amount_success" => round($refund_amount_success,2),
+            "refund_amount_rest" => round($order_amount - $refund_amount_pending - $refund_amount_success,2),
             "refund_record_list"=> OrderRefundRecordResource::collection($refund_records)
         ];
         return $this->jsonSuccessResponse($rs);
