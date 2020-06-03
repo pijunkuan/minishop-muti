@@ -54,8 +54,8 @@ class TemplateConfirmation
                     }
                     $shop_template = $shop_template->refresh();
                     $default_setting_file = "{$template['template_file']}template_setting.json";
-                    if(Storage::exists($default_setting_file)){
-                        $default_setting = json_decode(Storage::get($default_setting_file),true);
+                    if(Storage::disk('local')->exists($default_setting_file)){
+                        $default_setting = json_decode(Storage::disk('local')->get($default_setting_file),true);
                     }else{
                         $default_setting = null;
                     }
