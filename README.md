@@ -5,6 +5,10 @@
 
 > 欢迎各位大牛多多提意见，也欢迎各位有兴趣的朋友一起维护，欢迎加QQ群：1025097836 互相交流探讨
 
+系统配置需求：
+
+Laravel 6+，PHP 7.1+，Mysql5.7
+
 #### 单店铺git地址（不再维护）
 >（国内）gitee地址：https://gitee.com/jackypi/minishop-serve
 >

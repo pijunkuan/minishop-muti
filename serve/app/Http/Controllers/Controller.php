@@ -33,10 +33,5 @@ class Controller extends BaseController
         return SysHomeSetting::first();
     }
 
-    public function test_sms(Request $request)
-    {
-        return redirect("http://baidu.com",302);
-    }
-
 
 }
