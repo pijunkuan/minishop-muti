@@ -44,12 +44,12 @@ class ShopController extends Controller
             $shop->status = $request->get('status');
         }
         if ($request->has('active')) {
-            $shop->status = $request->get('status') ? true : false;
+            $shop->active = $request->get('active') ? true : false;
         }
         if ($request->get('auto_close_in')) {
             $shop->auto_close_in = $request->get('auto_close_in');
         }
-        if ($request->get('auto_receive_in')) {
+        if ($request->has('auto_receive_in')) {
             $shop->auto_receive_in = $request->get('auto_receive_in');
         }
         $shop->save();
