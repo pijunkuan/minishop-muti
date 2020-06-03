@@ -17,15 +17,15 @@ class RefundListController extends Controller
     public function index(Request $request)
     {
         $lists = new UserWalletRefundList();
-        if ($request->has('mobile')) {
+        if ($request->get('mobile')) {
             $user = User::where('mobile', $request->get('mobile'))->firstOrFail();
             $wallet = $user->wallet;
             if (!$wallet) return $this->jsonErrorResponse(422, "该用户未开启钱包");
             $lists = $lists->where('wallet_id', $wallet['id']);
         }
-        if ($request->has('record_no')) $lists = $lists->where('record_no', $request->get('record_no'));
-        if ($request->has('status')) $lists = $lists->where('status', $request->get('status'));
-        if ($request->has('order_no')) $lists = $lists->where('order_no', $request->get('order_no'));
+        if ($request->get('record_no')) $lists = $lists->where('record_no', $request->get('record_no'));
+        if ($request->get('status')) $lists = $lists->where('status', $request->get('status'));
+        if ($request->get('order_no')) $lists = $lists->where('order_no', $request->get('order_no'));
         $lists = $lists->orderBy('created_at', 'desc')->paginate($request->get('pageSize'));
         return $this->jsonSuccessResponse(new RefundCollection($lists));
     }
