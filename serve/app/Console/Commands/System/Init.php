@@ -62,76 +62,76 @@ class Init extends Command
         $this->info('系统管理员初始化完成，用户名：admin，密码：123456');
         DB::table('sys_wx_bank_lists')->delete();
         $banklists = [
-            ['open_bank_code'=>"0100","bank"=>"中国邮政储蓄银行"],
-            ['open_bank_code'=>"0102","bank"=>"工商银行"],
-            ['open_bank_code'=>"0103","bank"=>"农业银行"],
-            ['open_bank_code'=>"0104","bank"=>"中国银行"],
-            ['open_bank_code'=>"0105","bank"=>"建设银行"],
-            ['open_bank_code'=>"0301","bank"=>"交通银行"],
-            ['open_bank_code'=>"0302","bank"=>"中信银行"],
-            ['open_bank_code'=>"0303","bank"=>"光大银行"],
-            ['open_bank_code'=>"0304","bank"=>"华夏银行"],
-            ['open_bank_code'=>"0305","bank"=>"民生银行"],
-            ['open_bank_code'=>"0306","bank"=>"广发银行"],
-            ['open_bank_code'=>"0308","bank"=>"招商银行"],
-            ['open_bank_code'=>"0309","bank"=>"兴业银行"],
-            ['open_bank_code'=>"0310","bank"=>"浦发银行"],
-            ['open_bank_code'=>"0318","bank"=>"平安银行"],
-            ['open_bank_code'=>"0403","bank"=>"北京银行"],
-            ['open_bank_code'=>"0408","bank"=>"宁波银行"],
+            ['open_bank_code' => "0100", "bank" => "中国邮政储蓄银行"],
+            ['open_bank_code' => "0102", "bank" => "工商银行"],
+            ['open_bank_code' => "0103", "bank" => "农业银行"],
+            ['open_bank_code' => "0104", "bank" => "中国银行"],
+            ['open_bank_code' => "0105", "bank" => "建设银行"],
+            ['open_bank_code' => "0301", "bank" => "交通银行"],
+            ['open_bank_code' => "0302", "bank" => "中信银行"],
+            ['open_bank_code' => "0303", "bank" => "光大银行"],
+            ['open_bank_code' => "0304", "bank" => "华夏银行"],
+            ['open_bank_code' => "0305", "bank" => "民生银行"],
+            ['open_bank_code' => "0306", "bank" => "广发银行"],
+            ['open_bank_code' => "0308", "bank" => "招商银行"],
+            ['open_bank_code' => "0309", "bank" => "兴业银行"],
+            ['open_bank_code' => "0310", "bank" => "浦发银行"],
+            ['open_bank_code' => "0318", "bank" => "平安银行"],
+            ['open_bank_code' => "0403", "bank" => "北京银行"],
+            ['open_bank_code' => "0408", "bank" => "宁波银行"],
         ];
         SysWxBankList::insert($banklists);
         $this->info('银行列表初始化成功');
         DB::table('sys_account_ways')->delete();
         $way_lists = [
-            ['way'=>'alipay',"title"=>"支付宝","fee"=>0,"fee_min"=>0,"fee_max"=>0,"daily_limit"=>10000,"active"=>0],
-            ['way'=>'wxpay',"title"=>"微信零钱","fee"=>0,"fee_min"=>0,"fee_max"=>0,"daily_limit"=>10000,"active"=>0],
-            ['way'=>'bank',"title"=>"银行卡","fee"=>0.1,"fee_min"=>1,"fee_max"=>25,"daily_limit"=>10000,"active"=>1],
+            ['way' => 'alipay', "title" => "支付宝", "fee" => 0, "fee_min" => 0, "fee_max" => 0, "daily_limit" => 10000, "active" => 0],
+            ['way' => 'wxpay', "title" => "微信零钱", "fee" => 0, "fee_min" => 0, "fee_max" => 0, "daily_limit" => 10000, "active" => 0],
+            ['way' => 'bank', "title" => "银行卡", "fee" => 0.1, "fee_min" => 1, "fee_max" => 25, "daily_limit" => 10000, "active" => 1],
         ];
         SysAccountWay::insert($way_lists);
         $this->info('提现方式初始化成功');
         DB::table('sys_shop_payment_methods')->delete();
         $payment_methods = [
-            ["code" => "wallet", "title" => "钱包支付", "img" => null, "des" => "钱包支付方式", "need_setting" => false, 'need_wallet'=>false,],
-            ["code" => "cash", "title" => "货到付款", "img" => null, "des" => "货到付款方式", "need_setting" => false, 'need_wallet'=>false,],
-            ["code" => "alipay", "title" => "支付宝", "img" => null, "des" => "支付宝手机支付", "need_setting" => false, 'need_wallet'=>true,],
-            ["code" => "wxpay", "title" => "微信", "img" => null, "des" => "微信支付", "need_setting" => false, 'need_wallet'=>true,],
+            ["code" => "wallet", "title" => "钱包支付", "img" => null, "des" => "钱包支付方式", "need_setting" => false, 'need_wallet' => false,],
+            ["code" => "cash", "title" => "货到付款", "img" => null, "des" => "货到付款方式", "need_setting" => false, 'need_wallet' => false,],
+            ["code" => "alipay", "title" => "支付宝", "img" => null, "des" => "支付宝手机支付", "need_setting" => false, 'need_wallet' => true,],
+            ["code" => "wxpay", "title" => "微信", "img" => null, "des" => "微信支付", "need_setting" => false, 'need_wallet' => true,],
         ];
         SysShopPaymentMethod::insert($payment_methods);
         $this->info('支付方式初始化成功');
         DB::table('sys_sms_templates')->delete();
         $sms_init = [
-            ["id"=>1,"template_code" => "customer_verification", "template_type" => "front_customer", "template_name" => "验证顾客（注册/重置密码）手机号", "template_des" => "发送（注册/重置密码）验证码至顾客手机", "template_content" => "您好，您的验证码是#code#，请尽快验证，如非本人操作请忽略。"],
-            ["id"=>2,"template_code" => "order_create", "template_type" => "front_order", "template_name" => "订单生成通知", "template_des" => "订单提交后，提醒顾客支付订单", "template_content" => "感谢您的惠顾，您的订单#order_no#已提交，请在#time#内完成支付。"],
-            ["id"=>3,"template_code" => "order_paid", "template_type" => "front_order", "template_name" => "订单生效", "template_des" => "订单付款完成后，通知顾客", "template_content" => "感谢您的惠顾，您的订单#order_no#已生效，我们将尽快为您处理。"],
-            ["id"=>4,"template_code" => "order_cancel", "template_type" => "front_order", "template_name" => "订单取消", "template_des" => "订单被顾客主动取消或被网站管理员取消时，通知顾客", "template_content" => "您的订单#order_no#已取消，请登录查看订单详情。"],
-            ["id"=>5,"template_code" => "order_sent", "template_type" => "front_order", "template_name" => "订单发货提醒", "template_des" => "订单发货时，通知顾客", "template_content" => "您的订单#order_no#正通过[#shipment_company#]配送，单号:#shipment_no#，请留意查收。"],
-            ["id"=>6,"template_code" => "order_refund", "template_type" => "front_order", "template_name" => "退单申请结果", "template_des" => "退单申请经过管理员审核后，通知顾客退单是否通过", "template_content" => "您的订单#order_no#退单申请状态已更新，请登录进行查看。"],
-            ["id"=>7,"template_code" => "order_payback", "template_type" => "front_order", "template_name" => "订单退款提醒", "template_des" => "订单退款成功后，通知顾客", "template_content" => "您的订单#order_no#已发起退款，款项#amount#将原路退回，请注意查收。"],
-            ["id"=>8,"template_code" => "admin_order_create", "template_type" => "admin_order", "template_name" => "新订单", "template_des" => "当网站有新订单时，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
-            ["id"=>9,"template_code" => "admin_order_paid", "template_type" => "admin_order", "template_name" => "订单付款通知", "template_des" => "新订单付款成功后，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
-            ["id"=>10,"template_code" => "admin_order_cancel", "template_type" => "admin_order", "template_name" => "订单关闭通知", "template_des" => "订单被顾客关闭时，通知管理员", "template_content" => "网站订单取消通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
-            ["id"=>11,"template_code" => "admin_order_success", "template_type" => "admin_order", "template_name" => "订单成功通知", "template_des" => "顾客确认收货时，通知管理员", "template_content" => "网站订单成功通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
-            ["id"=>12,"template_code" => "admin_order_refunding", "template_type" => "admin_order", "template_name" => "退单通知", "template_des" => "顾客申请退单退款时，通知管理员", "template_content" => "网站订单退款通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
+            ["id" => 1, "template_code" => "customer_verification", "template_type" => "front_customer", "template_name" => "验证顾客（注册/重置密码）手机号", "template_des" => "发送（注册/重置密码）验证码至顾客手机", "template_content" => "您好，您的验证码是#code#，请尽快验证，如非本人操作请忽略。"],
+            ["id" => 2, "template_code" => "order_create", "template_type" => "front_order", "template_name" => "订单生成通知", "template_des" => "订单提交后，提醒顾客支付订单", "template_content" => "感谢您的惠顾，您的订单#order_no#已提交，请在#time#内完成支付。"],
+            ["id" => 3, "template_code" => "order_paid", "template_type" => "front_order", "template_name" => "订单生效", "template_des" => "订单付款完成后，通知顾客", "template_content" => "感谢您的惠顾，您的订单#order_no#已生效，我们将尽快为您处理。"],
+            ["id" => 4, "template_code" => "order_cancel", "template_type" => "front_order", "template_name" => "订单取消", "template_des" => "订单被顾客主动取消或被网站管理员取消时，通知顾客", "template_content" => "您的订单#order_no#已取消，请登录查看订单详情。"],
+            ["id" => 5, "template_code" => "order_sent", "template_type" => "front_order", "template_name" => "订单发货提醒", "template_des" => "订单发货时，通知顾客", "template_content" => "您的订单#order_no#正通过[#shipment_company#]配送，单号:#shipment_no#，请留意查收。"],
+            ["id" => 6, "template_code" => "order_refund", "template_type" => "front_order", "template_name" => "退单申请结果", "template_des" => "退单申请经过管理员审核后，通知顾客退单是否通过", "template_content" => "您的订单#order_no#退单申请状态已更新，请登录进行查看。"],
+            ["id" => 7, "template_code" => "order_payback", "template_type" => "front_order", "template_name" => "订单退款提醒", "template_des" => "订单退款成功后，通知顾客", "template_content" => "您的订单#order_no#已发起退款，款项#amount#将原路退回，请注意查收。"],
+            ["id" => 8, "template_code" => "admin_order_create", "template_type" => "admin_order", "template_name" => "新订单", "template_des" => "当网站有新订单时，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
+            ["id" => 9, "template_code" => "admin_order_paid", "template_type" => "admin_order", "template_name" => "订单付款通知", "template_des" => "新订单付款成功后，通知管理员", "template_content" => "新订单提醒，编号：#order_no#，金额：#amount#，状态：等待配送。"],
+            ["id" => 10, "template_code" => "admin_order_cancel", "template_type" => "admin_order", "template_name" => "订单关闭通知", "template_des" => "订单被顾客关闭时，通知管理员", "template_content" => "网站订单取消通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
+            ["id" => 11, "template_code" => "admin_order_success", "template_type" => "admin_order", "template_name" => "订单成功通知", "template_des" => "顾客确认收货时，通知管理员", "template_content" => "网站订单成功通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
+            ["id" => 12, "template_code" => "admin_order_refunding", "template_type" => "admin_order", "template_name" => "退单通知", "template_des" => "顾客申请退单退款时，通知管理员", "template_content" => "网站订单退款通知，订单号：#order_no#，金额：#amount#，状态：#order_status#。"],
         ];
         SysSmsTemplate::insert($sms_init);
         $this->info('短信模板初始化成功');
         $template = [
-            "id"=>1,
-            "template_name"=>"基础主题",
-            "template_file"=>"templates/default/",
-            "template_content"=>null,
-            "active"=>1
+            "id" => 1,
+            "template_name" => "基础主题",
+            "template_file" => "templates/default/",
+            "template_content" => null,
+            "active" => 1
         ];
         $variant = [
-            "price"=>0,
-            "time"=>12
+            "price" => 0,
+            "time" => 12
         ];
-        if($sys_template = SysTemplate::find($template['id'])){
+        if ($sys_template = SysTemplate::find($template['id'])) {
             $sys_template->update($template);
             $sys_template->variants()->delete();
             $sys_template->variants()->create($variant);
-        }else{
+        } else {
             $sys_template = SysTemplate::create($template);
             $sys_template->variants()->create($variant);
         }
@@ -188,37 +188,79 @@ class Init extends Command
         }
         $this->info('版本初始化成功');
         $sms = [
-            "id"=>1,
-            "sms_name"=>"国内短信包"
+            "id" => 1,
+            "sms_name" => "国内短信包"
         ];
         $variants = [
-            ["price"=>9,"time"=>100],
-            ["price"=>45,"time"=>500],
-            ["price"=>90,"time"=>1000],
+            ["price" => 9, "time" => 100],
+            ["price" => 45, "time" => 500],
+            ["price" => 90, "time" => 1000],
         ];
-        if($sys_sms = SysSms::find($sms['id'])){
+        if ($sys_sms = SysSms::find($sms['id'])) {
             $sys_sms->update($sms);
             $sys_sms->variants()->delete();
             foreach ($variants as $variant) $sys_sms->variants()->create($variant);
 
-        }else{
+        } else {
             $sys_sms = SysSms::create($sms);
             foreach ($variants as $variant) $sys_sms->variants()->create($variant);
         }
         $this->info('短信包初始化成功');
-        if(!AdminTemplate::where('code','template')->first()){
+        if (!AdminTemplate::where('code', 'template')->first())
             AdminTemplate::create([
-                'code'=>"template",
-                'setting'=>null
+                'code' => "template",
+                'setting' => [
+                    "page" => [
+                        "detail" => [
+                            ["img" => null, "text" => "微信、抖音、今日头条、百度等多平台小程序生成", "title" => "多平台小程序"],
+                            ["img" => null, "text" => "满减、优惠券、秒杀等多款营销工具可选，促进用户成交", "title" => "多款营销工具"],
+                        ],
+                        "prices" => [
+                            "title" => "价格",
+                            "button" => "立刻使用",
+                            "content" => [
+                                ["price" => 0, "level_title" => "体验版", "level_content" => ["自动生成域名", "可上传1-20个商品", "赠送1G图片空间", "支持自定义模块"]],
+                                ["price" => 59, "level_title" => "高级版", "level_content" => ["自定义域名", "无限商品上传", "赠送2G图片空间", "支持自定义模块", "提供多场景主题模版", "多种营销工具自选", "支持二次开发和定制", "可配置多平台小程序", "可配置多种收款", "赠送50条短信/月"]],
+                            ]
+                        ],
+                        "banners" => [
+                            ["img" => null, "text" => "简单几步操作，即可生成自己的网上小商城", "title" => "一键搭建线上商城", "sub_title" => "简单几步搭建商城"]
+                        ],
+                        "cooperate" => [
+                            "title" => "合作",
+                            "content" => [
+                                ["img" => null, "title" => "云片网"],
+                            ]
+                        ],
+                        "customers" => [
+                            "title" => "用户说",
+                            "content" => [
+                                ["img" => null, "text" => "操作很简单，不用费事。客户使用起来很方便，下单更多更快。", "title" => "非常好用"]
+                            ]
+                        ],
+                        "advantages" => [
+                            "title" => "我们的优势",
+                            "content" => [
+                                ["img" => null, "text" => "手机浏览器+小程序\n适应主流客户群", "title" => "轻量级", "sub_title" => "主攻移动端"]
+                            ]
+                        ]
+                    ],
+                    "basic" => [
+                        "beian" => ["no" => "粤xxxxx号", "copyright" => "Copyright 2015-2019"],
+                        "company" => ["desc" => "本公司提供小程序搭建、完整的电商系统建设服务", "address" => "xxxxx"],
+                        "menubar" => [
+                            ["link" => null, "title" => "产品优势", "link_type" => "out"],
+                        ],
+                        "service" => ["time" => "每天上午8:00-下午6:30\n联系我们请扫描上方二维码", "qrcode" => null],
+                        "webback" => ["img" => null, "color" => "#FFFFFF", "imageType" => "repeatall"],
+                        "weblogo" => null,
+                        "webname" => "minishop"
+                    ],
+                    "color" => ["subColor" => "#ffcd51", "supColor" => "#d8172e", "mainColor" => "#f04826", "textColor" => "#868686", "titleColor" => "#2b2236", "subtitleColor" => "#414342", "borderColorDark" => "#b4b5b9", "borderColorLight" => "#e8e8e8", "borderColorMiddle" => "#f9f3e5", "backgroundColorDark" => "#3b2f50", "backgroundColorLight" => "#dfe4e4"]
+                ]
             ]);
-        }
         $this->info('前台模板初始化成功');
-        if (!AdminContent::where('code', 'contrast')->first()) {
-            AdminContent::create([
-                'code' => "contrast",
-                "content" => null
-            ]);
-        }
+        if (!AdminContent::where('code', 'contrast')->first()) AdminContent::create(['code' => "contrast", "content" => null]);
         $this->info('前台协议模板初始化成功');
         if (!SysCenterSetting::first()) SysCenterSetting::create([]);
         $this->info('Center配置文件初始化成功');
