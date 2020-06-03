@@ -11,6 +11,7 @@ use App\Models\SysAccountWay;
 use App\Models\SysCenterSetting;
 use App\Models\SysHomeSetting;
 use App\Models\SysLevel;
+use App\Models\SysPaymentMethod;
 use App\Models\SysShopPaymentMethod;
 use App\Models\SysSms;
 use App\Models\SysSmsTemplate;
@@ -99,6 +100,14 @@ class Init extends Command
         ];
         SysShopPaymentMethod::insert($payment_methods);
         $this->info('支付方式初始化成功');
+        $sys_payment_methods = [
+            ["id"=>1,"method_code"=>"alipay","method_title"=>"支付宝","active"=>1],
+            ["id"=>2,"method_code"=>"wxpay","method_title"=>"微信","active"=>1],
+            ["id"=>3,"method_code"=>"bank","method_title"=>"银行转账","active"=>0],
+        ];
+        DB::table('sys_payment_methods')->delete();
+        SysPaymentMethod::insert($sys_payment_methods);
+        $this->info('前台支付方式初始化成功');
         DB::table('sys_sms_templates')->delete();
         $sms_init = [
             ["id" => 1, "template_code" => "customer_verification", "template_type" => "front_customer", "template_name" => "验证顾客（注册/重置密码）手机号", "template_des" => "发送（注册/重置密码）验证码至顾客手机", "template_content" => "您好，您的验证码是#code#，请尽快验证，如非本人操作请忽略。"],
