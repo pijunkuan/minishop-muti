@@ -38,6 +38,7 @@ class ProductController extends Controller
     {
         $shop = $request->get('ori_shop');
         $product = $shop->products()->findOrFail($request->route()->parameter('product'));
+        if(!$product['on_sale']) return $this->jsonErrorResponse(422,"已下架");
         return $this->jsonSuccessResponse(new ProductDetail($product));
     }
 }
