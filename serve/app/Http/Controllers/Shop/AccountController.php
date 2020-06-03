@@ -19,15 +19,5 @@ class AccountController extends Controller
         return $template = AdminContent::where('code', 'contrast')->value('content');
     }
 
-    public function img2base64(Request $request)
-    {
-        if($request->get('url')){
-            $img = $request->get('url');
-            $file = file_get_contents($img);
-            $base64 = base64_encode($file);
-            return $base64;
-        }else{
-            return null;
-        }
-    }
+
 }
