@@ -250,7 +250,10 @@ class Init extends Command
                         "advantages" => [
                             "title" => "我们的优势",
                             "content" => [
-                                ["img" => null, "text" => "手机浏览器+小程序\n适应主流客户群", "title" => "轻量级", "sub_title" => "主攻移动端"]
+                                ["img" => null, "text" => "手机浏览器+小程序\n适应主流客户群", "title" => "轻量级", "sub_title" => "主攻移动端"],
+                                ["img" => null, "text" => "手机浏览器+小程序\n适应主流客户群", "title" => "轻量级", "sub_title" => "主攻移动端"],
+                                ["img" => null, "text" => "手机浏览器+小程序\n适应主流客户群", "title" => "轻量级", "sub_title" => "主攻移动端"],
+                                ["img" => null, "text" => "手机浏览器+小程序\n适应主流客户群", "title" => "轻量级", "sub_title" => "主攻移动端"],
                             ]
                         ]
                     ],
