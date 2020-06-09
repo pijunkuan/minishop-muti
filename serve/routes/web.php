@@ -14,7 +14,7 @@
 Route::post('shop/pay/confirm', "Shop\Shop\PayController@confirm");
 Route::post('front/pay/confirm', "Front\Pay\PayController@confirm");
 Route::get('front/pay/wxpay/{no}', "Front\Pay\PayController@pay");
-Route::get('{filename}','Controller@testfile');
+//Route::get('{filename}','Controller@testfile');
 
 
 Route::group(["domain" => "back-admin." . env('SHOP_HOST'),], function () {
