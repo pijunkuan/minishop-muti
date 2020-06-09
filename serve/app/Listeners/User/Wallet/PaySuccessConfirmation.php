@@ -42,6 +42,7 @@ class PaySuccessConfirmation
             $fee = round($payment['pay_amount'] * $level['fee_rate'] * 0.01, 2);
             $data = [
                 "pay_no" => $payment['pay_no'],
+                "shop_id"=>$shop['id'],
                 "shop_name"=>$shop['shop_name'],
                 "no" => $payment['order']['no'],
                 "amount" => $payment['pay_amount'],
