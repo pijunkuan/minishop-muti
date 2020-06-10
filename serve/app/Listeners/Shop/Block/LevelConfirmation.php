@@ -39,45 +39,23 @@ class LevelConfirmation
                 $exp_at = now()->addMonths($event->time)->addDay();
                 $shop_level = $shop->level;
                 if($shop_level){
-                    switch ($level['id']){
-                        case 1:
-                            if($shop_level['sys_level_id'] == 1){
-                                if($shop_level['exp_at'] < now()){
-                                    $shop_level->update([
-                                        'exp_at'=>$exp_at
-                                    ]);
-                                }else{
-                                    $exp_at = Carbon::make($shop_level['exp_at']);
-                                    $exp_at = $exp_at->addMonths($event->time)->addDay();
-                                    $shop_level->update([
-                                        'exp_at'=> $exp_at
-                                    ]);
-                                }
-                            }
-                            break;
-                        case 2:
-                            switch ($shop_level['sys_level_id']){
-                                case 1:
-                                    $shop_level->update([
-                                        'sys_level_id'=>2,
-                                        'exp_at'=>$exp_at
-                                    ]);
-                                    break;
-                                case 2:
-                                    if($shop_level['exp_at'] < now()){
-                                        $shop_level->update([
-                                            'exp_at'=>$exp_at
-                                        ]);
-                                    }else{
-                                        $exp_at = Carbon::make($shop_level['exp_at']);
-                                        $exp_at = $exp_at->addMonths($event->time)->addDay();
-                                        $shop_level->update([
-                                           'exp_at'=> $exp_at
-                                        ]);
-                                    }
-                                    break;
-                            }
-                            break;
+                    if($shop_level['sys_level_id'] != $level['id']){
+                        $shop_level->update([
+                            'sys_level_id'=>$level['id'],
+                            'exp_at'=>$exp_at
+                        ]);
+                    }else{
+                        if($shop_level['exp_at'] < now()){
+                            $shop_level->update([
+                                'exp_at'=>$exp_at
+                            ]);
+                        }else{
+                            $exp_at = Carbon::make($shop_level['exp_at']);
+                            $exp_at = $exp_at->addMonths($event->time)->addDay();
+                            $shop_level->update([
+                                'exp_at'=> $exp_at
+                            ]);
+                        }
                     }
                 }else{
                     $shop->level()->create([
