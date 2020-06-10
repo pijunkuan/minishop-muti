@@ -6,8 +6,11 @@ use App\Events\Shop\Block\BlockSuccessEvent;
 use App\Models\ShopOrder;
 use App\Models\SysLevel;
 use App\Models\SysLevelVariant;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Filesystem\Cache;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class LevelConfirmation
 {
@@ -39,9 +42,17 @@ class LevelConfirmation
                     switch ($level['id']){
                         case 1:
                             if($shop_level['sys_level_id'] == 1){
-                                $shop_level->update([
-                                   'exp_at'=>$exp_at
-                                ]);
+                                if($shop_level['exp_at'] < now()){
+                                    $shop_level->update([
+                                        'exp_at'=>$exp_at
+                                    ]);
+                                }else{
+                                    $exp_at = Carbon::make($shop_level['exp_at']);
+                                    $exp_at = $exp_at->addMonths($event->time)->addDay();
+                                    $shop_level->update([
+                                        'exp_at'=> $exp_at
+                                    ]);
+                                }
                             }
                             break;
                         case 2:
@@ -58,7 +69,8 @@ class LevelConfirmation
                                             'exp_at'=>$exp_at
                                         ]);
                                     }else{
-                                        $exp_at = $shop_level['exp_at']->addMonths($event->time)->addDay();
+                                        $exp_at = Carbon::make($shop_level['exp_at']);
+                                        $exp_at = $exp_at->addMonths($event->time)->addDay();
                                         $shop_level->update([
                                            'exp_at'=> $exp_at
                                         ]);

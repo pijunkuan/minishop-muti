@@ -7,13 +7,13 @@
     <link rel="shortcut icon" href="{{$ico}}">
 
     <title>{{$title}}</title>
-    <link href="{{asset($file.'css/app.css')}}" rel=stylesheet>
-    <link href="{{asset($file.'css/chunk-vendors.css')}}" rel=stylesheet>
+    <link href="{{asset($file.'css/app.css?v='.time())}}" rel=stylesheet>
+    <link href="{{asset($file.'css/chunk-vendors.css?v='.time())}}" rel=stylesheet>
 </head>
 <body>
 <div id="app"></div>
-<script src="{{asset($file.'js/chunk-vendors.js')}}"></script>
-<script src="{{asset($file.'js/app.js')}}"></script>
+<script src="{{asset($file.'js/chunk-vendors.js?v='.time())}}"></script>
+<script src="{{asset($file.'js/app.js?v='.time())}}"></script>
 </body>
 
 

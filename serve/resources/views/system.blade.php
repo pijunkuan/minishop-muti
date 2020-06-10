@@ -8,13 +8,13 @@
     <link rel="shortcut icon" href="{{$ico}}">
 
     <title>{{$title}}</title>
-    <link href="{{asset($file.'css/app.css')}}" rel=stylesheet>
+    <link href="{{asset($file.'css/app.css?v='.time())}}" rel=stylesheet>
 </head>
 <body>
 <div id="app"></div>
-<script src="{{asset($file.'js/template-elementUI.js')}}"></script>
-<script src="{{asset($file.'js/template-libs.js')}}"></script>
-<script src="{{asset($file.'js/app.js')}}"></script>
+<script src="{{asset($file.'js/template-elementUI.js?v='.time())}}"></script>
+<script src="{{asset($file.'js/template-libs.js?v='.time())}}"></script>
+<script src="{{asset($file.'js/app.js?v='.time())}}"></script>
 </body>
 
 

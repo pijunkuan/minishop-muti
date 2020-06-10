@@ -20,6 +20,9 @@ class IncomeController extends Controller
             if (!$wallet) return $this->jsonErrorResponse(422, "该用户未开启钱包");
             $incomes = $incomes->where('wallet_id', $wallet['id']);
         }
+        if($walletId = $request->get('wallet_id')){
+            $incomes = $incomes->where('wallet_id',$walletId);
+        }
         if($no = $request->get('no')){
             $incomes = $incomes->where('no',$no);
         }
