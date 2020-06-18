@@ -25,7 +25,7 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         $shop = $request->get('ori_shop');
-        if (Category::count() > 20) return $this->jsonErrorResponse(404, "超出最大分类数量（20）");
+//        if ($shop->categories()->count() > 20) return $this->jsonErrorResponse(404, "超出最大分类数量（20）");
         $category =  $shop->categories()->make([
             "category_title" => $request->get('category_title'),
             "visibility" => $request->get('visibility')
