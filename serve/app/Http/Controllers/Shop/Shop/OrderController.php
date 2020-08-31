@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop\Shop;
 
 use App\Events\Shop\Pay\PaySuccessEvent;
+use App\Exports\Order\OrderDownload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\Shop\OrderStoreRequest;
 use App\Http\Resources\Shop\Order\OrderListCollection;
@@ -11,6 +12,7 @@ use App\Models\ShopOrder;
 use App\Models\ShopOrderPayment;
 use App\Services\Shop\ShopOrderService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -35,6 +37,11 @@ class OrderController extends Controller
     {
         $order = auth('users')->user()->shopOrders()->where('no', $request->route()->parameter('order_no'))->first();
         return $this->jsonSuccessResponse(new OrderResource($order));
+    }
+
+    public function download(Request $request){
+        $orders = auth('users')->user()->shopOrders()->get();
+        return Excel::download(new OrderDownload($orders),'order.csv');
     }
 
 
