@@ -188,4 +188,40 @@ class OrderController extends Controller
         }
         return $this->jsonSuccessResponse(new AdminOrderTipsResource($tip));
     }
+
+    public function download(Request $request){
+        $shop = $request->get('ori_shop');
+        $orders = $shop->orders();
+        $orders = $orders->orderBy('created_at', 'desc');
+        if ($name = $request->get('name')) {
+            $orders_id = OrderAddress::where('name', 'like', "%{$name}%")->pluck('order_id');
+            $orders->whereIn('id', $orders_id);
+        }
+        if ($no = $request->get('no')) {
+            $orders->where('no', 'like', "%{$no}%");
+        }
+        if ($status = $request->get('status')) {
+            switch ($status) {
+                //待付款
+                case Order::ORDER_STATUS_PENDING:
+                    $orders->where('status', Order::ORDER_STATUS_PENDING);
+                    break;
+                //待发货
+                case Order::ORDER_STATUS_PROCESSING:
+                    $orders->where('status', Order::ORDER_STATUS_PROCESSING)->where('refund_status', null);
+                    break;
+                //已发货
+                case Order::ORDER_STATUS_PARTIAL:
+                case Order::ORDER_STATUS_SENT:
+                    $orders->whereIn('status', [Order::ORDER_STATUS_PARTIAL, Order::ORDER_STATUS_SENT])->where('refund_status', null);
+                    break;
+                //退款中
+                case Order::REFUND_STATUS_REFUNDING:
+                    $orders->where('refund_status', Order::REFUND_STATUS_REFUNDING);
+                    break;
+            }
+        }
+        $orders = $orders->get();
+        return Excel::download(new OrderDownload($orders),'order.csv');
+    }
 }

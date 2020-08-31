@@ -19,7 +19,6 @@ Route::namespace('Shop')->group(function () {
         Route::prefix('order')->group(function () {
             Route::post('', 'OrderController@store');
             Route::get('list', 'OrderController@index');
-            Route::post('download','OrderController@download');
             Route::get('{order_no}', 'OrderController@show');
         });
         Route::prefix('sys')->group(function () {

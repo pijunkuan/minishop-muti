@@ -39,10 +39,7 @@ class OrderController extends Controller
         return $this->jsonSuccessResponse(new OrderResource($order));
     }
 
-    public function download(Request $request){
-        $orders = auth('users')->user()->shopOrders()->get();
-        return Excel::download(new OrderDownload($orders),'order.csv');
-    }
+    
 
 
 }
